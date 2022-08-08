@@ -33,7 +33,7 @@ class CustomButton extends StatelessWidget {
     }
 
     if (this.buttonType == ButtonType.secondary) {
-      return Theme.of(context).primaryColor;
+      return Theme.of(context).primaryColorDark;
     }
 
     if (this.buttonType == ButtonType.third) {
@@ -49,12 +49,12 @@ class CustomButton extends StatelessWidget {
       padding: this.padding,
       height: this.height ?? 55,
       width: this.width ?? MediaQuery.of(context).size.width * 1,
-      child: RaisedButton(
-        elevation: 7,
+      child: ElevatedButton(
         child: Text(
           this.buttonText,
           style: Theme.of(context).textTheme.bodyText1?.copyWith(
-            color: this.buttonType == ButtonType.primary ? primary : this.buttonType == ButtonType.third ? Colors.black : Colors.white,
+            color: this.buttonType == ButtonType.primary ? primary :
+            this.buttonType == ButtonType.third ? Colors.black : Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: this.textSize != null
                 ? this.textSize
@@ -62,10 +62,10 @@ class CustomButton extends StatelessWidget {
           ),
         ),
         onPressed: this.onPressed,
-        color: _buttonColor(context),
-        shape: RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(10.0),
-        ),
+        // color: _buttonColor(context),
+        // shape: RoundedRectangleBorder(
+        //   borderRadius: new BorderRadius.circular(10.0),
+        // ),
       ),
     );
   }

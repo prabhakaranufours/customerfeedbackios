@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/button.dart';
 import '../widgets/textfield.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -105,7 +106,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                   FocusScope.of(context).unfocus(),
                               textInputAction: TextInputAction.done,
                             ),
-                            SizedBox(height: 10),
+                            SizedBox(height: 25),
+                            CustomButton(
+                              buttonText: 'LOGIN',
+                              onPressed: () =>
+                              {},
+                            ),
+
                           ],
                         ),
                       ),
