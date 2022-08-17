@@ -1,5 +1,12 @@
-import 'package:flutter/material.dart';
+import 'dart:ffi';
+import 'dart:io';
 
+import 'package:device_info/device_info.dart';
+import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+import '../helpers/colors.dart';
 import '../widgets/button.dart';
 import '../widgets/textfield.dart';
 
@@ -10,10 +17,71 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
+//Create Folder in Internal app
+Future<void> createFolderInAppDocDir(String folderName) async {
+  //Get this App Document Directory
+  if (await Permission.storage.request().isGranted) {
+    // final Directory _appDocDir = await getApplicationDocumentsDirectory();
+    final Directory? _appDocDir = await getApplicationDocumentsDirectory();
+    //App Document Directory + folder name
+    final Directory _appDocDirFolder =
+        Directory('${_appDocDir?.path}/../$folderName/');
+
+    if (await _appDocDirFolder.exists()) {
+      //if folder already exists return path
+    } else {
+      //if folder not exists create folder and then return its path
+      final Directory _appDocDirNewFolder =
+          await _appDocDirFolder.create(recursive: true);
+    }
+  }
+}
+
+Future<void> createFol(String folderName) async {
+  var path;
+
+  // // You can request multiple permissions at once.
+  // Map<Permission, PermissionStatus> statuses = await [
+  //   Permission.location,
+  //   Permission.storage,
+  // ].request();
+  // print(statuses[Permission.location]);
+
+  if (Platform.isIOS) {
+
+  } else if (Platform.isAndroid) {
+    var androidInfo = await DeviceInfoPlugin().androidInfo;
+    var release = androidInfo.version.sdkInt;
+    print('Android $release');
+
+    if (release >= 30) {
+      createFolderInAppDocDir(folderName);
+    } else {
+      if (await Permission.storage.request().isGranted) {
+        path = Directory("storage/emulated/0/$folderName");
+        if ((await path.exists())) {
+          print("exist");
+        } else {
+          print("not exist");
+          path.create();
+        }
+      }
+    }
+  }
+}
+
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final passwordController = TextEditingController();
+  bool isRememberMeSelected = true;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // createFolderInAppDocDir("CustomerPrabhakaran");
+    createFol("CustomerFeedback_IOS");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +103,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   transform: Matrix4.translationValues(0, -10, 0),
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                    color:Colors.white,
-                    borderRadius:BorderRadius.only(
-                      topLeft:Radius.circular(10),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
                       topRight: Radius.circular(10),
                     ),
                   ),
-                  child:Column(
+                  child: Column(
                     children: [
                       Container(
                         transform: Matrix4.translationValues(0, -15, 0),
@@ -109,16 +177,53 @@ class _LoginScreenState extends State<LoginScreen> {
                             SizedBox(height: 25),
                             CustomButton(
                               buttonText: 'LOGIN',
-                              onPressed: () =>
-                              {},
+                              onPressed: () => {
+                                Navigator.pushReplacementNamed(
+                                    context, '/home'),
+                              },
                             ),
-
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Expanded(
+                                  flex: 5,
+                                  child: Row(
+                                    children: <Widget>[
+                                      Checkbox(
+                                        value: isRememberMeSelected,
+                                        activeColor: primary,
+                                        onChanged: (val) {
+                                          setState(() {
+                                            isRememberMeSelected = val!;
+                                          });
+                                        },
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            isRememberMeSelected =
+                                                !isRememberMeSelected;
+                                          });
+                                        },
+                                        child: Text(
+                                          'Remember me',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1!
+                                              .copyWith(fontSize: 13),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),
                     ],
                   ),
-
                 ),
               ],
             ),

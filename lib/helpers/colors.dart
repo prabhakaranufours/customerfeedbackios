@@ -14,3 +14,5 @@ final green = const Color.fromRGBO(0, 179, 60, 1);
 final textDarkGrey = const Color.fromRGBO(115, 115, 115, 1);
 final grey = const Color.fromRGBO(166, 166, 166, 1);
 final veryLightGrey = const Color.fromRGBO(115, 172, 208, 1);
+
+final primaryDark = const Color.fromRGBO(144, 21, 26, 1);
