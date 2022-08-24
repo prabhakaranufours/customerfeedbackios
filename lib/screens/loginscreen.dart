@@ -2,19 +2,63 @@ import 'dart:ffi';
 import 'dart:io';
 
 import 'package:device_info/device_info.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:toast/toast.dart';
 
 import '../helpers/colors.dart';
+import '../helpers/utils.dart';
+import '../models/loginresponse.dart';
 import '../widgets/button.dart';
 import '../widgets/textfield.dart';
+import '../api/customerfeedback_api_call.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
+}
+
+//Get LoginDetails
+void api(BuildContext context) async {
+  // Utils.showLoader(context);
+  // var email = await SharedPreferencesHelper.getPrefString(
+  //     SharedPreferencesHelper.USER_EMAIL, '');
+  var email = 'chitra.murali@i2isoftwares.com';
+  var password = 'Password0';
+  Loginresponse? response = await CustomerFeedbackApiCall().checkLogin(email, password);
+  if(response != null) {
+    Utils.showToastMsg(response.message);
+    if (response.status!) {
+      _showConfirmationDialog(context, "\nLogin Successfully");
+    }
+  }
+}
+
+//Dialog
+Future<void> _showConfirmationDialog(BuildContext context, String msg) {
+  return showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (context) {
+      return CupertinoAlertDialog(
+        content: Text(msg),
+        actions: <Widget>[
+          CupertinoButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              // Navigator.of(context).pop('reloadData');
+            },
+            child: Text('Ok'),
+            padding: EdgeInsets.zero,
+          ),
+        ],
+      );
+    },
+  );
 }
 
 //Create Folder in Internal app
@@ -48,7 +92,6 @@ Future<void> createFol(String folderName) async {
   // print(statuses[Permission.location]);
 
   if (Platform.isIOS) {
-
   } else if (Platform.isAndroid) {
     var androidInfo = await DeviceInfoPlugin().androidInfo;
     var release = androidInfo.version.sdkInt;
@@ -79,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // createFolderInAppDocDir("CustomerPrabhakaran");
+    ToastContext().init(context);
     createFol("CustomerFeedback_IOS");
   }
 
@@ -178,8 +221,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             CustomButton(
                               buttonText: 'LOGIN',
                               onPressed: () => {
-                                Navigator.pushReplacementNamed(
-                                    context, '/home'),
+                                api(context),
                               },
                             ),
                             SizedBox(height: 10),

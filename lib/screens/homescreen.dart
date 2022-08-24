@@ -1,4 +1,5 @@
 import 'package:customerfeedbackios/database/database_helper.dart';
+import 'package:customerfeedbackios/models/UserDetails.dart';
 import 'package:flutter/material.dart';
 
 import '../helpers/colors.dart';
@@ -13,6 +14,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -41,10 +47,12 @@ class _HomeScreenState extends State<HomeScreen> {
             InkWell(
               onTap: () {
 
-                DatabaseHelper.instance.insert({
-                  DatabaseHelper.userName: 'Prabhakaran',
-                  DatabaseHelper.password: 'Password0'
-                });
+                List<UserDetails> userd = [];
+                var s = UserDetails();
+                s.emailID = "prabhakaran.s@ufours.com";
+                s.isWorkstationLogin = 1;
+                userd.add(s);
+                DatabaseHelper.instance.userinsert(userd);
               },
               child: Padding(
                 padding: EdgeInsets.all(14),
