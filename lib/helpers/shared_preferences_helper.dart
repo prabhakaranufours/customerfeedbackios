@@ -8,6 +8,7 @@ class SharedPreferencesHelper {
   static final String LOGIN_RESPONSE = "login_response";
   static final String USER_EMAIL = "USER_EMAIL";
   static final String USER_PASSWORD = "USER_PASSWORD";
+  static final String USER_ID = "USER_ID";
   static final String SETTING_DETAILS = "SETTING_DETAILS";
 
   static final String DEPARTMENTID = "DEPARTMENT_ID";

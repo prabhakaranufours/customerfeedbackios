@@ -1,22 +1,23 @@
 class Loginresponse {
-  Loginresponse({
-      this.status, 
-      this.showQa, 
-      this.message, 
-      this.returnData, 
-      this.method, 
-      this.sessionID, 
-      this.id, 
-      this.isshow, 
-      this.data, 
-      this.isOTP, 
-      this.isfeedback,});
+  Loginresponse(
+    this.status,
+    this.showQa,
+    this.message,
+    this.returnData,
+    this.method,
+    this.sessionID,
+    this.id,
+    this.isshow,
+    this.data,
+    this.isOTP,
+    this.isfeedback,
+  );
 
   Loginresponse.fromJson(dynamic json) {
     status = json['Status'];
     showQa = json['ShowQa'];
     message = json['Message'];
-    returnData = json['ReturnData'] != null ? ReturnData.fromJson(json['ReturnData']) : null;
+    returnData = ReturnData.fromJson(json['ReturnData']);
     method = json['Method'];
     sessionID = json['SessionID'];
     id = json['ID'];
@@ -25,40 +26,43 @@ class Loginresponse {
     isOTP = json['isOTP'];
     isfeedback = json['isfeedback'];
   }
-  bool? status;
-  bool? showQa;
-  String? message;
-  ReturnData? returnData;
-  String? method;
-  String? sessionID;
-  String? id;
+
+  late bool status;
+  late bool showQa;
+  late String message;
+  late ReturnData returnData;
+  late String method;
+  late String sessionID;
+  late String id;
   dynamic isshow;
-  num? data;
+  late num data;
   dynamic isOTP;
-  num? isfeedback;
-Loginresponse copyWith({  bool? status,
-  bool? showQa,
-  String? message,
-  ReturnData? returnData,
-  String? method,
-  String? sessionID,
-  String? id,
-  dynamic isshow,
-  num? data,
-  dynamic isOTP,
-  num? isfeedback,
-}) => Loginresponse(  status: status ?? this.status,
-  showQa: showQa ?? this.showQa,
-  message: message ?? this.message,
-  returnData: returnData ?? this.returnData,
-  method: method ?? this.method,
-  sessionID: sessionID ?? this.sessionID,
-  id: id ?? this.id,
-  isshow: isshow ?? this.isshow,
-  data: data ?? this.data,
-  isOTP: isOTP ?? this.isOTP,
-  isfeedback: isfeedback ?? this.isfeedback,
-);
+  late num isfeedback;
+
+// Loginresponse copyWith({  bool? status,
+//   bool? showQa,
+//   String? message,
+//   ReturnData? returnData,
+//   String? method,
+//   String? sessionID,
+//   String? id,
+//   dynamic isshow,
+//   num? data,
+//   dynamic isOTP,
+//   num? isfeedback,
+// }) => Loginresponse(  status: status ?? this.status,
+//   showQa: showQa ?? this.showQa,
+//   message: message ?? this.message,
+//   returnData: returnData ?? this.returnData,
+//   method: method ?? this.method,
+//   sessionID: sessionID ?? this.sessionID,
+//   id: id ?? this.id,
+//   isshow: isshow ?? this.isshow,
+//   data: data ?? this.data,
+//   isOTP: isOTP ?? this.isOTP,
+//   isfeedback: isfeedback ?? this.isfeedback,
+// );
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['Status'] = status;
@@ -76,12 +80,12 @@ Loginresponse copyWith({  bool? status,
     map['isfeedback'] = isfeedback;
     return map;
   }
-
 }
 
 class ReturnData {
   ReturnData({
-      this.userDetails,});
+    this.userDetails,
+  });
 
   ReturnData.fromJson(dynamic json) {
     if (json['UserDetails'] != null) {
@@ -91,10 +95,16 @@ class ReturnData {
       });
     }
   }
+
   List<UserDetails>? userDetails;
-ReturnData copyWith({  List<UserDetails>? userDetails,
-}) => ReturnData(  userDetails: userDetails ?? this.userDetails,
-);
+
+  ReturnData copyWith({
+    List<UserDetails>? userDetails,
+  }) =>
+      ReturnData(
+        userDetails: userDetails ?? this.userDetails,
+      );
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     if (userDetails != null) {
@@ -102,36 +112,36 @@ ReturnData copyWith({  List<UserDetails>? userDetails,
     }
     return map;
   }
-
 }
 
 class UserDetails {
-  UserDetails({
-      this.fromFramework, 
-      this.countryID, 
-      this.countryIDCurrent, 
-      this.roleID, 
-      this.userID, 
-      this.companyIDUser, 
-      this.locationIDUser, 
-      this.companyName, 
-      this.companyIDCurrent, 
-      this.locationName, 
-      this.locationIDCurrent, 
-      this.groupID, 
-      this.groupIDCurrent, 
-      this.languageID, 
-      this.userFirstName, 
-      this.userLastName, 
-      this.themeFolderPath, 
-      this.compLogo, 
-      this.announcement, 
-      this.isWorkstationLogin, 
-      this.roleformshowid, 
-      this.emailID, 
-      this.showQA, 
-      this.departmentID, 
-      this.departmentName,});
+  UserDetails(
+    this.fromFramework,
+    this.countryID,
+    this.countryIDCurrent,
+    this.roleID,
+    this.userID,
+    this.companyIDUser,
+    this.locationIDUser,
+    this.companyName,
+    this.companyIDCurrent,
+    this.locationName,
+    this.locationIDCurrent,
+    this.groupID,
+    this.groupIDCurrent,
+    this.languageID,
+    this.userFirstName,
+    this.userLastName,
+    this.themeFolderPath,
+    this.compLogo,
+    this.announcement,
+    this.isWorkstationLogin,
+    this.roleformshowid,
+    this.emailID,
+    this.showQA,
+    this.departmentID,
+    this.departmentName,
+  );
 
   UserDetails.fromJson(dynamic json) {
     fromFramework = json['FromFramework'];
@@ -160,85 +170,87 @@ class UserDetails {
     departmentID = json['DepartmentID'];
     departmentName = json['DepartmentName'];
   }
-  bool? fromFramework;
-  num? countryID;
-  num? countryIDCurrent;
-  num? roleID;
-  num? userID;
-  num? companyIDUser;
-  num? locationIDUser;
-  String? companyName;
-  num? companyIDCurrent;
-  String? locationName;
-  num? locationIDCurrent;
-  num? groupID;
-  num? groupIDCurrent;
-  num? languageID;
-  String? userFirstName;
-  String? userLastName;
+
+  late bool fromFramework;
+  late num countryID;
+  late num countryIDCurrent;
+  late num roleID;
+  late num userID;
+  late num companyIDUser;
+  late num locationIDUser;
+  late String companyName;
+  late num companyIDCurrent;
+  late String locationName;
+  late num locationIDCurrent;
+  late num groupID;
+  late num groupIDCurrent;
+  late num languageID;
+  late String userFirstName;
+  late String userLastName;
   dynamic themeFolderPath;
-  String? compLogo;
-  String? announcement;
-  num? isWorkstationLogin;
-  num? roleformshowid;
-  String? emailID;
-  bool? showQA;
-  num? departmentID;
+  late String compLogo;
+  late String announcement;
+  late num isWorkstationLogin;
+  late num roleformshowid;
+  late String emailID;
+  late bool showQA;
+  late num departmentID;
   dynamic departmentName;
-UserDetails copyWith({  bool? fromFramework,
-  num? countryID,
-  num? countryIDCurrent,
-  num? roleID,
-  num? userID,
-  num? companyIDUser,
-  num? locationIDUser,
-  String? companyName,
-  num? companyIDCurrent,
-  String? locationName,
-  num? locationIDCurrent,
-  num? groupID,
-  num? groupIDCurrent,
-  num? languageID,
-  String? userFirstName,
-  String? userLastName,
-  dynamic themeFolderPath,
-  String? compLogo,
-  String? announcement,
-  num? isWorkstationLogin,
-  num? roleformshowid,
-  String? emailID,
-  bool? showQA,
-  num? departmentID,
-  dynamic departmentName,
-}) => UserDetails(  fromFramework: fromFramework ?? this.fromFramework,
-  countryID: countryID ?? this.countryID,
-  countryIDCurrent: countryIDCurrent ?? this.countryIDCurrent,
-  roleID: roleID ?? this.roleID,
-  userID: userID ?? this.userID,
-  companyIDUser: companyIDUser ?? this.companyIDUser,
-  locationIDUser: locationIDUser ?? this.locationIDUser,
-  companyName: companyName ?? this.companyName,
-  companyIDCurrent: companyIDCurrent ?? this.companyIDCurrent,
-  locationName: locationName ?? this.locationName,
-  locationIDCurrent: locationIDCurrent ?? this.locationIDCurrent,
-  groupID: groupID ?? this.groupID,
-  groupIDCurrent: groupIDCurrent ?? this.groupIDCurrent,
-  languageID: languageID ?? this.languageID,
-  userFirstName: userFirstName ?? this.userFirstName,
-  userLastName: userLastName ?? this.userLastName,
-  themeFolderPath: themeFolderPath ?? this.themeFolderPath,
-  compLogo: compLogo ?? this.compLogo,
-  announcement: announcement ?? this.announcement,
-  isWorkstationLogin: isWorkstationLogin ?? this.isWorkstationLogin,
-  roleformshowid: roleformshowid ?? this.roleformshowid,
-  emailID: emailID ?? this.emailID,
-  showQA: showQA ?? this.showQA,
-  departmentID: departmentID ?? this.departmentID,
-  departmentName: departmentName ?? this.departmentName,
-);
+
+// UserDetails copyWith({  bool? fromFramework,
+//   num? countryID,
+//   num? countryIDCurrent,
+//   num? roleID,
+//   num? userID,
+//   num? companyIDUser,
+//   num? locationIDUser,
+//   String? companyName,
+//   num? companyIDCurrent,
+//   String? locationName,
+//   num? locationIDCurrent,
+//   num? groupID,
+//   num? groupIDCurrent,
+//   num? languageID,
+//   String? userFirstName,
+//   String? userLastName,
+//   dynamic themeFolderPath,
+//   String? compLogo,
+//   String? announcement,
+//   num? isWorkstationLogin,
+//   num? roleformshowid,
+//   String? emailID,
+//   bool? showQA,
+//   num? departmentID,
+//   dynamic departmentName,
+// }) => UserDetails(  fromFramework: fromFramework ?? this.fromFramework,
+//   countryID: countryID ?? this.countryID,
+//   countryIDCurrent: countryIDCurrent ?? this.countryIDCurrent,
+//   roleID: roleID ?? this.roleID,
+//   userID: userID ?? this.userID,
+//   companyIDUser: companyIDUser ?? this.companyIDUser,
+//   locationIDUser: locationIDUser ?? this.locationIDUser,
+//   companyName: companyName ?? this.companyName,
+//   companyIDCurrent: companyIDCurrent ?? this.companyIDCurrent,
+//   locationName: locationName ?? this.locationName,
+//   locationIDCurrent: locationIDCurrent ?? this.locationIDCurrent,
+//   groupID: groupID ?? this.groupID,
+//   groupIDCurrent: groupIDCurrent ?? this.groupIDCurrent,
+//   languageID: languageID ?? this.languageID,
+//   userFirstName: userFirstName ?? this.userFirstName,
+//   userLastName: userLastName ?? this.userLastName,
+//   themeFolderPath: themeFolderPath ?? this.themeFolderPath,
+//   compLogo: compLogo ?? this.compLogo,
+//   announcement: announcement ?? this.announcement,
+//   isWorkstationLogin: isWorkstationLogin ?? this.isWorkstationLogin,
+//   roleformshowid: roleformshowid ?? this.roleformshowid,
+//   emailID: emailID ?? this.emailID,
+//   showQA: showQA ?? this.showQA,
+//   departmentID: departmentID ?? this.departmentID,
+//   departmentName: departmentName ?? this.departmentName,
+// );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['FromFramework'] = fromFramework;
+    map['FromFramework'] = fromFramework ? 1 : 0;
     map['CountryID'] = countryID;
     map['CountryIDCurrent'] = countryIDCurrent;
     map['RoleID'] = roleID;
@@ -260,11 +272,9 @@ UserDetails copyWith({  bool? fromFramework,
     map['IsWorkstationLogin'] = isWorkstationLogin;
     map['Roleformshowid'] = roleformshowid;
     map['EmailID'] = emailID;
-    map['showQA'] = showQA;
+    map['showQA'] = showQA ? 1 : 0;
     map['DepartmentID'] = departmentID;
     map['DepartmentName'] = departmentName;
     return map;
   }
-
-
 }

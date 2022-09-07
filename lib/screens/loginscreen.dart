@@ -8,7 +8,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:toast/toast.dart';
 
+import '../database/database_helper.dart';
 import '../helpers/colors.dart';
+import '../helpers/shared_preferences_helper.dart';
 import '../helpers/utils.dart';
 import '../models/loginresponse.dart';
 import '../widgets/button.dart';
@@ -32,8 +34,12 @@ void api(BuildContext context) async {
   Loginresponse? response = await CustomerFeedbackApiCall().checkLogin(email, password);
   if(response != null) {
     Utils.showToastMsg(response.message);
-    if (response.status!) {
-      _showConfirmationDialog(context, "\nLogin Successfully");
+    if (response.status) {
+      // _showConfirmationDialog(context, "\nLogin Successfully");
+      DatabaseHelper.instance.userinsert(response.returnData.userDetails);
+      await SharedPreferencesHelper.setPrefString(SharedPreferencesHelper.USER_ID,
+          response.returnData.userDetails![0].userID.toString());
+      Navigator.pushReplacementNamed(context, '/download');
     }
   }
 }
@@ -222,6 +228,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               buttonText: 'LOGIN',
                               onPressed: () => {
                                 api(context),
+
                               },
                             ),
                             SizedBox(height: 10),

@@ -8,7 +8,7 @@ import 'package:toast/toast.dart';
 class Utils {
   // static ResponseLogin responseLogin;
   // static UserDetail userDetail = UserDetail();
-  static Loginresponse loginresponse = Loginresponse();
+  // static Loginresponse loginresponse = Loginresponse();
   // static SettingDetail settingDetail;
 
   //static Position userLocation;

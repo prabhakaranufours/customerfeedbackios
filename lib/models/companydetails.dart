@@ -1,5 +1,5 @@
-class Sbudetails {
-  Sbudetails(
+class Companydetails {
+  Companydetails(
       this.status, 
       this.showQa, 
       this.message, 
@@ -12,19 +12,20 @@ class Sbudetails {
       this.isOTP, 
       this.isfeedback,);
 
-  Sbudetails.fromJson(dynamic json) {
+  Companydetails.fromJson(dynamic json) {
     status = json['Status'];
     showQa = json['ShowQa'];
     message = json['Message'];
-    returnData = ReturnData.fromJson(json['ReturnData']);
+    returnData = ReturnData.fromJson(json['ReturnData']) ;
     method = json['Method'];
     sessionID = json['SessionID'];
     id = json['ID'];
-    isshow = json['isshow'] ?? false;
+    isshow = json['isshow'];
     data = json['data'];
-    isOTP = json['isOTP'] ?? "";
+    isOTP = json['isOTP'];
     isfeedback = json['isfeedback'];
   }
+
   late bool status;
   late bool showQa;
   late String message;
@@ -32,23 +33,23 @@ class Sbudetails {
   late String method;
   late String sessionID;
   late String id;
-  late bool isshow;
+  dynamic isshow;
   late num data;
-  late String isOTP;
+  dynamic isOTP;
   late num isfeedback;
 
-// Sbudetails copyWith({  bool? status,
+// Companydetails copyWith({  bool? status,
 //   bool? showQa,
 //   String? message,
 //   ReturnData? returnData,
 //   String? method,
 //   String? sessionID,
 //   String? id,
-//   String? isshow,
+//   dynamic isshow,
 //   num? data,
-//   String? isOTP,
+//   dynamic isOTP,
 //   num? isfeedback,
-// }) => Sbudetails(  status: status ?? this.status,
+// }) => Companydetails(  status: status ?? this.status,
 //   showQa: showQa ?? this.showQa,
 //   message: message ?? this.message,
 //   returnData: returnData ?? this.returnData,
@@ -60,8 +61,6 @@ class Sbudetails {
 //   isOTP: isOTP ?? this.isOTP,
 //   isfeedback: isfeedback ?? this.isfeedback,
 // );
-
-
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['Status'] = status;
@@ -90,12 +89,12 @@ class ReturnData {
     if (json['Table'] != null) {
       table = [];
       json['Table'].forEach((v) {
-        table?.add(Table.fromJson(v));
+        table?.add(CompanyTable.fromJson(v));
       });
     }
   }
-  List<Table>? table;
-ReturnData copyWith({  List<Table>? table,
+  List<CompanyTable>? table;
+ReturnData copyWith({  List<CompanyTable>? table,
 }) => ReturnData(  table: table ?? this.table,
 );
   Map<String, dynamic> toJson() {
@@ -108,26 +107,63 @@ ReturnData copyWith({  List<Table>? table,
 
 }
 
-class Table {
-  Table({
-      this.locationsettingsid, 
-      this.locationsettingsname,});
+class CompanyTable {
+  CompanyTable(
+      this.stateid, 
+      this.companyID, 
+      this.groupID, 
+      this.companyName, 
+      this.companyShortName, 
+      this.sectorid, 
+      this.userCompanyID, 
+      this.groupName,);
 
-  Table.fromJson(dynamic json) {
-    locationsettingsid = json['locationsettingsid'];
-    locationsettingsname = json['locationsettingsname'];
+  CompanyTable.fromJson(dynamic json) {
+    stateid = json['stateid'];
+    companyID = json['CompanyID'];
+    groupID = json['GroupID'];
+    companyName = json['CompanyName'];
+    companyShortName = json['CompanyShortName'];
+    sectorid = json['sectorid'];
+    userCompanyID = json['UserCompanyID'];
+    groupName = json['GroupName'];
   }
-  num? locationsettingsid;
-  String? locationsettingsname;
-Table copyWith({  num? locationsettingsid,
-  String? locationsettingsname,
-}) => Table(  locationsettingsid: locationsettingsid ?? this.locationsettingsid,
-  locationsettingsname: locationsettingsname ?? this.locationsettingsname,
-);
+  late num stateid;
+  late num companyID;
+  late num groupID;
+  late String companyName;
+  late String companyShortName;
+  late num sectorid;
+  late num userCompanyID;
+  late String groupName;
+
+// Table copyWith({  num? stateid,
+//   num? companyID,
+//   num? groupID,
+//   String? companyName,
+//   String? companyShortName,
+//   num? sectorid,
+//   num? userCompanyID,
+//   String? groupName,
+// }) => Table(  stateid: stateid ?? this.stateid,
+//   companyID: companyID ?? this.companyID,
+//   groupID: groupID ?? this.groupID,
+//   companyName: companyName ?? this.companyName,
+//   companyShortName: companyShortName ?? this.companyShortName,
+//   sectorid: sectorid ?? this.sectorid,
+//   userCompanyID: userCompanyID ?? this.userCompanyID,
+//   groupName: groupName ?? this.groupName,
+// );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['locationsettingsid'] = locationsettingsid;
-    map['locationsettingsname'] = locationsettingsname;
+    map['stateid'] = stateid;
+    map['CompanyID'] = companyID;
+    map['GroupID'] = groupID;
+    map['CompanyName'] = companyName;
+    map['CompanyShortName'] = companyShortName;
+    map['sectorid'] = sectorid;
+    map['UserCompanyID'] = userCompanyID;
+    map['GroupName'] = groupName;
     return map;
   }
 

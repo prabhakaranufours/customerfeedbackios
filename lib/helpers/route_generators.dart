@@ -1,3 +1,4 @@
+import 'package:customerfeedbackios/screens/downloadscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
@@ -20,6 +21,12 @@ class RouteGenerator {
         return platformPageRoute(
           context: context,
           builder: (_) => LoginScreen(),
+          settings: settings,
+        );
+      case '/download':
+        return platformPageRoute(
+          context: context,
+          builder: (_) => DownloadScreen(),
           settings: settings,
         );
       case '/home':
