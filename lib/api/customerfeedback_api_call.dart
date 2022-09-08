@@ -9,6 +9,7 @@ import '../models/auditdetails.dart';
 import '../models/companydetails.dart';
 import '../models/locationdetails.dart';
 import '../models/loginresponse.dart';
+import '../models/questiondetails.dart';
 import '../models/sbudetails.dart';
 
 class CustomerFeedbackApiCall {
@@ -117,7 +118,7 @@ class CustomerFeedbackApiCall {
     }
   }
 
-  //AuditDetails API
+  //Category API
   Future<Categorydetails?> getCategoryDetails(String userId) async {
     var params = {
       'userid': userId,
@@ -130,6 +131,25 @@ class CustomerFeedbackApiCall {
 
     if ((response.statusCode ?? -1) <= 205) {
       return Categorydetails.fromJson(response.data);
+    } else {
+      Utils.showToastMsg("Something went wrong!");
+      return null;
+    }
+  }
+
+  //Question API
+  Future<Questiondetails?> getQuestionDetails(String userId) async {
+    var params = {
+      'userid': userId,
+      'type': '1',
+      'date': '2016-10-08 00:00:00.000',
+    };
+
+    print('${_dio.options.baseUrl} $questionApi');
+    final response = await _dio.get(questionApi, queryParameters: params);
+
+    if ((response.statusCode ?? -1) <= 205) {
+      return Questiondetails.fromJson(response.data);
     } else {
       Utils.showToastMsg("Something went wrong!");
       return null;

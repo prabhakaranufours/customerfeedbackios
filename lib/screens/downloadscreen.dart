@@ -3,6 +3,7 @@ import 'package:customerfeedbackios/models/auditdetails.dart';
 import 'package:customerfeedbackios/models/categorydetails.dart';
 import 'package:customerfeedbackios/models/companydetails.dart';
 import 'package:customerfeedbackios/models/locationdetails.dart';
+import 'package:customerfeedbackios/models/questiondetails.dart';
 import 'package:customerfeedbackios/models/sbudetails.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -89,11 +90,27 @@ void categoryApi(BuildContext context) async {
     Utils.showToastMsg(response.message);
     if (response.status!) {
       DatabaseHelper.instance.categoryInsert(response.returnData?.table);
-      Navigator.pushReplacementNamed(context, '/home');
+      questionApi(context);
     }
   }
 }
 
+//Download the question Details
+
+void questionApi(BuildContext context) async {
+
+  var userId = await SharedPreferencesHelper.getPrefString(
+      SharedPreferencesHelper.USER_ID, '');
+  Questiondetails? response =
+  await CustomerFeedbackApiCall().getQuestionDetails(userId);
+  if (response != null) {
+    Utils.showToastMsg(response.message);
+    if (response.status!) {
+      DatabaseHelper.instance.questionInsert(response.returnData?.table);
+      Navigator.pushReplacementNamed(context, '/home');
+    }
+  }
+}
 
 
 class _DownloadScreenState extends State<DownloadScreen> {

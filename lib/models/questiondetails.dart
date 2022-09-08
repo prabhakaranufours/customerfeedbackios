@@ -1,5 +1,5 @@
-class Auditdetails {
-  Auditdetails({
+class Questiondetails {
+  Questiondetails({
       this.status, 
       this.showQa, 
       this.message, 
@@ -12,7 +12,7 @@ class Auditdetails {
       this.isOTP, 
       this.isfeedback,});
 
-  Auditdetails.fromJson(dynamic json) {
+  Questiondetails.fromJson(dynamic json) {
     status = json['Status'];
     showQa = json['ShowQa'];
     message = json['Message'];
@@ -36,7 +36,7 @@ class Auditdetails {
   num? data;
   String? isOTP;
   num? isfeedback;
-Auditdetails copyWith({  bool? status,
+Questiondetails copyWith({  bool? status,
   bool? showQa,
   String? message,
   ReturnData? returnData,
@@ -47,7 +47,7 @@ Auditdetails copyWith({  bool? status,
   num? data,
   String? isOTP,
   num? isfeedback,
-}) => Auditdetails(  status: status ?? this.status,
+}) => Questiondetails(  status: status ?? this.status,
   showQa: showQa ?? this.showQa,
   message: message ?? this.message,
   returnData: returnData ?? this.returnData,
@@ -87,12 +87,12 @@ class ReturnData {
     if (json['Table'] != null) {
       table = [];
       json['Table'].forEach((v) {
-        table?.add(AuditTable.fromJson(v));
+        table?.add(QuestionTable.fromJson(v));
       });
     }
   }
-  List<AuditTable>? table;
-ReturnData copyWith({  List<AuditTable>? table,
+  List<QuestionTable>? table;
+ReturnData copyWith({  List<QuestionTable>? table,
 }) => ReturnData(  table: table ?? this.table,
 );
   Map<String, dynamic> toJson() {
@@ -105,50 +105,56 @@ ReturnData copyWith({  List<AuditTable>? table,
 
 }
 
-class AuditTable {
-  AuditTable({
-      this.auditid, 
-      this.sectorid, 
-      this.auditname, 
-      this.auditdescription, 
-      this.startdate, 
-      this.enddate,});
+class QuestionTable {
+  QuestionTable({
+      this.auditqid, 
+      this.auditqname, 
+      this.qdescription, 
+      this.categoryid, 
+      this.ratingid, 
+      this.weightageid, 
+      this.cdate,});
 
-  AuditTable.fromJson(dynamic json) {
-    auditid = json['auditid'];
-    sectorid = json['sectorid'];
-    auditname = json['auditname'];
-    auditdescription = json['auditdescription'];
-    startdate = json['startdate'];
-    enddate = json['enddate'];
+  QuestionTable.fromJson(dynamic json) {
+    auditqid = json['auditqid'];
+    auditqname = json['auditqname'];
+    qdescription = json['qdescription'];
+    categoryid = json['categoryid'];
+    ratingid = json['ratingid'];
+    weightageid = json['weightageid'];
+    cdate = json['cdate'];
   }
-  num? auditid;
-  num? sectorid;
-  String? auditname;
-  String? auditdescription;
-  String? startdate;
-  String? enddate;
-AuditTable copyWith({  num? auditid,
-  num? sectorid,
-  String? auditname,
-  String? auditdescription,
-  String? startdate,
-  String? enddate,
-}) => AuditTable(  auditid: auditid ?? this.auditid,
-  sectorid: sectorid ?? this.sectorid,
-  auditname: auditname ?? this.auditname,
-  auditdescription: auditdescription ?? this.auditdescription,
-  startdate: startdate ?? this.startdate,
-  enddate: enddate ?? this.enddate,
+  num? auditqid;
+  String? auditqname;
+  String? qdescription;
+  num? categoryid;
+  num? ratingid;
+  num? weightageid;
+  String? cdate;
+QuestionTable copyWith({  num? auditqid,
+  String? auditqname,
+  String? qdescription,
+  num? categoryid,
+  num? ratingid,
+  num? weightageid,
+  String? cdate,
+}) => QuestionTable(  auditqid: auditqid ?? this.auditqid,
+  auditqname: auditqname ?? this.auditqname,
+  qdescription: qdescription ?? this.qdescription,
+  categoryid: categoryid ?? this.categoryid,
+  ratingid: ratingid ?? this.ratingid,
+  weightageid: weightageid ?? this.weightageid,
+  cdate: cdate ?? this.cdate,
 );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['auditid'] = auditid;
-    map['sectorid'] = sectorid;
-    map['auditname'] = auditname;
-    map['auditdescription'] = auditdescription;
-    map['startdate'] = startdate;
-    map['enddate'] = enddate;
+    map['auditqid'] = auditqid;
+    map['auditqname'] = auditqname;
+    map['qdescription'] = qdescription;
+    map['categoryid'] = categoryid;
+    map['ratingid'] = ratingid;
+    map['weightageid'] = weightageid;
+    map['cdate'] = cdate;
     return map;
   }
 
