@@ -1,8 +1,11 @@
+import 'package:customerfeedbackios/database/database_helper.dart';
+import 'package:customerfeedbackios/models/sbudetails.dart';
 import 'package:flutter/material.dart';
 
 import '../helpers/colors.dart';
 import '../widgets/app_bar.dart';
 import '../widgets/button.dart';
+import '../widgets/textfield.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -13,9 +16,107 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
+  List<Map> sbuDetails = [];
+  String sbuText = "Select SBU";
 
+  TextEditingController searchController = TextEditingController();
+  var sbuTextController = TextEditingController();
 
+  //After click the list item in sbu then set the value in text
+  void setSbuData(String value){
+    setState(() {
+      sbuText = value;
+    });
+  }
 
+  Future<void> _showSBU(BuildContext context) async {
+    return showDialog<void>(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: GestureDetector(
+                  onTap: () => FocusScope.of(context).unfocus(),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    child: Column(
+                      children: <Widget>[
+                        Flexible(
+                          child: CustomTextField(
+                            placeholder: "Search",
+                            onSubmitted: (_) =>
+                                FocusScope.of(context).unfocus(),
+                            onChanged: (val) async {
+                              if (val == null || val == "") {
+                                sbuDetails =
+                                    await DatabaseHelper.instance.getSBU();
+                              } else {
+                                sbuDetails.forEach((element) {
+                                  element['locationsettingsname'];
+                                });
+                              }
+                              setState(() {});
+                            },
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Image.asset(
+                                'assets/images/search-8.png',
+                                height: 15,
+                                width: 15,
+                              ),
+                            ),
+                            controller: searchController,
+                          ),
+                        ),
+                        Expanded(
+                          flex: 6,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: sbuDetails.length,
+                            itemBuilder: (context, index) => ListTile(
+                              onTap: () {
+                                setSbuData(sbuDetails[index]["locationsettingsname"]);
+                                Navigator.of(context).pop();
+                                // _getLocation();
+                              },
+                              title: Text(
+                                '${sbuDetails[index]["locationsettingsname"]}',
+                                style: Theme.of(context).textTheme.subtitle2,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() async {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+
+    sbuDetails = await DatabaseHelper.instance.getSBU();
+
+    sbuDetails.forEach((element) {
+      print(element['list']);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +145,6 @@ class _HomeScreenState extends State<HomeScreen> {
           actions: [
             InkWell(
               onTap: () {
-
                 // List<UserDetails> userd = [];
                 // var s = UserDetails();
                 // s.emailID = "prabhakaran.s@ufours.com";
@@ -103,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Select SBU',
+                          '$sbuText',
                           style:
                               Theme.of(context).textTheme.bodyText1!.copyWith(
                                     color: Colors.black,
@@ -119,7 +219,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      _showSBU(context);
+                    },
                   ),
                 ),
                 SizedBox(height: 30),

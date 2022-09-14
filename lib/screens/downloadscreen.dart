@@ -81,11 +81,10 @@ void auditApi(BuildContext context) async {
 
 //Download the category Details
 void categoryApi(BuildContext context) async {
-
   var userId = await SharedPreferencesHelper.getPrefString(
       SharedPreferencesHelper.USER_ID, '');
   Categorydetails? response =
-  await CustomerFeedbackApiCall().getCategoryDetails(userId);
+      await CustomerFeedbackApiCall().getCategoryDetails(userId);
   if (response != null) {
     Utils.showToastMsg(response.message);
     if (response.status!) {
@@ -96,13 +95,11 @@ void categoryApi(BuildContext context) async {
 }
 
 //Download the question Details
-
 void questionApi(BuildContext context) async {
-
   var userId = await SharedPreferencesHelper.getPrefString(
       SharedPreferencesHelper.USER_ID, '');
   Questiondetails? response =
-  await CustomerFeedbackApiCall().getQuestionDetails(userId);
+      await CustomerFeedbackApiCall().getQuestionDetails(userId);
   if (response != null) {
     Utils.showToastMsg(response.message);
     if (response.status!) {
@@ -112,6 +109,15 @@ void questionApi(BuildContext context) async {
   }
 }
 
+//Delete data in db table
+void deleteDataInDb() async {
+  DatabaseHelper.instance.sbuDelete();
+  DatabaseHelper.instance.companyDelete();
+  DatabaseHelper.instance.locationDelete();
+  DatabaseHelper.instance.auditDelete();
+  DatabaseHelper.instance.categoryDelete();
+  DatabaseHelper.instance.questionDelete();
+}
 
 class _DownloadScreenState extends State<DownloadScreen> {
   final GlobalKey<NavigatorState> key = new GlobalKey<NavigatorState>();
@@ -120,6 +126,10 @@ class _DownloadScreenState extends State<DownloadScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    //Delete all data in db
+    deleteDataInDb();
+
+    //Using this way to get the context and passed
     SchedulerBinding.instance.addPostFrameCallback((_) {
       sbuApi(key.currentContext!);
     });
