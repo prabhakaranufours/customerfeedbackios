@@ -15,20 +15,44 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   List<Map> sbuDetails = [];
+  List<Map> companyDetails = [];
+  List<Map> locationDetails = [];
+
   String sbuText = "Select SBU";
+  String companyText = "Select Company";
+  String locationText = "Select Location";
+
+  String companyId = "";
+  String sbuId = "";
+  String locationId = "";
 
   TextEditingController searchController = TextEditingController();
   var sbuTextController = TextEditingController();
 
   //After click the list item in sbu then set the value in text
-  void setSbuData(String value){
+  void setSbuData(String value, String id) {
     setState(() {
       sbuText = value;
+      sbuId = id;
     });
   }
 
+  void setCompanyData(String value, String id) {
+    setState(() {
+      companyText = value;
+      companyId = id;
+    });
+  }
+
+  void setLocationData(String value, String id) {
+    setState(() {
+      locationText = value;
+      locationId = id;
+    });
+  }
+
+  //SBU
   Future<void> _showSBU(BuildContext context) async {
     return showDialog<void>(
         context: context,
@@ -79,12 +103,163 @@ class _HomeScreenState extends State<HomeScreen> {
                             itemCount: sbuDetails.length,
                             itemBuilder: (context, index) => ListTile(
                               onTap: () {
-                                setSbuData(sbuDetails[index]["locationsettingsname"]);
+                                setSbuData(
+                                  sbuDetails[index]["locationsettingsname"],
+                                  sbuDetails[index]["locationsettingsid"],
+                                );
                                 Navigator.of(context).pop();
                                 // _getLocation();
                               },
                               title: Text(
                                 '${sbuDetails[index]["locationsettingsname"]}',
+                                style: Theme.of(context).textTheme.subtitle2,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        });
+  }
+
+  //Company
+  Future<void> _showCompany(BuildContext context) async {
+    return showDialog<void>(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: GestureDetector(
+                  onTap: () => FocusScope.of(context).unfocus(),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    child: Column(
+                      children: <Widget>[
+                        Flexible(
+                          child: CustomTextField(
+                            placeholder: "Search",
+                            onSubmitted: (_) =>
+                                FocusScope.of(context).unfocus(),
+                            onChanged: (val) async {
+                              if (val == null || val == "") {
+                                companyDetails =
+                                    await DatabaseHelper.instance.getCompany();
+                              } else {
+                                companyDetails.forEach((element) {
+                                  element['CompanyName'];
+                                });
+                              }
+                              setState(() {});
+                            },
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Image.asset(
+                                'assets/images/search-8.png',
+                                height: 15,
+                                width: 15,
+                              ),
+                            ),
+                            controller: searchController,
+                          ),
+                        ),
+                        Expanded(
+                          flex: 6,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: companyDetails.length,
+                            itemBuilder: (context, index) => ListTile(
+                              onTap: () {
+                                setCompanyData(
+                                    companyDetails[index]["CompanyName"],
+                                    companyDetails[index]["CompanyID"]);
+                                Navigator.of(context).pop();
+                                // _getLocation();
+                              },
+                              title: Text(
+                                '${companyDetails[index]["CompanyName"]}',
+                                style: Theme.of(context).textTheme.subtitle2,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        });
+  }
+
+  //Location
+  Future<void> _showLocation(BuildContext context) async {
+    return showDialog<void>(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: GestureDetector(
+                  onTap: () => FocusScope.of(context).unfocus(),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    child: Column(
+                      children: <Widget>[
+                        Flexible(
+                          child: CustomTextField(
+                            placeholder: "Search",
+                            onSubmitted: (_) =>
+                                FocusScope.of(context).unfocus(),
+                            onChanged: (val) async {
+                              if (val == null || val == "") {
+                                locationDetails = await DatabaseHelper.instance
+                                    .getLocation(companyId, sbuId);
+                              } else {
+                                locationDetails.forEach((element) {
+                                  element['locationName'];
+                                });
+                              }
+                              setState(() {});
+                            },
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Image.asset(
+                                'assets/images/search-8.png',
+                                height: 15,
+                                width: 15,
+                              ),
+                            ),
+                            controller: searchController,
+                          ),
+                        ),
+                        Expanded(
+                          flex: 6,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: locationDetails.length,
+                            itemBuilder: (context, index) => ListTile(
+                              onTap: () {
+                                setLocationData(
+                                    locationDetails[index]["LocationName"],
+                                    locationDetails[index]["LocationID"]);
+                                Navigator.of(context).pop();
+                                // _getLocation();
+                              },
+                              title: Text(
+                                '${locationDetails[index]["LocationName"]}',
                                 style: Theme.of(context).textTheme.subtitle2,
                               ),
                             ),
@@ -112,10 +287,8 @@ class _HomeScreenState extends State<HomeScreen> {
     super.didChangeDependencies();
 
     sbuDetails = await DatabaseHelper.instance.getSBU();
+    companyDetails = await DatabaseHelper.instance.getCompany();
 
-    sbuDetails.forEach((element) {
-      print(element['list']);
-    });
   }
 
   @override
@@ -243,7 +416,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Select Comapany',
+                          '$companyText',
                           style:
                               Theme.of(context).textTheme.bodyText1!.copyWith(
                                     color: Colors.black,
@@ -259,7 +432,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      _showCompany(context);
+                    },
                   ),
                 ),
                 SizedBox(height: 30),
@@ -281,7 +456,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Select Location',
+                          '$locationText',
                           style:
                               Theme.of(context).textTheme.bodyText1!.copyWith(
                                     color: Colors.black,
@@ -297,7 +472,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      _showLocation(context);
+                    },
                   ),
                 ),
                 SizedBox(height: 30),
