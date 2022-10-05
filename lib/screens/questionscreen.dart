@@ -40,19 +40,24 @@ class _QuestionScreenState extends State<QuestionScreen> {
         body: Column(
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 40,
-                    color: Colors.grey,
-                    child:
-                    Text('Bangalore',style: TextStyle(color: Colors.black,fontSize: 8.0),)),
-                Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 40,
-                    color: Colors.grey,
-                    child:
-                    Text('Audit > Category > Score',style: TextStyle(color: Colors.black,fontSize: 8.0),)),
+                Expanded(
+                  child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 40,
+                      color: Colors.grey,
+                      child:
+                      Text('Bangalore',style: TextStyle(color: Colors.black,fontSize: 15.0),)),
+                ),
+                Expanded(
+                  child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 40,
+                      color: Colors.grey,
+                      child:
+                      Text('Audit > Category > Score',style: TextStyle(color: Colors.black,fontSize: 15.0),)),
+                ),
               ],
             ),
             Container(
@@ -68,7 +73,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
               ),
             ),
             CustomButton(
-              buttonText: 'Next Feedback',
+              buttonText: 'Submit Audit',
               onPressed: () => {
                 Navigator.pushReplacementNamed(context, '/category'),
               },
