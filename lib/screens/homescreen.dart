@@ -1,5 +1,4 @@
 import 'package:customerfeedbackios/database/database_helper.dart';
-import 'package:customerfeedbackios/models/sbudetails.dart';
 import 'package:flutter/material.dart';
 
 import '../helpers/colors.dart';
@@ -51,6 +50,8 @@ class _HomeScreenState extends State<HomeScreen> {
       locationId = id;
     });
   }
+
+
 
   //SBU
   Future<void> _showSBU(BuildContext context) async {
@@ -275,6 +276,8 @@ class _HomeScreenState extends State<HomeScreen> {
         });
   }
 
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -288,6 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     sbuDetails = await DatabaseHelper.instance.getSBU();
     companyDetails = await DatabaseHelper.instance.getCompany();
+    locationDetails = await DatabaseHelper.instance.getLocation(companyId, sbuId);
 
   }
 
@@ -295,7 +299,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: customAppBar(
+        appBar:
+        customAppBar(
           context,
           title: Text(
             'Home',
@@ -526,7 +531,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 CustomButton(
                   buttonText: 'Feedback',
                   onPressed: () => {
-                    Navigator.pushReplacementNamed(context, '/home'),
+                    Navigator.pushReplacementNamed(context, '/category'),
                   },
                 ),
               ],

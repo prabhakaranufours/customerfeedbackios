@@ -1,4 +1,6 @@
+import 'package:customerfeedbackios/screens/categoryscreen.dart';
 import 'package:customerfeedbackios/screens/downloadscreen.dart';
+import 'package:customerfeedbackios/screens/questionscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
@@ -33,6 +35,20 @@ class RouteGenerator {
         return platformPageRoute(
           context: context,
           builder: (_) => HomeScreen(),
+          settings: settings,
+        );
+
+      case '/category':
+        return platformPageRoute(
+          context: context,
+          builder: (_) => CategoryScreen(),
+          settings: settings,
+        );
+
+      case '/question':
+        return platformPageRoute(
+          context: context,
+          builder: (_) => QuestionScreen(),
           settings: settings,
         );
       default:
