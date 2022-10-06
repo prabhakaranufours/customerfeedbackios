@@ -9,7 +9,6 @@ import '../screens/loginscreen.dart';
 import '../screens/splashscreen.dart';
 
 class RouteGenerator {
-
   static Route<dynamic> generateRoute(RouteSettings settings, context) {
     final args = settings.arguments;
     switch (settings.name) {
@@ -41,7 +40,8 @@ class RouteGenerator {
       case '/category':
         return platformPageRoute(
           context: context,
-          builder: (_) => CategoryScreen(),
+          // builder: (_) => CategoryScreen(companyId: String, auditId: args),
+          builder: (_) => CategoryScreen(data: args as Map<String, String>),
           settings: settings,
         );
 

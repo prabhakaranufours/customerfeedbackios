@@ -1,17 +1,37 @@
 import 'package:customerfeedbackios/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 
+import '../database/database_helper.dart';
 import '../helpers/colors.dart';
 import '../widgets/button.dart';
 
 class CategoryScreen extends StatefulWidget {
-  const CategoryScreen({Key? key}) : super(key: key);
+  String companyId = "";
+  String auditId = "";
+
+  //This line used to get the data from previous screen
+  final Map<String, String> data;
+  CategoryScreen({Key? key, required this.data})
+      : super(key: key);
 
   @override
-  State<CategoryScreen> createState() => _CategoryScreenState();
+  State<CategoryScreen> createState() =>
+      _CategoryScreenState();
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
+
+  List<Map> categoryDetails = [];
+
+  @override
+  void didChangeDependencies() async {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+
+    categoryDetails =
+        await DatabaseHelper.instance.getCategory(widget.data['companyId']!,widget.data['feedbackId']!);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -45,8 +65,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     width: MediaQuery.of(context).size.width,
                     height: 40,
                     color: Colors.grey,
-                    child:
-                    Text('Bangalore',style: TextStyle(color: Colors.black),)),
+                    child: Text(
+                      'Bangalore',
+                      style: TextStyle(color: Colors.black),
+                    )),
               ],
             ),
             Container(

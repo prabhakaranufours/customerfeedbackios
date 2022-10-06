@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:customerfeedbackios/database/database_helper.dart';
 import 'package:flutter/material.dart';
 
@@ -17,14 +18,17 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Map> sbuDetails = [];
   List<Map> companyDetails = [];
   List<Map> locationDetails = [];
+  List<Map> feedbackDetails = [];
 
   String sbuText = "Select SBU";
   String companyText = "Select Company";
   String locationText = "Select Location";
+  String feedbackText = "Select Feedback";
 
   String companyId = "";
   String sbuId = "";
   String locationId = "";
+  String feedbackId = "";
 
   TextEditingController searchController = TextEditingController();
   var sbuTextController = TextEditingController();
@@ -51,7 +55,12 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-
+  void setFeedbackData(String value,String id){
+    setState(() {
+      feedbackText = value;
+      feedbackId = id;
+    });
+  }
 
   //SBU
   Future<void> _showSBU(BuildContext context) async {
@@ -182,8 +191,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 setCompanyData(
                                     companyDetails[index]["CompanyName"],
                                     companyDetails[index]["CompanyID"]);
+                                _getLocation(
+                                    companyDetails[index]["CompanyID"]);
+
                                 Navigator.of(context).pop();
-                                // _getLocation();
+
                               },
                               title: Text(
                                 '${companyDetails[index]["CompanyName"]}',
@@ -218,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.5,
                     child: Column(
-                      children: <Widget>[
+                      children: [
                         Flexible(
                           child: CustomTextField(
                             placeholder: "Search",
@@ -256,6 +268,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 setLocationData(
                                     locationDetails[index]["LocationName"],
                                     locationDetails[index]["LocationID"]);
+
+                                _getFeedback(locationDetails[index]["sectorid"]);
+
                                 Navigator.of(context).pop();
                                 // _getLocation();
                               },
@@ -276,7 +291,94 @@ class _HomeScreenState extends State<HomeScreen> {
         });
   }
 
+  //Feedback
+  Future<void> _showFeedback(BuildContext context) async {
+    return showDialog<void>(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: GestureDetector(
+                  onTap: () => FocusScope.of(context).unfocus(),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    child: Column(
+                      children: [
+                        Flexible(
+                          child: CustomTextField(
+                            placeholder: "Search",
+                            onSubmitted: (_) =>
+                                FocusScope.of(context).unfocus(),
+                            onChanged: (val) async {
+                              if (val == null || val == "") {
+                                feedbackDetails = await DatabaseHelper.instance
+                                    .getFeedback(companyId);
+                              } else {
+                                feedbackDetails.forEach((element) {
+                                  element['auditname'];
+                                });
+                              }
+                              setState(() {});
+                            },
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Image.asset(
+                                'assets/images/search-8.png',
+                                height: 15,
+                                width: 15,
+                              ),
+                            ),
+                            controller: searchController,
+                          ),
+                        ),
+                        Expanded(
+                          flex: 6,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: feedbackDetails.length,
+                            itemBuilder: (context, index) => ListTile(
+                              onTap: () {
+                                setFeedbackData(
+                                    feedbackDetails[index]["auditname"],
+                                    feedbackDetails[index]["auditid"]);
 
+                                Navigator.of(context).pop();
+                              },
+                              title: Text(
+                                '${feedbackDetails[index]["auditname"]}',
+                                style: Theme.of(context).textTheme.subtitle2,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        });
+  }
+
+  //This is used for showing the error message
+  static _showMessage(BuildContext context, String msg) {
+    var snackBar = SnackBar(
+      elevation: 0,
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      content: AwesomeSnackbarContent(
+        title: 'On Snap!',
+        message: msg,
+        contentType: ContentType.failure,
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 
   @override
   void initState() {
@@ -291,16 +393,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
     sbuDetails = await DatabaseHelper.instance.getSBU();
     companyDetails = await DatabaseHelper.instance.getCompany();
-    locationDetails = await DatabaseHelper.instance.getLocation(companyId, sbuId);
+  }
 
+  //Get location
+  void _getLocation(String compId) async {
+    print('GetLocation');
+    locationDetails = await DatabaseHelper.instance.getLocation(compId, sbuId);
+  }
+
+  //get Feedback
+  void _getFeedback(String sectorId) async{
+    print('GetFeedback');
+    feedbackDetails = await DatabaseHelper.instance.getFeedback(sectorId);
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar:
-        customAppBar(
+        appBar: customAppBar(
           context,
           title: Text(
             'Home',
@@ -501,7 +612,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Select Feedback',
+                          '$feedbackText',
                           style:
                               Theme.of(context).textTheme.bodyText1!.copyWith(
                                     color: Colors.black,
@@ -517,7 +628,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      _showFeedback(context);
+                    },
                   ),
                 ),
                 SizedBox(height: 30),
@@ -531,7 +644,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 CustomButton(
                   buttonText: 'Feedback',
                   onPressed: () => {
-                    Navigator.pushReplacementNamed(context, '/category'),
+                    if (sbuId != "" &&
+                        companyId != "" &&
+                        locationId != "" &&
+                        feedbackId != "")
+                      {
+                        Navigator.pushReplacementNamed(context, '/category',
+                            arguments: {
+                              "companyId": companyId,
+                              "feedbackId": feedbackId
+                            }),
+                      }
+                    else
+                      {_showMessage(context, "Please select all items")}
                   },
                 ),
               ],

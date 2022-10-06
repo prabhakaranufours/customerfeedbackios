@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../helpers/colors.dart';
 import '../widgets/app_bar.dart';
 import '../widgets/button.dart';
@@ -41,6 +40,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Expanded(
                   child: Container(
