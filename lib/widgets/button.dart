@@ -14,6 +14,7 @@ class CustomButton extends StatelessWidget {
     this.textSize,
     this.height,
     this.borderColor = Colors.white,
+
   });
 
   final String buttonText;
@@ -50,11 +51,13 @@ class CustomButton extends StatelessWidget {
       height: this.height ?? 55,
       width: this.width ?? MediaQuery.of(context).size.width * 1,
       child: ElevatedButton(
+
         child: Text(
           this.buttonText,
           style: Theme.of(context).textTheme.bodyText1?.copyWith(
-            color: this.buttonType == ButtonType.primary ? primary :
-            this.buttonType == ButtonType.third ? Colors.black : Colors.white,
+            // color: this.buttonType == ButtonType.primary ? primary :
+            // this.buttonType == ButtonType.third ? Colors.black : Colors.white,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: this.textSize != null
                 ? this.textSize
@@ -62,7 +65,12 @@ class CustomButton extends StatelessWidget {
           ),
         ),
         onPressed: this.onPressed,
-        // color: _buttonColor(context),
+        style:
+        ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(primaryDark),),
+
+
+    // color: _buttonColor(context),
         // shape: RoundedRectangleBorder(
         //   borderRadius: new BorderRadius.circular(10.0),
         // ),
