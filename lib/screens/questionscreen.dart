@@ -11,6 +11,9 @@ class QuestionScreen extends StatefulWidget {
 }
 
 class _QuestionScreenState extends State<QuestionScreen> {
+
+  final remarksController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -18,7 +21,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
         appBar: customAppBar(
           context,
           title: Text(
-            'Select Questions',
+            'Questions',
             style: Theme.of(context)
                 .textTheme
                 .bodyText1!
@@ -56,7 +59,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                       height: 40,
                       color: Colors.grey,
                       child:
-                      Text('Audit > Category > Score',style: TextStyle(color: Colors.black,fontSize: 15.0),)),
+                      Text('Audit > Category',style: TextStyle(color: Colors.black,fontSize: 15.0),)),
                 ),
               ],
             ),
@@ -66,21 +69,69 @@ class _QuestionScreenState extends State<QuestionScreen> {
               child: ListView.builder(
                 itemCount: 5,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text('COVID Feedback'),
+                  return Card(
+                    elevation: 3,
+                    child: ListTile(
+                      title: Column(
+                        children: [
+                          Text('Was TerminixSis technician visit made as per schedule during lockdown period ?',
+                            style: TextStyle(fontSize: 18),),
+                          Container(
+                            child: SizedBox(
+                              height: 10,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex:8,
+                                child: TextField(
+                                  controller: remarksController,
+                                ),
+                              ),
+                              Expanded(
+                                flex:2,
+                                child: Container(
+                                  width: 40,
+                                  height: 40,
+                                  child: ImageIcon(
+                                    AssetImage("assets/images/camera.png"),
+                                    color: Color(0xFF3A5A98),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 5,)
+                        ],
+                      ),
+
+                    ),
                   );
                 },
               ),
             ),
-            CustomButton(
-              buttonText: 'Submit Audit',
-              onPressed: () => {
-                Navigator.pushReplacementNamed(context, '/category'),
-              },
+            Container(
+              margin: EdgeInsets.all(5),
+              child: CustomButton(
+                buttonText: 'Submit Audit',
+                onPressed: () => {
+                  Navigator.pushReplacementNamed(context, '/category'),
+                },
+              ),
             ),
           ],
         ),
       ),
     );
   }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    remarksController.dispose();
+    super.dispose();
+  }
+
 }

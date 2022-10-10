@@ -19,18 +19,32 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
+
+
   List<Map> categoryDetails = [];
 
   @override
-  void didChangeDependencies() async {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-
+  void initState() {
+    // TODO: implement initState
     print(widget.data['companyId']);
     print(widget.data['feedbackId']);
 
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    get();
+  }
+
+  //We cannot write setstate in between didchangeDependencies so write seperate
+  void get() async{
     categoryDetails = await DatabaseHelper.instance
         .getCategory(widget.data['companyId']!, widget.data['feedbackId']!);
+
+    setState(() {});
+
   }
 
   @override
@@ -49,7 +63,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
           ),
           backgroundColor: primaryDark,
           leading: GestureDetector(
-            onTap: () {},
+            onTap: () {
+              // Navigator.pop(context,true);
+              Navigator.pushReplacementNamed(context, '/home');
+            },
             child: Padding(
               padding: const EdgeInsets.all(17.0),
               child: Image.asset(
@@ -60,41 +77,33 @@ class _CategoryScreenState extends State<CategoryScreen> {
         ),
         body: Column(
           children: [
-            Row(
-              children: [
-                Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 35,
-                    color: Colors.grey,
-                    child: Padding(
-                      padding: const EdgeInsets.all(3.0),
-                      child: Text(
-                        'Bangalore',
-                        style: TextStyle(color: Colors.black, fontSize: 18),
-                      ),
-                    )),
-              ],
-            ),
             Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.7,
+                width: MediaQuery.of(context).size.width,
+                height: 35,
+                color: Colors.grey,
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text(
+                    'Bangalore',
+                    style: TextStyle(color: Colors.black, fontSize: 18),
+                  ),
+                )),
+            SizedBox(
+              height: 12,
+            ),
+            Expanded(
               child: ListView.builder(
                 itemCount: categoryDetails.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Card(
-                        elevation: 2,
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 50,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              '${categoryDetails[index]["categoryname"]}',
-                              style: TextStyle(fontSize: 18),
-                            ),
-                          ),
-                        )),
+                  return Card(
+                    elevation: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Text(
+                        '${categoryDetails[index]["categoryname"]}',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    )
                   );
                 },
               ),

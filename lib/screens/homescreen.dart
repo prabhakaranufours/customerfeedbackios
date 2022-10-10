@@ -24,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String companyText = "Select Company";
   String locationText = "Select Location";
   String feedbackText = "Select Feedback";
+  String sectorText = "";
 
   String companyId = "";
   String sbuId = "";
@@ -61,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
       feedbackId = id;
     });
   }
+
 
   //SBU
   Future<void> _showSBU(BuildContext context) async {
@@ -636,7 +638,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(height: 30),
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  child: Text('Sector',
+                  child: Text(
+                      'Sector',
                       style: TextStyle(fontSize: 15.0),
                       textAlign: TextAlign.left),
                 ),
