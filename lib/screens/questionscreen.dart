@@ -78,7 +78,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                             style: TextStyle(fontSize: 18),),
                           Container(
                             child: SizedBox(
-                              height: 10,
+                              height: 20,
                             ),
                           ),
                           Row(
@@ -132,6 +132,16 @@ class _QuestionScreenState extends State<QuestionScreen> {
     // widget tree.
     remarksController.dispose();
     super.dispose();
+  }
+
+  Widget starCreate(){
+    return ListView.builder(
+        itemCount: 5,
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+
+              title: Text("List item $index"));
+        });
   }
 
 }

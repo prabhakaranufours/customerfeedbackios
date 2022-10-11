@@ -6,6 +6,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 import '../screens/homescreen.dart';
 import '../screens/loginscreen.dart';
+import '../screens/scorescreen.dart';
 import '../screens/splashscreen.dart';
 
 class RouteGenerator {
@@ -49,6 +50,13 @@ class RouteGenerator {
         return platformPageRoute(
           context: context,
           builder: (_) => QuestionScreen(),
+          settings: settings,
+        );
+
+      case '/score':
+        return platformPageRoute(
+          context: context,
+          builder: (_) => ScoreScreen(),
           settings: settings,
         );
       default:

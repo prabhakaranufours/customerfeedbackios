@@ -95,15 +95,20 @@ class _CategoryScreenState extends State<CategoryScreen> {
               child: ListView.builder(
                 itemCount: categoryDetails.length,
                 itemBuilder: (context, index) {
-                  return Card(
-                    elevation: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Text(
-                        '${categoryDetails[index]["categoryname"]}',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    )
+                  return GestureDetector(
+                    onTap: (){
+                      Navigator.pushReplacementNamed(context, '/score');
+                    },
+                    child: Card(
+                      elevation: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(
+                          '${categoryDetails[index]["categoryname"]}',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      )
+                    ),
                   );
                 },
               ),
