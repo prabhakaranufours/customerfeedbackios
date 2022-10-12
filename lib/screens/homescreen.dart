@@ -1,5 +1,6 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:customerfeedbackios/database/database_helper.dart';
+import 'package:customerfeedbackios/helpers/utils.dart';
 import 'package:flutter/material.dart';
 
 import '../helpers/colors.dart';
@@ -412,257 +413,263 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        appBar: customAppBar(
-          context,
-          title: Text(
-            'Home',
-            style: Theme.of(context)
-                .textTheme
-                .bodyText1!
-                .apply(color: lightGrey)
-                .copyWith(fontWeight: FontWeight.bold),
-          ),
-          backgroundColor: primaryDark,
-          leading: GestureDetector(
-            onTap: () {},
-            child: Padding(
-              padding: const EdgeInsets.all(17.0),
-              child: Image.asset(
-                'assets/images/menubar-8.png',
-              ),
+      child: WillPopScope(
+        onWillPop: () async{
+          Utils.showExitDialog(context);
+          return true;
+        },
+        child: Scaffold(
+          appBar: customAppBar(
+            context,
+            title: Text(
+              'Home',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1!
+                  .apply(color: lightGrey)
+                  .copyWith(fontWeight: FontWeight.bold),
             ),
-          ),
-          actions: [
-            InkWell(
-              onTap: () {
-                // List<UserDetails> userd = [];
-                // var s = UserDetails();
-                // s.emailID = "prabhakaran.s@ufours.com";
-                // s.isWorkstationLogin = 1;
-                // userd.add(s);
-                // DatabaseHelper.instance.userinsert(userd);
-              },
-              child: Padding(
-                padding: EdgeInsets.all(14),
-                child: Image.asset(
-                  'assets/images/QRcode-8.png',
-                  height: 35,
-                  width: 35,
-                ),
-              ),
-            ),
-            InkWell(
+            backgroundColor: primaryDark,
+            leading: GestureDetector(
               onTap: () {},
               child: Padding(
-                padding: EdgeInsets.all(12.0),
+                padding: const EdgeInsets.all(17.0),
                 child: Image.asset(
-                  'assets/images/cloud-computing.png',
-                  height: 25,
-                  width: 25,
-                  fit: BoxFit.contain,
+                  'assets/images/menubar-8.png',
                 ),
               ),
             ),
-            SizedBox(width: 20),
-          ],
-        ),
-        body: SingleChildScrollView(
-          padding: EdgeInsets.zero,
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.only(left: 10.0, right: 10.0),
-            child: Column(
-              children: [
-                SizedBox(height: 40),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 50,
-                  padding: EdgeInsets.all(2.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: grey),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+            actions: [
+              InkWell(
+                onTap: () {
+                  // List<UserDetails> userd = [];
+                  // var s = UserDetails();
+                  // s.emailID = "prabhakaran.s@ufours.com";
+                  // s.isWorkstationLogin = 1;
+                  // userd.add(s);
+                  // DatabaseHelper.instance.userinsert(userd);
+                },
+                child: Padding(
+                  padding: EdgeInsets.all(14),
+                  child: Image.asset(
+                    'assets/images/QRcode-8.png',
+                    height: 35,
+                    width: 35,
                   ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      elevation: 7,
-                      foregroundColor: Colors.black, // foreground (text) color
+                ),
+              ),
+              InkWell(
+                onTap: () {},
+                child: Padding(
+                  padding: EdgeInsets.all(12.0),
+                  child: Image.asset(
+                    'assets/images/cloud-computing.png',
+                    height: 25,
+                    width: 25,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+              SizedBox(width: 20),
+            ],
+          ),
+          body: SingleChildScrollView(
+            padding: EdgeInsets.zero,
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Column(
+                children: [
+                  SizedBox(height: 40),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    padding: EdgeInsets.all(2.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: grey),
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '$sbuText',
-                          style:
-                              Theme.of(context).textTheme.bodyText1!.copyWith(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 15,
-                                  ),
-                        ),
-                        // SizedBox(width: 10),
-                        Image.asset(
-                          'assets/images/downarrow.png',
-                          height: 10,
-                          width: 10,
-                        ),
-                      ],
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        elevation: 7,
+                        foregroundColor: Colors.black, // foreground (text) color
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '$sbuText',
+                            style:
+                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 15,
+                                    ),
+                          ),
+                          // SizedBox(width: 10),
+                          Image.asset(
+                            'assets/images/downarrow.png',
+                            height: 10,
+                            width: 10,
+                          ),
+                        ],
+                      ),
+                      onPressed: () {
+                        _showSBU(context);
+                      },
                     ),
-                    onPressed: () {
-                      _showSBU(context);
+                  ),
+                  SizedBox(height: 30),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    padding: EdgeInsets.all(2.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: grey),
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        elevation: 7,
+                        foregroundColor: Colors.black, // foreground (text) color
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '$companyText',
+                            style:
+                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 15,
+                                    ),
+                          ),
+                          // SizedBox(width: 10),
+                          Image.asset(
+                            'assets/images/downarrow.png',
+                            height: 10,
+                            width: 10,
+                          ),
+                        ],
+                      ),
+                      onPressed: () {
+                        _showCompany(context);
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    padding: EdgeInsets.all(2.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: grey),
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        elevation: 7,
+                        foregroundColor: Colors.black, // foreground (text) color
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '$locationText',
+                            style:
+                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 15,
+                                    ),
+                          ),
+                          // SizedBox(width: 10),
+                          Image.asset(
+                            'assets/images/downarrow.png',
+                            height: 10,
+                            width: 10,
+                          ),
+                        ],
+                      ),
+                      onPressed: () {
+                        _showLocation(context);
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    padding: EdgeInsets.all(2.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: grey),
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        elevation: 7,
+                        foregroundColor: Colors.black, // foreground (text) color
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '$feedbackText',
+                            style:
+                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 15,
+                                    ),
+                          ),
+                          // SizedBox(width: 10),
+                          Image.asset(
+                            'assets/images/downarrow.png',
+                            height: 10,
+                            width: 10,
+                          ),
+                        ],
+                      ),
+                      onPressed: () {
+                        _showFeedback(context);
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: Text(
+                        'Sector',
+                        style: TextStyle(fontSize: 15.0),
+                        textAlign: TextAlign.left),
+                  ),
+                  SizedBox(height: 30),
+                  CustomButton(
+                    buttonText: 'Feedback',
+                    onPressed: () => {
+                      if (sbuId != "" &&
+                          companyId != "" &&
+                          locationId != "" &&
+                          feedbackId != "")
+                        {
+                          Navigator.pushNamed(context, '/category',
+                              arguments: {
+                                "companyId": companyId,
+                                "feedbackId": feedbackId
+                              }),
+                        }
+                      else
+                        {_showMessage(context, "Please select all items")}
                     },
                   ),
-                ),
-                SizedBox(height: 30),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 50,
-                  padding: EdgeInsets.all(2.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: grey),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      elevation: 7,
-                      foregroundColor: Colors.black, // foreground (text) color
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '$companyText',
-                          style:
-                              Theme.of(context).textTheme.bodyText1!.copyWith(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 15,
-                                  ),
-                        ),
-                        // SizedBox(width: 10),
-                        Image.asset(
-                          'assets/images/downarrow.png',
-                          height: 10,
-                          width: 10,
-                        ),
-                      ],
-                    ),
-                    onPressed: () {
-                      _showCompany(context);
-                    },
-                  ),
-                ),
-                SizedBox(height: 30),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 50,
-                  padding: EdgeInsets.all(2.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: grey),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      elevation: 7,
-                      foregroundColor: Colors.black, // foreground (text) color
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '$locationText',
-                          style:
-                              Theme.of(context).textTheme.bodyText1!.copyWith(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 15,
-                                  ),
-                        ),
-                        // SizedBox(width: 10),
-                        Image.asset(
-                          'assets/images/downarrow.png',
-                          height: 10,
-                          width: 10,
-                        ),
-                      ],
-                    ),
-                    onPressed: () {
-                      _showLocation(context);
-                    },
-                  ),
-                ),
-                SizedBox(height: 30),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 50,
-                  padding: EdgeInsets.all(2.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: grey),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      elevation: 7,
-                      foregroundColor: Colors.black, // foreground (text) color
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '$feedbackText',
-                          style:
-                              Theme.of(context).textTheme.bodyText1!.copyWith(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 15,
-                                  ),
-                        ),
-                        // SizedBox(width: 10),
-                        Image.asset(
-                          'assets/images/downarrow.png',
-                          height: 10,
-                          width: 10,
-                        ),
-                      ],
-                    ),
-                    onPressed: () {
-                      _showFeedback(context);
-                    },
-                  ),
-                ),
-                SizedBox(height: 30),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: Text(
-                      'Sector',
-                      style: TextStyle(fontSize: 15.0),
-                      textAlign: TextAlign.left),
-                ),
-                SizedBox(height: 30),
-                CustomButton(
-                  buttonText: 'Feedback',
-                  onPressed: () => {
-                    if (sbuId != "" &&
-                        companyId != "" &&
-                        locationId != "" &&
-                        feedbackId != "")
-                      {
-                        Navigator.pushNamed(context, '/category',
-                            arguments: {
-                              "companyId": companyId,
-                              "feedbackId": feedbackId
-                            }),
-                      }
-                    else
-                      {_showMessage(context, "Please select all items")}
-                  },
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

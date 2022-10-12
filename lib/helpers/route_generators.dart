@@ -1,6 +1,8 @@
 import 'package:customerfeedbackios/screens/categoryscreen.dart';
 import 'package:customerfeedbackios/screens/downloadscreen.dart';
+import 'package:customerfeedbackios/screens/otpverifyscreen.dart';
 import 'package:customerfeedbackios/screens/questionscreen.dart';
+import 'package:customerfeedbackios/screens/submitscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
@@ -57,6 +59,19 @@ class RouteGenerator {
         return platformPageRoute(
           context: context,
           builder: (_) => ScoreScreen(),
+          settings: settings,
+        );
+      case '/otp':
+        return platformPageRoute(
+          context: context,
+          builder: (_) => OTPVerifyScreen(),
+          settings: settings,
+        );
+
+      case '/submit':
+        return platformPageRoute(
+          context: context,
+          builder: (_) => SubmitScreen(),
           settings: settings,
         );
       default:

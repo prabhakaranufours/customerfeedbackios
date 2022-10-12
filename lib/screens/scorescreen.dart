@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../helpers/colors.dart';
 import '../widgets/app_bar.dart';
+import '../widgets/button.dart';
 
 class ScoreScreen extends StatefulWidget {
   const ScoreScreen({Key? key}) : super(key: key);
@@ -16,7 +17,8 @@ class _ScoreScreenState extends State<ScoreScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: customAppBar(
+        appBar:
+        customAppBar(
           context,
           title: Text(
             'Score',
@@ -40,6 +42,15 @@ class _ScoreScreenState extends State<ScoreScreen> {
         body: Column(
           children: [
             Utils.subHeader(context, 'Bangalore', 'Audit > Category > Score'),
+            Container(
+              margin: EdgeInsets.all(5),
+              child: CustomButton(
+                buttonText: 'SUBMIT',
+                onPressed: () => {
+                Navigator.pushNamed(context, '/otp'),
+                },
+              ),
+            ),
 
           ],
         ),

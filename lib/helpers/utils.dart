@@ -1,6 +1,7 @@
 import 'package:customerfeedbackios/models/loginresponse.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:toast/toast.dart';
 
@@ -51,7 +52,8 @@ class Utils {
     EasyLoading.dismiss();
   }
 
-  static Future<void> showContactAdminDialog(BuildContext context) async {
+  //This dialog used for exit show dialog in home page [Prabhakaran]
+  static Future<void> showExitDialog(BuildContext context) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -59,9 +61,9 @@ class Utils {
         return CupertinoAlertDialog(
           content: SingleChildScrollView(
             child: ListBody(
-              children: <Widget>[
+              children: [
                 Text(
-                  'Please contact Facility Admin to book optDesk',
+                  'Do you want to exit from the app',
                   style: Theme.of(context)
                       .textTheme
                       .subtitle2!
@@ -70,11 +72,13 @@ class Utils {
               ],
             ),
           ),
-          actions: <Widget>[
+          actions: [
             TextButton(
               child: Text('Yes'),
               onPressed: () {
-                Navigator.of(context).pop();
+                // Navigator.of(context).pop();
+                //It clear all stack
+                SystemNavigator.pop(animated: true);
               },
             ),
           ],
