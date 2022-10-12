@@ -652,7 +652,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         locationId != "" &&
                         feedbackId != "")
                       {
-                        Navigator.pushReplacementNamed(context, '/category',
+                        Navigator.pushNamed(context, '/category',
                             arguments: {
                               "companyId": companyId,
                               "feedbackId": feedbackId

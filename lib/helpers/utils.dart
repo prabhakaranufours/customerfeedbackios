@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:toast/toast.dart';
 
-
 class Utils {
   // static ResponseLogin responseLogin;
   // static UserDetail userDetail = UserDetail();
@@ -14,7 +13,6 @@ class Utils {
   //static Position userLocation;
 
   static void showToastMsg(String? msg) {
-
     //
     // Toast.show(
     //   msg,
@@ -84,4 +82,41 @@ class Utils {
       },
     );
   }
+
+  //This Subheader will use in all pages [Prabhakaran]
+  static Widget subHeader(BuildContext context, String msg, String msg1) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          flex: 4,
+          child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 40,
+              color: Colors.grey.shade300,
+              padding: EdgeInsets.all(7.0),
+              child: Text(
+                  msg,
+                style: TextStyle(color: Colors.black, fontSize: 15.0),
+              )),
+        ),
+        Expanded(
+          flex: 6,
+          child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 40,
+              color: Colors.grey.shade300,
+              padding: EdgeInsets.all(7.0),
+              child: Text(
+                msg1,
+                style: TextStyle(color: Colors.black, fontSize: 15.0),
+              )),
+        ),
+      ],
+    );
+  }
+
+
 }

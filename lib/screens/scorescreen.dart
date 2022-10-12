@@ -1,3 +1,4 @@
+import 'package:customerfeedbackios/helpers/utils.dart';
 import 'package:flutter/material.dart';
 
 import '../helpers/colors.dart';
@@ -26,13 +27,19 @@ class _ScoreScreenState extends State<ScoreScreen> {
                 .copyWith(fontWeight: FontWeight.bold),
           ),
           backgroundColor: primaryDark,
-          leading: Padding(
-            padding: const EdgeInsets.all(17.0),
-            child: Image.asset('assets/images/back arrow-8.png'),
+          leading: GestureDetector(
+            onTap: (){
+              Navigator.pop(context);
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(17.0),
+              child: Image.asset('assets/images/back arrow-8.png'),
+            ),
           ),
         ),
         body: Column(
           children: [
+            Utils.subHeader(context, 'Bangalore', 'Audit > Category > Score'),
 
           ],
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../helpers/colors.dart';
+import '../helpers/utils.dart';
 import '../widgets/app_bar.dart';
 import '../widgets/button.dart';
 
@@ -30,7 +31,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
           ),
           backgroundColor: primaryDark,
           leading: GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.pop(context);
+            },
             child: Padding(
               padding: const EdgeInsets.all(17.0),
               child: Image.asset(
@@ -41,31 +44,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
         ),
         body: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Expanded(
-                  child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 40,
-                      color: Colors.grey,
-                      child:
-                      Text('Bangalore',style: TextStyle(color: Colors.black,fontSize: 15.0),)),
-                ),
-                Expanded(
-                  child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 40,
-                      color: Colors.grey,
-                      child:
-                      Text('Audit > Category',style: TextStyle(color: Colors.black,fontSize: 15.0),)),
-                ),
-              ],
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.7,
+            Utils.subHeader(context, 'Bangalore', 'Audit > Category > Question'),
+            Expanded(
               child: ListView.builder(
                 itemCount: 5,
                 itemBuilder: (context, index) {
@@ -116,7 +96,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
               child: CustomButton(
                 buttonText: 'Submit Audit',
                 onPressed: () => {
-                  Navigator.pushReplacementNamed(context, '/category'),
+                  Navigator.pop(context),
                 },
               ),
             ),

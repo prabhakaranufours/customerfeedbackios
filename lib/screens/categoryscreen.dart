@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../database/database_helper.dart';
 import '../helpers/colors.dart';
+import '../helpers/utils.dart';
 import '../widgets/button.dart';
 
 class CategoryScreen extends StatefulWidget {
@@ -65,7 +66,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
           leading: GestureDetector(
             onTap: () {
               // Navigator.pop(context,true);
-              Navigator.pushReplacementNamed(context, '/home');
+              Navigator.pop(context);
             },
             child: Padding(
               padding: const EdgeInsets.all(17.0),
@@ -77,17 +78,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         ),
         body: Column(
           children: [
-            Container(
-                width: MediaQuery.of(context).size.width,
-                height: 35,
-                color: Colors.grey,
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Text(
-                    'Bangalore',
-                    style: TextStyle(color: Colors.black, fontSize: 18),
-                  ),
-                )),
+            Utils.subHeader(context, 'Bangalore', ''),
             SizedBox(
               height: 12,
             ),
@@ -97,7 +88,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: (){
-                      Navigator.pushReplacementNamed(context, '/score');
+                      Navigator.pushNamed(context, '/score');
                     },
                     child: Card(
                       elevation: 2,
@@ -119,7 +110,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 buttonText: 'Next Feedback',
                 borderColor: primaryDark,
                 onPressed: () => {
-                  Navigator.pushReplacementNamed(context, '/question'),
+                  Navigator.pushNamed(context, '/question'),
                 },
               ),
             ),
