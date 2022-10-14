@@ -8,3 +8,4 @@ const String locationApi = "GetLocationsbyuserid";
 const String auditApi = "getallaudit_New";
 const String categoryApi = "getallcategoryNew_Company";
 const String questionApi = "getallquestion_New";
+const String otpApi = "FeedBackOTPSMS";

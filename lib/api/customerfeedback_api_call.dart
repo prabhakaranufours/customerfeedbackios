@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:customerfeedbackios/models/categorydetails.dart';
+import 'package:customerfeedbackios/models/otpdetails.dart';
 import 'package:dio/dio.dart';
 
 import '../helpers/url_utils.dart';
@@ -150,6 +151,25 @@ class CustomerFeedbackApiCall {
 
     if ((response.statusCode ?? -1) <= 205) {
       return Questiondetails.fromJson(response.data);
+    } else {
+      Utils.showToastMsg("Something went wrong!");
+      return null;
+    }
+  }
+
+  //Get OTP
+  Future<Otpdetails?> getOTPDetails(String compId,String locationId,String userId) async {
+    var params = {
+      'companyid': compId,
+      'locationid': locationId,
+      'userid': userId,
+    };
+
+    print('${_dio.options.baseUrl} $otpApi');
+    final response = await _dio.get(otpApi, queryParameters: params);
+
+    if ((response.statusCode ?? -1) <= 205) {
+      return Otpdetails.fromJson(response.data);
     } else {
       Utils.showToastMsg("Something went wrong!");
       return null;

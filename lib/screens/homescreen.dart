@@ -4,6 +4,7 @@ import 'package:customerfeedbackios/helpers/utils.dart';
 import 'package:flutter/material.dart';
 
 import '../helpers/colors.dart';
+import '../helpers/shared_preferences_helper.dart';
 import '../widgets/app_bar.dart';
 import '../widgets/button.dart';
 import '../widgets/textfield.dart';
@@ -47,6 +48,9 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       companyText = value;
       companyId = id;
+      //Store the companyId in sharedPreference
+      SharedPreferencesHelper.setPrefString(
+          SharedPreferencesHelper.COMPANY_ID, companyId);
     });
   }
 
@@ -54,16 +58,18 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       locationText = value;
       locationId = id;
+      //Store the locationId in sharedPreference
+      SharedPreferencesHelper.setPrefString(
+          SharedPreferencesHelper.LOCATION_ID, locationId);
     });
   }
 
-  void setFeedbackData(String value,String id){
+  void setFeedbackData(String value, String id) {
     setState(() {
       feedbackText = value;
       feedbackId = id;
     });
   }
-
 
   //SBU
   Future<void> _showSBU(BuildContext context) async {
@@ -198,7 +204,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                     companyDetails[index]["CompanyID"]);
 
                                 Navigator.of(context).pop();
-
                               },
                               title: Text(
                                 '${companyDetails[index]["CompanyName"]}',
@@ -272,7 +277,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     locationDetails[index]["LocationName"],
                                     locationDetails[index]["LocationID"]);
 
-                                _getFeedback(locationDetails[index]["sectorid"]);
+                                _getFeedback(
+                                    locationDetails[index]["sectorid"]);
 
                                 Navigator.of(context).pop();
                                 // _getLocation();
@@ -405,7 +411,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   //get Feedback
-  void _getFeedback(String sectorId) async{
+  void _getFeedback(String sectorId) async {
     print('GetFeedback');
     feedbackDetails = await DatabaseHelper.instance.getFeedback(sectorId);
   }
@@ -414,7 +420,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: WillPopScope(
-        onWillPop: () async{
+        onWillPop: () async {
           Utils.showExitDialog(context);
           return true;
         },
@@ -494,7 +500,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         elevation: 7,
-                        foregroundColor: Colors.black, // foreground (text) color
+                        foregroundColor:
+                            Colors.black, // foreground (text) color
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -534,7 +541,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         elevation: 7,
-                        foregroundColor: Colors.black, // foreground (text) color
+                        foregroundColor:
+                            Colors.black, // foreground (text) color
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -574,7 +582,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         elevation: 7,
-                        foregroundColor: Colors.black, // foreground (text) color
+                        foregroundColor:
+                            Colors.black, // foreground (text) color
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -614,7 +623,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         elevation: 7,
-                        foregroundColor: Colors.black, // foreground (text) color
+                        foregroundColor:
+                            Colors.black, // foreground (text) color
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -644,8 +654,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(height: 30),
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    child: Text(
-                        'Sector',
+                    child: Text('Sector',
                         style: TextStyle(fontSize: 15.0),
                         textAlign: TextAlign.left),
                   ),
@@ -658,11 +667,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           locationId != "" &&
                           feedbackId != "")
                         {
-                          Navigator.pushNamed(context, '/category',
-                              arguments: {
-                                "companyId": companyId,
-                                "feedbackId": feedbackId
-                              }),
+                          Navigator.pushNamed(context, '/category', arguments: {
+                            "companyId": companyId,
+                            "feedbackId": feedbackId
+                          }),
                         }
                       else
                         {_showMessage(context, "Please select all items")}

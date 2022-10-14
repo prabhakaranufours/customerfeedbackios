@@ -12,7 +12,6 @@ class QuestionScreen extends StatefulWidget {
 }
 
 class _QuestionScreenState extends State<QuestionScreen> {
-
   final remarksController = TextEditingController();
 
   @override
@@ -44,33 +43,54 @@ class _QuestionScreenState extends State<QuestionScreen> {
         ),
         body: Column(
           children: [
-            Utils.subHeader(context, 'Bangalore', 'Audit > Category > Question'),
+            Utils.subHeader(
+                context, 'Bangalore', 'Audit > Category > Question'),
             Expanded(
               child: ListView.builder(
                 itemCount: 5,
+                shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return Card(
                     elevation: 3,
                     child: ListTile(
                       title: Column(
                         children: [
-                          Text('Was TerminixSis technician visit made as per schedule during lockdown period ?',
-                            style: TextStyle(fontSize: 18),),
-                          Container(
-                            child: SizedBox(
-                              height: 20,
-                            ),
+                          Text(
+                            'Was TerminixSis technician visit made as per schedule during lockdown period ?',
+                            style: TextStyle(fontSize: 18),
                           ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: List.generate(
+                                  6,
+                                  (index) => index==5 ? CustomButton(
+                                    buttonText: 'N/A',
+                                    borderColor: Colors.grey,
+                                    width: 25,
+                                    height: 25,
+                                    onPressed: () => {
+                                      Navigator.pop(context),
+                                    },
+                                  ) : IconButton(
+                                        icon: Icon(
+                                          Icons.star,
+                                          color: _rating >= 1
+                                              ? Colors.orange
+                                              : Colors.grey,
+                                        ),
+                                        onPressed: () => rate(1),
+                                      ))),
+
                           Row(
                             children: [
                               Expanded(
-                                flex:8,
+                                flex: 8,
                                 child: TextField(
                                   controller: remarksController,
                                 ),
                               ),
                               Expanded(
-                                flex:2,
+                                flex: 2,
                                 child: Container(
                                   width: 40,
                                   height: 40,
@@ -82,10 +102,11 @@ class _QuestionScreenState extends State<QuestionScreen> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 5,)
+                          SizedBox(
+                            height: 5,
+                          )
                         ],
                       ),
-
                     ),
                   );
                 },
@@ -106,6 +127,15 @@ class _QuestionScreenState extends State<QuestionScreen> {
     );
   }
 
+  int _rating = 0;
+
+  void rate(int rating) {
+    //Other actions based on rating such as api calls.
+    setState(() {
+      _rating = rating;
+    });
+  }
+
   @override
   void dispose() {
     // Clean up the controller when the widget is removed from the
@@ -114,14 +144,20 @@ class _QuestionScreenState extends State<QuestionScreen> {
     super.dispose();
   }
 
-  Widget starCreate(){
+  Widget starCreate() {
     return ListView.builder(
         itemCount: 5,
+        scrollDirection: Axis.horizontal,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-
-              title: Text("List item $index"));
+            title: GestureDetector(
+              child: new Icon(
+                Icons.star,
+                color: _rating >= 1 ? Colors.orange : Colors.grey,
+              ),
+              onTap: () => rate(1),
+            ),
+          );
         });
   }
-
 }

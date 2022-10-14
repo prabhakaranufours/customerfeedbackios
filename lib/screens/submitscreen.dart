@@ -16,6 +16,12 @@ class SubmitScreen extends StatefulWidget {
 class _SubmitScreenState extends State<SubmitScreen> {
   final cNameController = TextEditingController();
   final auditorNameController = TextEditingController();
+  final auditeeNameController = TextEditingController();
+  final siteNameController = TextEditingController();
+  final clientPersonNameController = TextEditingController();
+  final sbuNameController = TextEditingController();
+  final aomController = TextEditingController();
+  final feedbackRepSignController = TextEditingController();
   final feedbackTakenByController = TextEditingController();
   final feedbackRepController = TextEditingController();
 
@@ -106,7 +112,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                             borderRadius: BorderRadius.all(Radius.circular(10))),
                         child: CustomTextField(
                           placeholder: "AUDITEE NAME",
-                          controller: auditorNameController,
+                          controller: auditeeNameController,
                           prefixIcon: Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: Image.asset(
@@ -127,7 +133,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                             borderRadius: BorderRadius.all(Radius.circular(10))),
                         child: CustomTextField(
                           placeholder: "SITE NAME",
-                          controller: auditorNameController,
+                          controller: siteNameController,
                           prefixIcon: Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: Image.asset(
@@ -148,7 +154,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                             borderRadius: BorderRadius.all(Radius.circular(10))),
                         child: CustomTextField(
                           placeholder: "CLIENT PERSON NAME",
-                          controller: auditorNameController,
+                          controller: clientPersonNameController,
                           prefixIcon: Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: Image.asset(
@@ -169,7 +175,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                             borderRadius: BorderRadius.all(Radius.circular(10))),
                         child: CustomTextField(
                           placeholder: "SBU NAME",
-                          controller: auditorNameController,
+                          controller: sbuNameController,
                           prefixIcon: Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: Image.asset(
@@ -190,7 +196,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                             borderRadius: BorderRadius.all(Radius.circular(10))),
                         child: CustomTextField(
                           placeholder: "OM / AOM / SUPERVISOR",
-                          controller: auditorNameController,
+                          controller: aomController,
                           prefixIcon: Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: Image.asset(
@@ -253,7 +259,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                             borderRadius: BorderRadius.all(Radius.circular(10))),
                         child: CustomTextField(
                           placeholder: "FEEDBACK REP SIGN",
-                          controller: auditorNameController,
+                          controller: feedbackRepSignController,
                           prefixIcon: Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: Image.asset(
