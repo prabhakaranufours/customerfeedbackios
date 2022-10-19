@@ -279,6 +279,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                 _getFeedback(
                                     locationDetails[index]["sectorid"]);
+                                //SectorId store in sharedPreference
+                                SharedPreferencesHelper.setPrefString(SharedPreferencesHelper.SECTOR_ID,
+                                    locationDetails[index]["sectorid"] );
 
                                 Navigator.of(context).pop();
                                 // _getLocation();
