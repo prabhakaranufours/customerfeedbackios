@@ -2,13 +2,13 @@ import 'package:customerfeedbackios/helpers/utils.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
+import '../database/database_helper.dart';
 import '../helpers/colors.dart';
+import '../helpers/shared_preferences_helper.dart';
 import '../widgets/app_bar.dart';
 import '../widgets/button.dart';
 
 class ScoreScreen extends StatefulWidget {
-
-
   const ScoreScreen({Key? key}) : super(key: key);
 
   @override
@@ -16,6 +16,26 @@ class ScoreScreen extends StatefulWidget {
 }
 
 class _ScoreScreenState extends State<ScoreScreen> {
+
+  String sectorId = "";
+  List<Map> feedbackDetails = [];
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    get();
+  }
+
+  //We cannot write setstate in between didchangeDependencies so write seperate
+  void get() async{
+    sectorId = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.SECTOR_ID, '');
+    feedbackDetails = await DatabaseHelper.instance.getFeedback(sectorId);
+    setState(() {});
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -46,6 +66,7 @@ class _ScoreScreenState extends State<ScoreScreen> {
           children: [
             Utils.subHeader(context, 'Bangalore', 'Audit > Category > Score'),
             Container(
+              // height: MediaQuery.of(context).size.height,
               margin: EdgeInsets.all(5),
               child: Column(
                 children: [
@@ -56,31 +77,29 @@ class _ScoreScreenState extends State<ScoreScreen> {
                     padding: const EdgeInsets.all(15.0),
                     child: Circular_arc(),
                   ),
-                  Text("Test"),
-                  // Container(
-                  //   height: 100,
-                  //   width: MediaQuery.of(context).size.width,
-                  //   child: ListView.builder(
-                  //     itemCount: 3,
-                  //     itemBuilder: (context, index) {
-                  //       return GestureDetector(
-                  //         onTap: (){
-                  //         },
-                  //         child: Card(
-                  //             elevation: 2,
-                  //             child: Padding(
-                  //               padding: const EdgeInsets.all(8),
-                  //               child: Text(
-                  //                 // '${categoryDetails[index]["categoryname"]}',
-                  //                 "TEst",
-                  //                 style: TextStyle(fontSize: 18),
-                  //               ),
-                  //             )
-                  //         ),
-                  //       );
-                  //     },
-                  //   ),
-                  // ),
+                  Container(
+                    height: 300,
+                    width: MediaQuery.of(context).size.width,
+                    child: ListView.builder(
+                      itemCount: feedbackDetails.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: (){
+                          },
+                          child: Card(
+                              elevation: 2,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Text(
+                                  '${feedbackDetails[index]["auditname"]}',
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              )
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                   CustomButton(
                     buttonText: 'SUBMIT',
                     onPressed: () => {
@@ -95,32 +114,6 @@ class _ScoreScreenState extends State<ScoreScreen> {
       ),
     );
   }
-
-  //FeedbackList
-  Widget FeedbackList() {
-    return ListView.builder(
-      itemCount: 3,
-      itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: (){
-            Navigator.pushNamed(context, '/score');
-          },
-          child: Card(
-              elevation: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Text(
-                  // '${categoryDetails[index]["categoryname"]}',
-                  "TEst",
-                  style: TextStyle(fontSize: 18),
-                ),
-              )
-          ),
-        );
-      },
-    );
-  }
-
 }
 
 
@@ -164,12 +157,12 @@ class _Circular_arcState extends State<Circular_arc>
           ),
           CustomPaint(
             size: Size(300, 300),
-            painter: ProgressArc(animation.value, Colors.redAccent, false),
+            painter: ProgressArc(1, Colors.redAccent, false),
           ),
           Positioned(
             top: 120,
             left: 130,
-            child: Text("${(animation.value /3.14 *100).round()}%",
+            child: Text("${(1 /3.14 *100).round()}%",
               style: TextStyle(color: Colors.black,
                   fontSize: 30),),
           )
