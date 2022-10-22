@@ -22,7 +22,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
           context,
           title: Text(
             'Questions',
-            style: Theme.of(context)
+            style: Theme
+                .of(context)
                 .textTheme
                 .bodyText1!
                 .apply(color: lightGrey)
@@ -60,26 +61,23 @@ class _QuestionScreenState extends State<QuestionScreen> {
                             style: TextStyle(fontSize: 18),
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: List.generate(
                                   6,
-                                  (index) => index==5 ? CustomButton(
+                                      (index) =>
+                                  index == 5 ? CustomButton(
                                     buttonText: 'N/A',
                                     borderColor: Colors.grey,
                                     width: 25,
                                     height: 25,
-                                    onPressed: () => {
+                                    onPressed: () =>
+                                    {
                                       Navigator.pop(context),
                                     },
-                                  ) : IconButton(
-                                        icon: Icon(
-                                          Icons.star,
-                                          color: _rating >= 1
-                                              ? Colors.orange
-                                              : Colors.grey,
-                                        ),
-                                        onPressed: () => rate(1),
-                                      ))),
+                                  ) : ImageIcon(
+                                    AssetImage("assets/images/one.png"),
+                                    // color: Color(0xFF3A5A98),
+                                  ),)),
 
                           Row(
                             children: [
@@ -116,7 +114,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
               margin: EdgeInsets.all(5),
               child: CustomButton(
                 buttonText: 'Submit Audit',
-                onPressed: () => {
+                onPressed: () =>
+                {
                   Navigator.pop(context),
                 },
               ),
@@ -124,6 +123,18 @@ class _QuestionScreenState extends State<QuestionScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  //Emoji row
+  Widget emojiRow() {
+    return Row(
+      children: [
+        ImageIcon(
+          AssetImage("assets/images/one.png"),
+          // color: Color(0xFF3A5A98),
+        ),
+      ],
     );
   }
 
