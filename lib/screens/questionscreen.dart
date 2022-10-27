@@ -56,56 +56,63 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     child: ListTile(
                       title: Column(
                         children: [
-                          Text(
-                            'Was TerminixSis technician visit made as per schedule during lockdown period ?',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: List.generate(
-                                  6,
-                                      (index) =>
-                                  index == 5 ? CustomButton(
-                                    buttonText: 'N/A',
-                                    borderColor: Colors.grey,
-                                    width: 25,
-                                    height: 25,
-                                    onPressed: () =>
-                                    {
-                                      Navigator.pop(context),
-                                    },
-                                  ) : ImageIcon(
-                                    AssetImage("assets/images/one.png"),
-                                    // color: Color(0xFF3A5A98),
-                                  ),)),
-
-                          Row(
-                            children: [
-                              Expanded(
-                                flex: 8,
-                                child: TextField(
-                                  controller: remarksController,
-                                ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Container(
-                                  width: 40,
-                                  height: 40,
-                                  child: ImageIcon(
-                                    AssetImage("assets/images/camera.png"),
-                                    color: Color(0xFF3A5A98),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 5,
-                          )
-                        ],
+                        Text(
+                        ' Was TerminixSis technician visit made as per schedule during lockdown period ?',
+                        style: TextStyle(fontSize: 18),
                       ),
+                    //   Row(
+                    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //       children:
+                    //       // List.generate(
+                    //       //     6,
+                    //       //         (index) =>
+                    //       //     index == 5 ? CustomButton(
+                    //       //       buttonText: 'N/A',
+                    //       //       borderColor: Colors.grey,
+                    //       //       width: 25,
+                    //       //       height: 25,
+                    //       //       onPressed: () =>
+                    //       //       {
+                    //       //         Navigator.pop(context),
+                    //       //       },
+                    //       //     ) :
+                    //       //     ImageIcon(
+                    //       //       AssetImage("assets/images/one.png"),
+                    //       //       // color: Color(0xFF3A5A98),
+                    //       //     ),
+                    //       // ),
+                    //
+                    //
+                    //
+                    // ),
+
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 8,
+                          child: TextField(
+                            controller: remarksController,
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            child: ImageIcon(
+                              AssetImage("assets/images/camera.png"),
+                              color: Color(0xFF3A5A98),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+                    SizedBox(
+                      height: 5,
+                    )
+                    ],
+                  ),)
+                  ,
                   );
                 },
               ),
