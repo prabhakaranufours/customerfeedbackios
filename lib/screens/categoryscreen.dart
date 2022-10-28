@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../database/database_helper.dart';
 import '../helpers/colors.dart';
+import '../helpers/shared_preferences_helper.dart';
 import '../helpers/utils.dart';
 import '../widgets/button.dart';
 
@@ -43,9 +44,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
   void get() async{
     categoryDetails = await DatabaseHelper.instance
         .getCategory(widget.data['companyId']!, widget.data['feedbackId']!);
-
     setState(() {});
+  }
 
+  void nextPage(String categoryId) async{
+    await SharedPreferencesHelper.setPrefString(SharedPreferencesHelper.CATEGORY_ID,
+        categoryId);
+    Navigator.pushNamed(context, '/score');
   }
 
   @override
@@ -88,7 +93,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: (){
-                      Navigator.pushNamed(context, '/score');
+                      nextPage(categoryDetails[index]["categoryid"]);
                     },
                     child: Card(
                       elevation: 2,

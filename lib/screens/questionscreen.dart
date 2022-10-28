@@ -1,6 +1,8 @@
 import 'package:customerfeedbackios/widgets/MyRadioOptions.dart';
 import 'package:flutter/material.dart';
+import '../database/database_helper.dart';
 import '../helpers/colors.dart';
+import '../helpers/shared_preferences_helper.dart';
 import '../helpers/utils.dart';
 import '../widgets/app_bar.dart';
 import '../widgets/button.dart';
@@ -38,6 +40,24 @@ class _QuestionScreenState extends State<QuestionScreen> {
   };
   var temp = ['2', '3', '1', '5', 'n/a', '4'];
 
+  List<Map> qnsDetails = [];
+  List<Map> scoreDetails = [];
+
+
+
+  @override
+  void didChangeDependencies() async{
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    get();
+  }
+
+  void get() async{
+    var categoryId = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.CATEGORY_ID, '');
+    qnsDetails = await DatabaseHelper.instance.getQuestion(categoryId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -71,16 +91,16 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 context, 'Bangalore', 'Audit > Category > Question'),
             Expanded(
               child: ListView.builder(
-                itemCount: 5,
+                itemCount: qnsDetails.length,
                 shrinkWrap: true,
-                itemBuilder: (context, index) {
+                    itemBuilder: (context, index) {
                   return Card(
                     elevation: 3,
                     child: ListTile(
                       title: Column(
                         children: [
                           Text(
-                            ' Was TerminixSis technician visit made as per schedule during lockdown period ?',
+                            '${qnsDetails[index]["auditqname"]}',
                             style: TextStyle(fontSize: 18),
                           ),
                           SizedBox(
@@ -91,9 +111,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
                               itemBuilder: (context, index) {
                                 return index == 5
                                     ? Container(
-                                        height: 40,
-                                        width: 50,
-                                        margin: EdgeInsets.all(8),
+                                        height: 30,
+                                        width: 70,
+                                        margin: EdgeInsets.all(10),
                                         child: CustomButton(
                                             buttonText: 'n/a',
                                             onPressed: () {
@@ -158,26 +178,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
     );
   }
 
-  //Emoji row
-  Widget emojiRow() {
-    return Row(
-      children: [
-        ImageIcon(
-          AssetImage("assets/images/one.png"),
-          // color: Color(0xFF3A5A98),
-        ),
-      ],
-    );
-  }
-
-  int _rating = 0;
-
-  void rate(int rating) {
-    //Other actions based on rating such as api calls.
-    setState(() {
-      _rating = rating;
-    });
-  }
 
   @override
   void dispose() {
@@ -185,22 +185,5 @@ class _QuestionScreenState extends State<QuestionScreen> {
     // widget tree.
     remarksController.dispose();
     super.dispose();
-  }
-
-  Widget starCreate() {
-    return ListView.builder(
-        itemCount: 5,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            title: GestureDetector(
-              child: new Icon(
-                Icons.star,
-                color: _rating >= 1 ? Colors.orange : Colors.grey,
-              ),
-              onTap: () => rate(1),
-            ),
-          );
-        });
   }
 }

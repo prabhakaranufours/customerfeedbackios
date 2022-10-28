@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:customerfeedbackios/models/categorydetails.dart';
 import 'package:customerfeedbackios/models/otpdetails.dart';
+import 'package:customerfeedbackios/models/scoredetails.dart';
 import 'package:dio/dio.dart';
 
 import '../helpers/url_utils.dart';
@@ -151,6 +152,25 @@ class CustomerFeedbackApiCall {
 
     if ((response.statusCode ?? -1) <= 205) {
       return Questiondetails.fromJson(response.data);
+    } else {
+      Utils.showToastMsg("Something went wrong!");
+      return null;
+    }
+  }
+
+  //Score API
+  Future<Scoredetails?> getScoreDetails(String userId) async {
+    var params = {
+      'userid': userId,
+      'type': '1',
+      'date': '2016-10-08 00:00:00.000',
+    };
+
+    print('${_dio.options.baseUrl} $scoreApi');
+    final response = await _dio.get(scoreApi, queryParameters: params);
+
+    if ((response.statusCode ?? -1) <= 205) {
+      return Scoredetails.fromJson(response.data);
     } else {
       Utils.showToastMsg("Something went wrong!");
       return null;

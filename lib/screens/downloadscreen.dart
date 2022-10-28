@@ -5,6 +5,7 @@ import 'package:customerfeedbackios/models/companydetails.dart';
 import 'package:customerfeedbackios/models/locationdetails.dart';
 import 'package:customerfeedbackios/models/questiondetails.dart';
 import 'package:customerfeedbackios/models/sbudetails.dart';
+import 'package:customerfeedbackios/models/scoredetails.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -104,6 +105,21 @@ void questionApi(BuildContext context) async {
     Utils.showToastMsg(response.message);
     if (response.status!) {
       DatabaseHelper.instance.questionInsert(response.returnData?.table);
+      scoreApi(context);
+    }
+  }
+}
+
+//Download the answer Details
+void scoreApi(BuildContext context) async {
+  var userId = await SharedPreferencesHelper.getPrefString(
+      SharedPreferencesHelper.USER_ID, '');
+  Scoredetails? response =
+  await CustomerFeedbackApiCall().getScoreDetails(userId);
+  if (response != null) {
+    Utils.showToastMsg(response.message);
+    if (response.status!) {
+      DatabaseHelper.instance.answerInsert(response.returnData?.table);
       Navigator.pushReplacementNamed(context, '/home');
     }
   }
