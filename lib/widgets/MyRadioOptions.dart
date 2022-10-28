@@ -20,7 +20,7 @@ class MyRadioOption<T> extends StatelessWidget {
 
   Widget _buildLabel() {
     final bool isSelected = value == groupValue;
-    return isSelected ? Image.asset(selectedText,width: 50,): Image.asset(text,width: 50,);
+    return isSelected ? Image.asset(selectedText,width: 40,): Image.asset(text,width: 40,);
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:customerfeedbackios/widgets/MyRadioOptions.dart';
 import 'package:flutter/material.dart';
 import '../helpers/colors.dart';
 import '../helpers/utils.dart';
@@ -13,6 +14,29 @@ class QuestionScreen extends StatefulWidget {
 
 class _QuestionScreenState extends State<QuestionScreen> {
   final remarksController = TextEditingController();
+  String? _groupValue;
+
+  ValueChanged<String?> _valueChangedHandler() {
+    return (value) => setState(() => _groupValue = value!);
+  }
+
+  Map<String, dynamic> emojigrey = {
+    '1': "assets/images/one_grey.png",
+    '2': "assets/images/two_grey.png",
+    '3': "assets/images/three_grey.png",
+    '4': "assets/images/four_grey.png",
+    '5': "assets/images/five_grey.png",
+    'n/a': "assets/images/five_grey.png"
+  };
+  Map<String, dynamic> emojiSelect = {
+    '1': "assets/images/one.png",
+    '2': "assets/images/two.png",
+    '3': "assets/images/three.png",
+    '4': "assets/images/four.png",
+    '5': "assets/images/five.png",
+    'n/a': "assets/images/five.png"
+  };
+  var temp = ['2', '3', '1', '5', 'n/a', '4'];
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +46,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
           context,
           title: Text(
             'Questions',
-            style: Theme
-                .of(context)
+            style: Theme.of(context)
                 .textTheme
                 .bodyText1!
                 .apply(color: lightGrey)
@@ -56,63 +79,66 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     child: ListTile(
                       title: Column(
                         children: [
-                        Text(
-                        ' Was TerminixSis technician visit made as per schedule during lockdown period ?',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    //   Row(
-                    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //       children:
-                    //       // List.generate(
-                    //       //     6,
-                    //       //         (index) =>
-                    //       //     index == 5 ? CustomButton(
-                    //       //       buttonText: 'N/A',
-                    //       //       borderColor: Colors.grey,
-                    //       //       width: 25,
-                    //       //       height: 25,
-                    //       //       onPressed: () =>
-                    //       //       {
-                    //       //         Navigator.pop(context),
-                    //       //       },
-                    //       //     ) :
-                    //       //     ImageIcon(
-                    //       //       AssetImage("assets/images/one.png"),
-                    //       //       // color: Color(0xFF3A5A98),
-                    //       //     ),
-                    //       // ),
-                    //
-                    //
-                    //
-                    // ),
-
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 8,
-                          child: TextField(
-                            controller: remarksController,
+                          Text(
+                            ' Was TerminixSis technician visit made as per schedule during lockdown period ?',
+                            style: TextStyle(fontSize: 18),
                           ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Container(
-                            width: 40,
-                            height: 40,
-                            child: ImageIcon(
-                              AssetImage("assets/images/camera.png"),
-                              color: Color(0xFF3A5A98),
+                          SizedBox(
+                            height: 80,
+                            child: ListView.builder(
+                              itemCount: temp.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return index == 5
+                                    ? Container(
+                                        height: 40,
+                                        width: 50,
+                                        margin: EdgeInsets.all(8),
+                                        child: CustomButton(
+                                            buttonText: 'n/a',
+                                            onPressed: () {
+                                              setState(() {
+                                                _groupValue = '6';
+                                              });
+                                            }))
+                                    : MyRadioOption(
+                                        value: temp[index],
+                                        groupValue: _groupValue,
+                                        onChanged: _valueChangedHandler(),
+                                        label: temp[index],
+                                        text: emojigrey[temp[index]],
+                                        selectedText: emojiSelect[temp[index]],
+                                      );
+                              },
                             ),
                           ),
-                        ),
-                      ],
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 8,
+                                child: TextField(
+                                  controller: remarksController,
+                                ),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Container(
+                                  width: 40,
+                                  height: 40,
+                                  child: ImageIcon(
+                                    AssetImage("assets/images/camera.png"),
+                                    color: Color(0xFF3A5A98),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 5,
+                          )
+                        ],
+                      ),
                     ),
-                    SizedBox(
-                      height: 5,
-                    )
-                    ],
-                  ),)
-                  ,
                   );
                 },
               ),
@@ -121,8 +147,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
               margin: EdgeInsets.all(5),
               child: CustomButton(
                 buttonText: 'Submit Audit',
-                onPressed: () =>
-                {
+                onPressed: () => {
                   Navigator.pop(context),
                 },
               ),
