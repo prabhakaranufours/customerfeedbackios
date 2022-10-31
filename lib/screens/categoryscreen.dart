@@ -44,13 +44,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
   void get() async{
     categoryDetails = await DatabaseHelper.instance
         .getCategory(widget.data['companyId']!, widget.data['feedbackId']!);
+    await SharedPreferencesHelper.setPrefString(SharedPreferencesHelper.AUDIT_ID,
+        widget.data['feedbackId']!);
     setState(() {});
   }
 
   void nextPage(String categoryId) async{
     await SharedPreferencesHelper.setPrefString(SharedPreferencesHelper.CATEGORY_ID,
         categoryId);
-    Navigator.pushNamed(context, '/score');
+    Navigator.pushNamed(context, '/question');
   }
 
   @override
@@ -115,7 +117,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 buttonText: 'Next Feedback',
                 borderColor: primaryDark,
                 onPressed: () => {
-                  Navigator.pushNamed(context, '/question'),
+                  Navigator.pushNamed(context, '/score'),
                 },
               ),
             ),

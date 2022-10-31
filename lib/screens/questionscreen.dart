@@ -44,7 +44,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
   List<Map> scoreDetails = [];
 
 
-
   @override
   void didChangeDependencies() async{
     // TODO: implement didChangeDependencies
@@ -55,7 +54,11 @@ class _QuestionScreenState extends State<QuestionScreen> {
   void get() async{
     var categoryId = await SharedPreferencesHelper.getPrefString(
         SharedPreferencesHelper.CATEGORY_ID, '');
+    var auditId = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.AUDIT_ID, '');
     qnsDetails = await DatabaseHelper.instance.getQuestion(categoryId);
+    scoreDetails = await DatabaseHelper.instance.getAnswer(auditId);
+    setState(() {});
   }
 
   @override
@@ -93,20 +96,20 @@ class _QuestionScreenState extends State<QuestionScreen> {
               child: ListView.builder(
                 itemCount: qnsDetails.length,
                 shrinkWrap: true,
-                    itemBuilder: (context, index) {
+                    itemBuilder: (context, i) {
                   return Card(
                     elevation: 3,
                     child: ListTile(
                       title: Column(
                         children: [
                           Text(
-                            '${qnsDetails[index]["auditqname"]}',
+                            '${qnsDetails[i]["auditqname"]}',
                             style: TextStyle(fontSize: 18),
                           ),
                           SizedBox(
                             height: 80,
                             child: ListView.builder(
-                              itemCount: temp.length,
+                              itemCount: scoreDetails.length,
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
                                 return index == 5
@@ -118,16 +121,19 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                             buttonText: 'n/a',
                                             onPressed: () {
                                               setState(() {
-                                                _groupValue = '6';
+                                                qnsDetails[i]['selectedScore'] = '$i'+'6';
                                               });
                                             }))
                                     : MyRadioOption(
-                                        value: temp[index],
-                                        groupValue: _groupValue,
-                                        onChanged: _valueChangedHandler(),
-                                        label: temp[index],
-                                        text: emojigrey[temp[index]],
-                                        selectedText: emojiSelect[temp[index]],
+                                        value: '$i${scoreDetails[index]['scorename']}',
+                                        groupValue: qnsDetails[i]['selectedScore'],
+                                        onChanged: (val){
+                                          qnsDetails[i]["selectedScore"]= val;
+                                          setState(() {});
+                                        },
+                                        label: scoreDetails[index]['scorename'],
+                                        text: emojigrey[scoreDetails[index]['scorename']],
+                                        selectedText: emojiSelect[scoreDetails[index]['scorename']],
                                       );
                               },
                             ),
@@ -153,7 +159,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           )
                         ],
