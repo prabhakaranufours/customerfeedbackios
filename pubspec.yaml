@@ -49,6 +49,7 @@ dependencies:
   dio: 4.0.6
   awesome_snackbar_content: ^0.0.8
   flutter_otp_text_field: ^1.1.0+2
+  percent_indicator: ^4.0.1
 
 
 dev_dependencies:

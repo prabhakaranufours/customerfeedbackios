@@ -1,5 +1,6 @@
 import 'package:customerfeedbackios/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 import '../database/database_helper.dart';
 import '../helpers/colors.dart';
@@ -101,9 +102,30 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       elevation: 2,
                       child: Padding(
                         padding: const EdgeInsets.all(8),
-                        child: Text(
-                          '${categoryDetails[index]["categoryname"]}',
-                          style: TextStyle(fontSize: 18),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width:300,
+                              child: Text(
+                                '${categoryDetails[index]["categoryname"]}',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                softWrap: false,
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            ),
+                            Container(
+                              height: 50,
+                              child: CircularPercentIndicator(
+                                radius: 25.0,
+                                lineWidth: 5.0,
+                                percent: 1.0,
+                                center: new Text("100%",style: TextStyle(fontSize: 12),),
+                                progressColor: Colors.blue,
+                              ),
+                            )
+                          ],
                         ),
                       )
                     ),

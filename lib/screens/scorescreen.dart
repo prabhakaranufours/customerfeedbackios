@@ -1,5 +1,6 @@
 import 'package:customerfeedbackios/helpers/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'dart:math' as math;
 
 import '../database/database_helper.dart';
@@ -90,9 +91,30 @@ class _ScoreScreenState extends State<ScoreScreen> {
                               elevation: 2,
                               child: Padding(
                                 padding: const EdgeInsets.all(8),
-                                child: Text(
-                                  '${feedbackDetails[index]["auditname"]}',
-                                  style: TextStyle(fontSize: 18),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      width:300,
+                                      child: Text(
+                                        '${feedbackDetails[index]["auditname"]}',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                        softWrap: false,
+                                        style: TextStyle(fontSize: 16,),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 50,
+                                      child: CircularPercentIndicator(
+                                        radius: 25.0,
+                                        lineWidth: 5.0,
+                                        percent: 1.0,
+                                        center: new Text("100%",style: TextStyle(fontSize: 12),),
+                                        progressColor: Colors.blue,
+                                      ),
+                                    )
+                                  ],
                                 ),
                               )
                           ),
