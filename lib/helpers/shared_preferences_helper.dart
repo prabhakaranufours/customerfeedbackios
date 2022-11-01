@@ -10,7 +10,9 @@ class SharedPreferencesHelper {
   static final String USER_PASSWORD = "USER_PASSWORD";
   static final String USER_ID = "USER_ID";
   static final String COMPANY_ID = "COMPANY_ID";
+  static final String SBU_ID = "SBU_ID";
   static final String LOCATION_ID = "LOCATION_ID";
+  static final String FEEDBACK_ID = "FEEDBACK_ID";
   static final String SECTOR_ID = "SECTOR_ID";
   static final String CATEGORY_ID = "CATEGORY_ID";
   static final String AUDIT_ID = "AUDIT_ID";

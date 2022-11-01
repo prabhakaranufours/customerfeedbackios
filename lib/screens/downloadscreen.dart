@@ -133,6 +133,7 @@ void deleteDataInDb() async {
   DatabaseHelper.instance.auditDelete();
   DatabaseHelper.instance.categoryDelete();
   DatabaseHelper.instance.questionDelete();
+  DatabaseHelper.instance.scoreDelete();
 }
 
 class _DownloadScreenState extends State<DownloadScreen> {

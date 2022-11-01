@@ -41,6 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       sbuText = value;
       sbuId = id;
+      SharedPreferencesHelper.setPrefString(
+          SharedPreferencesHelper.SBU_ID, sbuId);
     });
   }
 
@@ -68,6 +70,8 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       feedbackText = value;
       feedbackId = id;
+      SharedPreferencesHelper.setPrefString(
+          SharedPreferencesHelper.FEEDBACK_ID, feedbackId);
     });
   }
 

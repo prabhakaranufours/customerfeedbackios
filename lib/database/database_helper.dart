@@ -501,6 +501,15 @@ class DatabaseHelper {
         where: "$Score_Scoreauditid  =?", whereArgs: [auditId]);
   }
 
+  //Get the scoreCalcualtion
+  Future<List<Map>> getScoreCalculation(String sbuId, String companyId,
+      String locationId,String auditId) async{
+    Database? db = await instance.database;
+    return await db.rawQuery("Select $Score_Scorescore,$CatData_Weightage from $_categoryData INNER JOIN $_scoreDetails"
+        "on $CatData_ScoreId = $Score_Scorescoreid where $Score_Scorescore != -1 AND $CatData_SbuId  = $sbuId  AND"
+        "$CatData_CompanyId = $companyId AND $CatData_LocationId = $locationId AND $CatData_AuditId = $auditId");
+  }
+
   //Insert the user table
   Future<int> insert(Map<String, dynamic> row) async {
     Database? db = await instance.database;
@@ -512,6 +521,11 @@ class DatabaseHelper {
     Database db = await instance.database;
     return await db.query(_userDetails);
   }
+
+
+
+
+
 
   //Delete the data from the user table
   Future<int> delete(int userName) async {
@@ -554,5 +568,11 @@ class DatabaseHelper {
   Future<int> questionDelete() async {
     Database db = await instance.database;
     return await db.delete(_questionDetails);
+  }
+
+  //Delete scoreDetails data in table
+  Future<int> scoreDelete() async {
+    Database db = await instance.database;
+    return await db.delete(_scoreDetails);
   }
 }
