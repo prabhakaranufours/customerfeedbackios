@@ -39,6 +39,9 @@ void api(BuildContext context) async {
       DatabaseHelper.instance.userinsert(response.returnData.userDetails);
       await SharedPreferencesHelper.setPrefString(SharedPreferencesHelper.USER_ID,
           response.returnData.userDetails![0].userID.toString());
+      await SharedPreferencesHelper.setPrefString(SharedPreferencesHelper.USER_NAME,
+          response.returnData.userDetails![0].userFirstName.toString());
+
       Navigator.pushReplacementNamed(context, '/download');
     }
   }

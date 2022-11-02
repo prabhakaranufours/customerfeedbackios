@@ -9,8 +9,11 @@ class SharedPreferencesHelper {
   static final String USER_EMAIL = "USER_EMAIL";
   static final String USER_PASSWORD = "USER_PASSWORD";
   static final String USER_ID = "USER_ID";
+  static final String USER_NAME = "USER_NAME";
   static final String COMPANY_ID = "COMPANY_ID";
+  static final String COMPANY_NAME = "COMPANY_NAME";
   static final String SBU_ID = "SBU_ID";
+  static final String SBU_NAME = "SBU_NAME";
   static final String LOCATION_ID = "LOCATION_ID";
   static final String FEEDBACK_ID = "FEEDBACK_ID";
   static final String SECTOR_ID = "SECTOR_ID";

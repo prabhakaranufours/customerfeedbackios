@@ -56,8 +56,8 @@ class _ScoreScreenState extends State<ScoreScreen> {
 
     //This for get the feedback list
     feedbackDetails = await DatabaseHelper.instance.getFeedback(sectorId);
-    scoreCalculation = await DatabaseHelper.instance.getScoreCalculation(sbuId, companyId, locationId, auditId);
-    getScoreCalculte(scoreCalculation);
+    // scoreCalculation = await DatabaseHelper.instance.getScoreCalculation(sbuId, companyId, locationId, auditId);
+    // getScoreCalculte(scoreCalculation);
     setState(() {});
   }
 
@@ -76,6 +76,13 @@ class _ScoreScreenState extends State<ScoreScreen> {
       scoreWeight = int_score! * int_weight!;
       totalWeightage = totalWeightage + scoreWeight;
     }
+
+    //Set the value in progress arc bar
+    var final_totalScore = totalWeightage / int_weight!;
+    final_totalScore = final_totalScore * 100;
+
+
+
   }
 
   @override
@@ -152,10 +159,17 @@ class _ScoreScreenState extends State<ScoreScreen> {
                                         radius: 25.0,
                                         lineWidth: 5.0,
                                         percent: 1.0,
-                                        center: new Text(
-                                          "100%",
-                                          style: TextStyle(fontSize: 12),
-                                        ),
+                                        center: auditId ==
+                                                feedbackDetails[index]
+                                                    ["auditid"]
+                                            ? Text(
+                                                "100%",
+                                                style: TextStyle(fontSize: 12),
+                                              )
+                                            : Text(
+                                                "0%",
+                                                style: TextStyle(fontSize: 12),
+                                              ),
                                         progressColor: Colors.blue,
                                       ),
                                     )

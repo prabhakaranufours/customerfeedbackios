@@ -1,6 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:signature/signature.dart';
 
 import '../helpers/colors.dart';
+import '../helpers/shared_preferences_helper.dart';
 import '../helpers/utils.dart';
 import '../widgets/app_bar.dart';
 import '../widgets/button.dart';
@@ -24,6 +28,117 @@ class _SubmitScreenState extends State<SubmitScreen> {
   final feedbackRepSignController = TextEditingController();
   final feedbackTakenByController = TextEditingController();
   final feedbackRepController = TextEditingController();
+
+  String sectorId = "";
+  String sbuId = "";
+  String sbuname = "";
+  String auditId = "";
+  String categoryId = "";
+  String companyId = "";
+  String locationId = "";
+  String userId = "";
+  String userName = "";
+
+  final SignatureController _controller = SignatureController(
+    penStrokeWidth: 1,
+    penColor: Colors.red,
+    exportBackgroundColor: Colors.blue,
+    exportPenColor: Colors.black,
+    onDrawStart: () => print('onDrawStart called!'),
+    onDrawEnd: () => print('onDrawEnd called!'),
+  );
+
+  Future<void> exportImage(BuildContext context) async {
+    if (_controller.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('No content')));
+      return;
+    }
+
+    final Uint8List? data = await _controller.toPngBytes();
+    if (data == null) {
+      return;
+    }
+
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+          return Scaffold(
+            appBar: AppBar(),
+            body: Center(
+              child: Container(
+                color: Colors.grey[300],
+                child: Image.memory(data),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  // Future<void> exportSVG(BuildContext context) async {
+  //   if (_controller.isEmpty) {
+  //     ScaffoldMessenger.of(context)
+  //         .showSnackBar(const SnackBar(content: Text('No content')));
+  //     return;
+  //   }
+  //
+  //   final SvgPicture data = _controller.toSVG()!;
+  //
+  //   await Navigator.of(context).push(
+  //     MaterialPageRoute<void>(
+  //       builder: (BuildContext context) {
+  //         return Scaffold(
+  //           appBar: AppBar(),
+  //           body: Center(
+  //             child: Container(color: Colors.grey[300], child: data),
+  //           ),
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller.addListener(() => print('Value changed'));
+  }
+
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    get();
+  }
+
+  //We cannot write setstate in between didchangeDependencies so write seperate
+  void get() async {
+    sbuId = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.SBU_ID, '');
+    sbuname = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.SBU_NAME, '');
+    auditId = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.FEEDBACK_ID, '');
+    categoryId = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.CATEGORY_ID, '');
+    companyId = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.COMPANY_ID, '');
+    locationId = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.LOCATION_ID, '');
+    userId = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.USER_ID, '');
+    userName = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.USER_NAME, '');
+    sectorId = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.SECTOR_ID, '');
+
+    setState(() {});
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +171,6 @@ class _SubmitScreenState extends State<SubmitScreen> {
             Expanded(
               child: SingleChildScrollView(
                 child: Container(
-                  height: MediaQuery.of(context).size.height,
                   padding: EdgeInsets.only(left: 10, right: 10),
                   child: Column(
                     children: [
@@ -273,7 +387,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                       SizedBox(height: 20),
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        height: 50,
+                        height: 90,
                         padding: EdgeInsets.all(2.0),
                         decoration: BoxDecoration(
                             border: Border.all(color: grey),
@@ -283,10 +397,26 @@ class _SubmitScreenState extends State<SubmitScreen> {
                           controller: auditorNameController,
                           prefixIcon: Padding(
                             padding: const EdgeInsets.all(12.0),
-                            child: Image.asset(
-                              'assets/images/username-8.png',
-                              height: 15,
-                              width: 15,
+                            child:
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Flexible(
+                                    child: Image.asset(
+                                      'assets/images/username-8.png',
+                                      height: 15,
+                                      width: 15,
+                                    ),
+                                  ),
+                                  Flexible(
+                                    child: Signature(
+                                      controller: _controller,
+                                      height: 70,
+                                      backgroundColor: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -297,6 +427,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         child: CustomButton(
                           buttonText: 'Submit',
                           onPressed: () => {
+
                             Navigator.pop(context),
                           },
                         ),

@@ -43,6 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
       sbuId = id;
       SharedPreferencesHelper.setPrefString(
           SharedPreferencesHelper.SBU_ID, sbuId);
+      SharedPreferencesHelper.setPrefString(
+          SharedPreferencesHelper.SBU_NAME, sbuText);
     });
   }
 
@@ -53,6 +55,9 @@ class _HomeScreenState extends State<HomeScreen> {
       //Store the companyId in sharedPreference
       SharedPreferencesHelper.setPrefString(
           SharedPreferencesHelper.COMPANY_ID, companyId);
+      SharedPreferencesHelper.setPrefString(
+          SharedPreferencesHelper.COMPANY_NAME, companyText);
+
     });
   }
 
