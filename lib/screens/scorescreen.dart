@@ -27,6 +27,8 @@ class _ScoreScreenState extends State<ScoreScreen> {
   String userId = "";
   String selectedAuditId = "";
 
+  double percentage = 1.35;
+
   List<Map> feedbackDetails = [];
   List<Map> scoreCalculation = [];
 
@@ -81,8 +83,7 @@ class _ScoreScreenState extends State<ScoreScreen> {
     var final_totalScore = totalWeightage / int_weight!;
     final_totalScore = final_totalScore * 100;
 
-
-
+    percentage = (final_totalScore * 3.14) / 100;
   }
 
   @override
@@ -123,7 +124,7 @@ class _ScoreScreenState extends State<ScoreScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(15.0),
-                    child: Circular_arc(),
+                    child: Circular_arc(percentage),
                   ),
                   Container(
                     height: 300,
@@ -197,7 +198,9 @@ class _ScoreScreenState extends State<ScoreScreen> {
 }
 
 class Circular_arc extends StatefulWidget {
-  const Circular_arc({Key? key}) : super(key: key);
+  Circular_arc(this.percentage, {Key? key}) : super(key: key);
+
+  double percentage = 0;
 
   @override
   _Circular_arcState createState() => _Circular_arcState();
@@ -231,17 +234,17 @@ class _Circular_arcState extends State<Circular_arc>
         children: [
           CustomPaint(
             size: Size(300, 300),
-            painter: ProgressArc(3, Colors.black54, true),
+            painter: ProgressArc(null, Colors.black54, true),
           ),
           CustomPaint(
             size: Size(300, 300),
-            painter: ProgressArc(1, Colors.redAccent, false),
+            painter: ProgressArc(widget.percentage, Colors.redAccent, false),
           ),
           Positioned(
             top: 120,
             left: 130,
             child: Text(
-              "${(1 / 3.14 * 100).round()}%",
+              "${(widget.percentage / 3.14 * 100).round()}%",
               style: TextStyle(color: Colors.black, fontSize: 30),
             ),
           )
@@ -253,7 +256,7 @@ class _Circular_arcState extends State<Circular_arc>
 
 class ProgressArc extends CustomPainter {
   bool isBackground;
-  double arc;
+  double? arc;
   Color progressColor;
 
   ProgressArc(this.arc, this.progressColor, this.isBackground);
@@ -262,7 +265,8 @@ class ProgressArc extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final rect = Rect.fromLTRB(0, 0, 300, 300);
     final startAngle = -math.pi;
-    final sweepAngle = -arc != null ? arc : math.pi;
+    // final sweepAngle = -arc != null ? arc : math.pi;
+    final sweepAngle = arc ?? math.pi;
     final userCenter = false;
     final paint = Paint()
       ..strokeCap = StrokeCap.round
