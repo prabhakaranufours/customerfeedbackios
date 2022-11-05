@@ -91,7 +91,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
             sbuid: sbuId,
             companyid: companyId,
             locationid: locationId,
-            sectorid: sectorId))
+            sectorid: sectorId,
+            categorydone: "false"))
         .toList();
 
     setState(() {});
@@ -157,6 +158,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                             buttonText: 'n/a',
                                             onPressed: () {
                                               setState(() {
+                                                qnsDetails[i].categorydone =
+                                                    "false";
                                                 qnsDetails[i].scoreid =
                                                     // '$i' + '6';
                                                     '6';
@@ -169,7 +172,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                         groupValue: qnsDetails[i].scoreid,
                                         onChanged: (val) {
                                           qnsDetails[i].scoreid = val;
-                                          qnsDetails[i].categorydone = '';
+                                          qnsDetails[i].categorydone = "true";
                                           print(jsonEncode(qnsDetails));
 
                                           setState(() {});
