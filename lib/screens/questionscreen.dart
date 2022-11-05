@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:ffi';
+import 'package:customerfeedbackios/models/categorydata.dart';
 import 'package:customerfeedbackios/widgets/MyRadioOptions.dart';
 import 'package:flutter/material.dart';
 import '../database/database_helper.dart';
@@ -15,12 +18,12 @@ class QuestionScreen extends StatefulWidget {
 }
 
 class _QuestionScreenState extends State<QuestionScreen> {
-  final remarksController = TextEditingController();
+  // final remarksController = TextEditingController();
   String? _groupValue;
 
-  ValueChanged<String?> _valueChangedHandler() {
-    return (value) => setState(() => _groupValue = value!);
-  }
+  // ValueChanged<String?> _valueChangedHandler() {
+  //   return (value) => setState(() => _groupValue = value!);
+  // }
 
   Map<String, dynamic> emojigrey = {
     '1': "assets/images/one_grey.png",
@@ -40,24 +43,57 @@ class _QuestionScreenState extends State<QuestionScreen> {
   };
   var temp = ['2', '3', '1', '5', 'n/a', '4'];
 
-  List<Map> qnsDetails = [];
+  List<Categorydata> qnsDetails = [];
   List<Map> scoreDetails = [];
 
-
   @override
-  void didChangeDependencies() async{
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
+  void initState() {
+    // TODO: implement initState
+    super.initState();
     get();
   }
 
-  void get() async{
+  // @override
+  // void didChangeDependencies() async {
+  //   // TODO: implement didChangeDependencies
+  //   super.didChangeDependencies();
+  //   // get();
+  // }
+
+  void get() async {
+    debugPrint('did changes');
+
     var categoryId = await SharedPreferencesHelper.getPrefString(
         SharedPreferencesHelper.CATEGORY_ID, '');
     var auditId = await SharedPreferencesHelper.getPrefString(
         SharedPreferencesHelper.AUDIT_ID, '');
-    qnsDetails = await DatabaseHelper.instance.getQuestion(categoryId);
+    var sbuId = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.SBU_ID, '');
+    var companyId = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.COMPANY_ID, '');
+    var locationId = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.LOCATION_ID, '');
+    var sectorId = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.SECTOR_ID, '');
+
+    var q = await DatabaseHelper.instance.getQuestion(categoryId);
     scoreDetails = await DatabaseHelper.instance.getAnswer(auditId);
+
+    //Map to List
+    qnsDetails = q
+        .map((e) => Categorydata(
+            questionid: e['auditqid'],
+            question: e['auditqname'],
+            remarks: e['description'],
+            categoryid: e['categoryid'],
+            weightage: e['weightageid'],
+            auditid: auditId,
+            sbuid: sbuId,
+            companyid: companyId,
+            locationid: locationId,
+            sectorid: sectorId))
+        .toList();
+
     setState(() {});
   }
 
@@ -96,14 +132,14 @@ class _QuestionScreenState extends State<QuestionScreen> {
               child: ListView.builder(
                 itemCount: qnsDetails.length,
                 shrinkWrap: true,
-                    itemBuilder: (context, i) {
+                itemBuilder: (context, i) {
                   return Card(
                     elevation: 3,
                     child: ListTile(
                       title: Column(
                         children: [
                           Text(
-                            '${qnsDetails[i]["auditqname"]}',
+                            '${qnsDetails[i].question}',
                             style: TextStyle(fontSize: 18),
                           ),
                           SizedBox(
@@ -121,19 +157,28 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                             buttonText: 'n/a',
                                             onPressed: () {
                                               setState(() {
-                                                qnsDetails[i]['selectedScore'] = '$i'+'6';
+                                                qnsDetails[i].scoreid =
+                                                    // '$i' + '6';
+                                                    '6';
                                               });
                                             }))
                                     : MyRadioOption(
-                                        value: '$i${scoreDetails[index]['scorename']}',
-                                        groupValue: qnsDetails[i]['selectedScore'],
-                                        onChanged: (val){
-                                          qnsDetails[i]["selectedScore"]= val;
+                                        value:
+                                            // '$i${scoreDetails[index]['scorename']}',
+                                            '${scoreDetails[index]['scorename']}',
+                                        groupValue: qnsDetails[i].scoreid,
+                                        onChanged: (val) {
+                                          qnsDetails[i].scoreid = val;
+                                          qnsDetails[i].categorydone = '';
+                                          print(jsonEncode(qnsDetails));
+
                                           setState(() {});
                                         },
                                         label: scoreDetails[index]['scorename'],
-                                        text: emojigrey[scoreDetails[index]['scorename']],
-                                        selectedText: emojiSelect[scoreDetails[index]['scorename']],
+                                        text: emojigrey[scoreDetails[index]
+                                            ['scorename']],
+                                        selectedText: emojiSelect[
+                                            scoreDetails[index]['scorename']],
                                       );
                               },
                             ),
@@ -143,7 +188,10 @@ class _QuestionScreenState extends State<QuestionScreen> {
                               Expanded(
                                 flex: 8,
                                 child: TextField(
-                                  controller: remarksController,
+                                  onChanged: (val) {
+                                    qnsDetails[i].remarks = val;
+                                  },
+                                  controller: null,
                                 ),
                               ),
                               Expanded(
@@ -173,8 +221,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
               margin: EdgeInsets.all(5),
               child: CustomButton(
                 buttonText: 'Submit Audit',
-                onPressed: () => {
-                  Navigator.pop(context),
+                onPressed: () {
+                  print(jsonEncode(qnsDetails));
+                  Navigator.pop(context);
                 },
               ),
             ),
@@ -182,14 +231,5 @@ class _QuestionScreenState extends State<QuestionScreen> {
         ),
       ),
     );
-  }
-
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is removed from the
-    // widget tree.
-    remarksController.dispose();
-    super.dispose();
   }
 }

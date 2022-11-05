@@ -311,7 +311,7 @@ class DatabaseHelper {
      ''');
 
     db.execute('''CREATE TABLE $_categoryData(
-      $CatDataID INTEGER PRIMARY KEY,
+      $CatDataID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
       $CatData_CategoryDone TEXT,
       $CatData_Weightage TEXT,
       $CatData_UploadFileName TEXT,
