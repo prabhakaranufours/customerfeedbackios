@@ -45,6 +45,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
   List<Categorydata> qnsDetails = [];
   List<Map> scoreDetails = [];
+  var q;
 
   @override
   void initState() {
@@ -53,12 +54,18 @@ class _QuestionScreenState extends State<QuestionScreen> {
     get();
   }
 
-  // @override
-  // void didChangeDependencies() async {
-  //   // TODO: implement didChangeDependencies
-  //   super.didChangeDependencies();
-  //   // get();
-  // }
+  //Insert in the categoryData table
+  void storeInDb(List<Categorydata> qnsDetails) {
+    var percentage = 0;
+    int s = qnsDetails.where((element) => element.scoreid != 0).toList().length;
+    var categoryId = qnsDetails[0].categoryid;
+    percentage = ((s/qnsDetails.length)/100) as int;
+
+    DatabaseHelper.instance.updatePercentage(categoryId!,percentage.toString());
+
+
+    DatabaseHelper.instance.categoryDataInsert(qnsDetails);
+  }
 
   void get() async {
     debugPrint('did changes');
@@ -76,8 +83,15 @@ class _QuestionScreenState extends State<QuestionScreen> {
     var sectorId = await SharedPreferencesHelper.getPrefString(
         SharedPreferencesHelper.SECTOR_ID, '');
 
-    var q = await DatabaseHelper.instance.getQuestion(categoryId);
-    scoreDetails = await DatabaseHelper.instance.getAnswer(auditId);
+    if(qnsDetails.length > 0){
+      qnsDetails = DatabaseHelper.instance.getCategoryDetails() as List<Categorydata>;
+
+    }else{
+      q = await DatabaseHelper.instance.getQuestion(categoryId);
+      scoreDetails = await DatabaseHelper.instance.getAnswer(auditId);
+    }
+
+
 
     //Map to List
     qnsDetails = q
@@ -226,6 +240,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 buttonText: 'Submit Audit',
                 onPressed: () {
                   print(jsonEncode(qnsDetails));
+
+
+                  storeInDb(qnsDetails);
                   Navigator.pop(context);
                 },
               ),

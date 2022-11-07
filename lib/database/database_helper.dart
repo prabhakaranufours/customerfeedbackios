@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+import '../models/categorydata.dart';
 import '../models/sbudetails.dart';
 import '../models/scoredetails.dart';
 
@@ -450,6 +451,24 @@ class DatabaseHelper {
     return 1;
   }
 
+  //Insert CategoryData Table
+  Future<int> categoryDataInsert(List<Categorydata> qnsDetails) async{
+    Database? db = await instance.database;
+    qnsDetails?.forEach((element) async {
+      await db.insert(_categoryData, element.toJson());
+    });
+    return 1;
+  }
+
+  //Update Categorydata percentage
+  Future<List<Map<String, Object?>>> updatePercentage(String categoryId,String percentage) async{
+    Database? db = await instance.database;
+    return await db.rawQuery("UPDATE $_categoryData SET $CatData_Percentage "
+        "= $percentage Where $CatData_CategoryId = $categoryId");
+
+  }
+
+
   //Get the sbuDetails
   Future<List<Map>> getSBU() async {
     Database? db = await instance.database;
@@ -499,6 +518,14 @@ class DatabaseHelper {
     Database? db = await instance.database;
     return await db.query(_scoreDetails,
         where: "$Score_Scoreauditid  =?", whereArgs: [auditId]);
+  }
+
+  //Get the categoryData details
+  Future<List<Map>> getCategoryDetails() async{
+    Database? db = await instance.database;
+    return await db.query(_categoryData,
+        where: "$Score_Scoreauditid  =?");
+
   }
 
   //Get the scoreCalcualtion
