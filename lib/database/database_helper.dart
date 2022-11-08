@@ -523,8 +523,7 @@ class DatabaseHelper {
   //Get the categoryData details
   Future<List<Map>> getCategoryDetails() async{
     Database? db = await instance.database;
-    return await db.query(_categoryData,
-        where: "$Score_Scoreauditid  =?");
+    return await db.rawQuery("Select * from $_categoryData");
 
   }
 

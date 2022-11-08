@@ -18,7 +18,7 @@ class QuestionScreen extends StatefulWidget {
 }
 
 class _QuestionScreenState extends State<QuestionScreen> {
-  // final remarksController = TextEditingController();
+  final remarksController = TextEditingController();
   String? _groupValue;
 
   // ValueChanged<String?> _valueChangedHandler() {
@@ -59,10 +59,10 @@ class _QuestionScreenState extends State<QuestionScreen> {
     var percentage = 0;
     int s = qnsDetails.where((element) => element.scoreid != 0).toList().length;
     var categoryId = qnsDetails[0].categoryid;
-    percentage = ((s/qnsDetails.length)/100) as int;
+    percentage = (s / qnsDetails.length) ~/ 100;
 
-    DatabaseHelper.instance.updatePercentage(categoryId!,percentage.toString());
-
+    DatabaseHelper.instance
+        .updatePercentage(categoryId!, percentage.toString());
 
     DatabaseHelper.instance.categoryDataInsert(qnsDetails);
   }
@@ -83,32 +83,54 @@ class _QuestionScreenState extends State<QuestionScreen> {
     var sectorId = await SharedPreferencesHelper.getPrefString(
         SharedPreferencesHelper.SECTOR_ID, '');
 
-    if(qnsDetails.length > 0){
-      qnsDetails = DatabaseHelper.instance.getCategoryDetails() as List<Categorydata>;
+    q = await DatabaseHelper.instance.getCategoryDetails();
+    scoreDetails = await DatabaseHelper.instance.getAnswer(auditId);
 
-    }else{
+    if ((q as List).isNotEmpty) {
+      // Update
+      //Map to List
+      qnsDetails = (q as List)
+          .map((e) => Categorydata(
+          percentage: e['Percentage'],
+          sbuid: e['sbuid'],
+          companyid: e['companyid'],
+          locationid: e['locationid'],
+          auditid: e['auditid'],
+          sectorid: e['sectorid'],
+          categoryid: e['categoryid'],
+          questionid: e['questionid'],
+          question: e['question'],
+          scoreid: e['scoreid'],
+          remarks: e['remarks'],
+          image: e['image'],
+          imagename: e['imagename'],
+          uploadfilename: e['uploadfilename'],
+          weightage: e['weightage'],
+          categorydone: e['categorydone']))
+          .toList();
+
+      print(jsonEncode(qnsDetails));
+
+    } else {
+      // New
       q = await DatabaseHelper.instance.getQuestion(categoryId);
-      scoreDetails = await DatabaseHelper.instance.getAnswer(auditId);
+
+      //Map to List
+      qnsDetails = (q as List)
+          .map((e) => Categorydata(
+              questionid: e['auditqid'],
+              question: e['auditqname'],
+              remarks: e['description'],
+              categoryid: e['categoryid'],
+              weightage: e['weightageid'],
+              auditid: auditId,
+              sbuid: sbuId,
+              companyid: companyId,
+              locationid: locationId,
+              sectorid: sectorId,
+              categorydone: "false"))
+          .toList();
     }
-
-
-
-    //Map to List
-    qnsDetails = q
-        .map((e) => Categorydata(
-            questionid: e['auditqid'],
-            question: e['auditqname'],
-            remarks: e['description'],
-            categoryid: e['categoryid'],
-            weightage: e['weightageid'],
-            auditid: auditId,
-            sbuid: sbuId,
-            companyid: companyId,
-            locationid: locationId,
-            sectorid: sectorId,
-            categorydone: "false"))
-        .toList();
-
     setState(() {});
   }
 
@@ -208,7 +230,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                   onChanged: (val) {
                                     qnsDetails[i].remarks = val;
                                   },
-                                  controller: null,
+                                  controller: TextEditingController(text: qnsDetails[i].remarks),
+
                                 ),
                               ),
                               Expanded(
@@ -240,7 +263,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 buttonText: 'Submit Audit',
                 onPressed: () {
                   print(jsonEncode(qnsDetails));
-
 
                   storeInDb(qnsDetails);
                   Navigator.pop(context);
