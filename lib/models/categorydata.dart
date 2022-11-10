@@ -53,7 +53,7 @@ class Categorydata {
   String? locationid;
   String? companyid;
   String? sbuid;
-  num? percentage;
+  String? percentage;
 Categorydata copyWith({  num? id,
   String? categorydone,
   String? weightage,
@@ -70,7 +70,7 @@ Categorydata copyWith({  num? id,
   String? locationid,
   String? companyid,
   String? sbuid,
-  num? percentage,
+  String? percentage,
 }) => Categorydata(  id: id ?? this.id,
   categorydone: categorydone ?? this.categorydone,
   weightage: weightage ?? this.weightage,

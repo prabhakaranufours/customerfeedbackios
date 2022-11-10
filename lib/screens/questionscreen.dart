@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:customerfeedbackios/models/categorydata.dart';
 import 'package:customerfeedbackios/widgets/MyRadioOptions.dart';
 import 'package:flutter/material.dart';
+import 'package:i2iutils/helpers/image_picker_helper.dart';
 import '../database/database_helper.dart';
 import '../helpers/colors.dart';
 import '../helpers/shared_preferences_helper.dart';
@@ -20,6 +21,7 @@ class QuestionScreen extends StatefulWidget {
 class _QuestionScreenState extends State<QuestionScreen> {
   final remarksController = TextEditingController();
   String? _groupValue;
+  bool isUpdate = false;
 
   // ValueChanged<String?> _valueChangedHandler() {
   //   return (value) => setState(() => _groupValue = value!);
@@ -64,7 +66,12 @@ class _QuestionScreenState extends State<QuestionScreen> {
     DatabaseHelper.instance
         .updatePercentage(categoryId!, percentage.toString());
 
-    DatabaseHelper.instance.categoryDataInsert(qnsDetails);
+    if(isUpdate){
+      DatabaseHelper.instance.categoryDataUpdate(qnsDetails);
+    }else{
+      DatabaseHelper.instance.categoryDataInsert(qnsDetails);
+    }
+
   }
 
   void get() async {
@@ -89,6 +96,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
     if ((q as List).isNotEmpty) {
       // Update
       //Map to List
+      isUpdate = true;
       qnsDetails = (q as List)
           .map((e) => Categorydata(
           percentage: e['Percentage'],
@@ -113,6 +121,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
     } else {
       // New
+      isUpdate = false;
       q = await DatabaseHelper.instance.getQuestion(categoryId);
 
       //Map to List
@@ -236,12 +245,24 @@ class _QuestionScreenState extends State<QuestionScreen> {
                               ),
                               Expanded(
                                 flex: 2,
-                                child: Container(
-                                  width: 40,
-                                  height: 40,
-                                  child: ImageIcon(
-                                    AssetImage("assets/images/camera.png"),
-                                    color: Color(0xFF3A5A98),
+                                child: InkWell(
+                                  onTap: () async{
+                                  var image = await getImage(returnType: ImageReturnType.base64);
+                                  if(image != null)
+                                  qnsDetails[i].image = image;
+                                  setState(() {});
+                                  },
+                                  child: Container(
+                                    width: 40,
+                                    height: 40,
+                                    child:
+                                    qnsDetails[i].image == null ?
+                                    ImageIcon(
+                                      AssetImage("assets/images/camera.png"),
+                                      color: Color(0xFF3A5A98),
+                                    ): Image.memory(
+                                      base64Decode(qnsDetails[i].image!)
+                                    ),
                                   ),
                                 ),
                               ),

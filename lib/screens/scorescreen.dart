@@ -58,8 +58,8 @@ class _ScoreScreenState extends State<ScoreScreen> {
 
     //This for get the feedback list
     feedbackDetails = await DatabaseHelper.instance.getFeedback(sectorId);
-    // scoreCalculation = await DatabaseHelper.instance.getScoreCalculation(sbuId, companyId, locationId, auditId);
-    // getScoreCalculte(scoreCalculation);
+    scoreCalculation = await DatabaseHelper.instance.getScoreCalculation(sbuId, companyId, locationId, auditId);
+    getScoreCalculte(scoreCalculation);
     setState(() {});
   }
 
