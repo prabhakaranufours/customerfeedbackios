@@ -130,7 +130,7 @@ class ScoreTable {
   bool? isnotapplicable;
   ScoreTable copyWith({  num? scoreid,
   String? scorename,
-  num? score,
+    num? score,
   num? auditid,
   bool? isdefault,
   bool? isnotapplicable,

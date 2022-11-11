@@ -27,7 +27,7 @@ class _ScoreScreenState extends State<ScoreScreen> {
   String userId = "";
   String selectedAuditId = "";
 
-  double percentage = 1.35;
+  double percentage=0;
 
   List<Map> feedbackDetails = [];
   List<Map> scoreCalculation = [];
@@ -72,18 +72,19 @@ class _ScoreScreenState extends State<ScoreScreen> {
 
     for (int i = 0; i < scoreCalculation.length; i++) {
       var score = scoreCalculation[i]["score"];
-      var weight = scoreCalculation[i]["Weightage"];
-      int_score = (int_score! + score) as int?;
-      int_weight = (int_weight! + weight) as int?;
-      scoreWeight = int_score! * int_weight!;
+      var weight = scoreCalculation[i]["weightage"];
+      int_score = (int_score! + int.parse(score));
+      int_weight = (int_weight! + int.parse(weight));
+      scoreWeight = int_score * int_weight;
       totalWeightage = totalWeightage + scoreWeight;
     }
 
     //Set the value in progress arc bar
     var final_totalScore = totalWeightage / int_weight!;
     final_totalScore = final_totalScore * 100;
-
+    print(final_totalScore);
     percentage = (final_totalScore * 3.14) / 100;
+    print(percentage);
   }
 
   @override

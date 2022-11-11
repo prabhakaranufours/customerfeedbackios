@@ -541,14 +541,12 @@ class DatabaseHelper {
       String locationId,String auditId) async{
     Database? db = await instance.database;
     var tex = "Select $Score_Scorescore,$CatData_Weightage from $_categoryData INNER JOIN $_scoreDetails"
-        " on $_categoryData.$CatData_ScoreId = $_scoreDetails.$Score_Scorescoreid where $_scoreDetails.$Score_Scorescore != -1 AND $_categoryData.$CatData_SbuId  = $sbuId  AND"
+        " on $_categoryData.$CatData_ScoreId = $_scoreDetails.$Score_Scorescore where $_scoreDetails.$Score_Scorescore != -1 AND $_categoryData.$CatData_SbuId  = $sbuId  AND"
         " $_categoryData.$CatData_CompanyId = $companyId AND $_categoryData.$CatData_LocationId = $locationId AND $_categoryData.$CatData_AuditId = $auditId";
     print(tex);
     return await db.rawQuery("Select $Score_Scorescore,$CatData_Weightage from $_categoryData INNER JOIN $_scoreDetails"
-        " on $_categoryData.$CatData_ScoreId = $_scoreDetails.$Score_Scorescoreid where $_scoreDetails.$Score_Scorescore != -1 AND $_categoryData.$CatData_SbuId  = $sbuId  AND"
+        " on $_categoryData.$CatData_ScoreId = $_scoreDetails.$Score_Scorescore where $_scoreDetails.$Score_Scorescore != -1 AND $_categoryData.$CatData_SbuId  = $sbuId  AND"
         " $_categoryData.$CatData_CompanyId = $companyId AND $_categoryData.$CatData_LocationId = $locationId AND $_categoryData.$CatData_AuditId = $auditId");
-
-
   }
 
   //Insert the user table
