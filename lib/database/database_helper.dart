@@ -463,8 +463,9 @@ class DatabaseHelper {
   //Update CategoryData Table
   Future<int> categoryDataUpdate(List<Categorydata> qnsDetails) async{
     Database? db = await instance.database;
-    qnsDetails?.forEach((element) async {
-      await db.update(_categoryData, element.toJson());
+    qnsDetails.forEach((element) async {
+      print(element.toJson());
+      await db.update(_categoryData, element.toJson(),where: 'id = ?',whereArgs: [element.id]);
     });
     return 1;
   }

@@ -66,12 +66,13 @@ class _QuestionScreenState extends State<QuestionScreen> {
     DatabaseHelper.instance
         .updatePercentage(categoryId!, percentage.toString());
 
-    if(isUpdate){
+    print(jsonEncode(qnsDetails));
+
+    if (isUpdate) {
       DatabaseHelper.instance.categoryDataUpdate(qnsDetails);
-    }else{
+    } else {
       DatabaseHelper.instance.categoryDataInsert(qnsDetails);
     }
-
   }
 
   void get() async {
@@ -90,8 +91,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
     var sectorId = await SharedPreferencesHelper.getPrefString(
         SharedPreferencesHelper.SECTOR_ID, '');
 
-    q = await DatabaseHelper.instance.getCategoryDetailsWithParameters(sbuId,
-        companyId, locationId, auditId, sectorId, categoryId);
+    q = await DatabaseHelper.instance.getCategoryDetailsWithParameters(
+        sbuId, companyId, locationId, auditId, sectorId, categoryId);
     scoreDetails = await DatabaseHelper.instance.getAnswer(auditId);
 
     if ((q as List).isNotEmpty) {
@@ -100,26 +101,26 @@ class _QuestionScreenState extends State<QuestionScreen> {
       isUpdate = true;
       qnsDetails = (q as List)
           .map((e) => Categorydata(
-          percentage: e['Percentage'],
-          sbuid: e['sbuid'],
-          companyid: e['companyid'],
-          locationid: e['locationid'],
-          auditid: e['auditid'],
-          sectorid: e['sectorid'],
-          categoryid: e['categoryid'],
-          questionid: e['questionid'],
-          question: e['question'],
-          scoreid: e['scoreid'],
-          remarks: e['remarks'],
-          image: e['image'],
-          imagename: e['imagename'],
-          uploadfilename: e['uploadfilename'],
-          weightage: e['weightage'],
-          categorydone: e['categorydone']))
+              percentage: e['Percentage'],
+              sbuid: e['sbuid'],
+              companyid: e['companyid'],
+              locationid: e['locationid'],
+              auditid: e['auditid'],
+              sectorid: e['sectorid'],
+              categoryid: e['categoryid'],
+              questionid: e['questionid'],
+              question: e['question'],
+              scoreid: e['scoreid'],
+              remarks: e['remarks'],
+              image: e['image'],
+              id: e['id'],
+              imagename: e['imagename'],
+              uploadfilename: e['uploadfilename'],
+              weightage: e['weightage'],
+              categorydone: e['categorydone']))
           .toList();
 
       print(jsonEncode(qnsDetails));
-
     } else {
       // New
       isUpdate = false;
@@ -240,30 +241,31 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                   onChanged: (val) {
                                     qnsDetails[i].remarks = val;
                                   },
-                                  controller: TextEditingController(text: qnsDetails[i].remarks),
-
+                                  controller: TextEditingController(
+                                      text: qnsDetails[i].remarks),
                                 ),
                               ),
                               Expanded(
                                 flex: 2,
                                 child: InkWell(
-                                  onTap: () async{
-                                  var image = await getImage(returnType: ImageReturnType.base64);
-                                  if(image != null)
-                                  qnsDetails[i].image = image;
-                                  setState(() {});
+                                  onTap: () async {
+                                    var image = await getImage(
+                                        returnType: ImageReturnType.base64);
+                                    if (image != null)
+                                      qnsDetails[i].image = image;
+                                    setState(() {});
                                   },
                                   child: Container(
                                     width: 40,
                                     height: 40,
-                                    child:
-                                    qnsDetails[i].image == null ?
-                                    ImageIcon(
-                                      AssetImage("assets/images/camera.png"),
-                                      color: Color(0xFF3A5A98),
-                                    ): Image.memory(
-                                      base64Decode(qnsDetails[i].image!)
-                                    ),
+                                    child: qnsDetails[i].image == null
+                                        ? ImageIcon(
+                                            AssetImage(
+                                                "assets/images/camera.png"),
+                                            color: Color(0xFF3A5A98),
+                                          )
+                                        : Image.memory(
+                                            base64Decode(qnsDetails[i].image!)),
                                   ),
                                 ),
                               ),

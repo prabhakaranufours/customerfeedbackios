@@ -87,9 +87,16 @@ class _ScoreScreenState extends State<ScoreScreen> {
 
     //Set the value in progress arc bar
     var final_totalScore = totalWeightage / int_weight!;
-    final_totalScore = final_totalScore * 100;
-    print(final_totalScore);
-    percentage = (final_totalScore * 3.14) / 100;
+    var convertToPercentage = (final_totalScore / 5.0) * 100;
+
+
+    //Store the total score in shared preference
+    await SharedPreferencesHelper.setPrefString(SharedPreferencesHelper.TOTAL_SCORE,
+        final_totalScore.toString());
+    // final_totalScore = final_totalScore * 100;
+    // print(final_totalScore);
+    // percentage = (final_totalScore * 3.14) / 100;
+    percentage = (convertToPercentage * 3.14) / 100;
     // percentage = 3.14;
     print(percentage);
   }
