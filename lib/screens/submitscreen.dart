@@ -6,6 +6,7 @@ import 'package:signature/signature.dart';
 import '../helpers/colors.dart';
 import '../helpers/shared_preferences_helper.dart';
 import '../helpers/utils.dart';
+import '../models/auditdata.dart';
 import '../widgets/app_bar.dart';
 import '../widgets/button.dart';
 import '../widgets/textfield.dart';
@@ -38,6 +39,9 @@ class _SubmitScreenState extends State<SubmitScreen> {
   String locationId = "";
   String userId = "";
   String userName = "";
+
+  List<Auditdata> auditDataDetails = [];
+
 
   final SignatureController _controller = SignatureController(
     penStrokeWidth: 1,
@@ -100,13 +104,45 @@ class _SubmitScreenState extends State<SubmitScreen> {
   //   );
   // }
 
+  //Insert in the AuditData table
+  void storeInDb(List<Auditdata> auditDetails) {
+    Auditdata(
+      strClientfeedback: "",
+      strAdditionalinformatin: "",
+      clientsign: "",
+      auditsign: "",
+      auditdate: "",
+      userid: "",
+      guid: "",
+      deviceid: "",
+      uploadguid: "",
+      uploadfilename: "",
+      auditeename: "",
+      auditorname: "",
+      oamname: "",
+      sbuname: "",
+      clientperson: "",
+      ssano: "",
+      sitename: "",
+      clientname: "",
+      xmldata: "",
+      categoryid: "",
+      auditid: "",
+      sectorid: "",
+      locationid: "",
+      companyid: "",
+      sbuid: "",
+      observation: "",
+      isfeedback: ""
+    );
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _controller.addListener(() => print('Value changed'));
   }
-
 
   @override
   void didChangeDependencies() {
@@ -138,7 +174,6 @@ class _SubmitScreenState extends State<SubmitScreen> {
 
     setState(() {});
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -181,7 +216,8 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         padding: EdgeInsets.all(2.0),
                         decoration: BoxDecoration(
                             border: Border.all(color: grey),
-                            borderRadius: BorderRadius.all(Radius.circular(10))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
                         child: CustomTextField(
                           placeholder: "CUSTOMER NAME",
                           controller: cNameController,
@@ -202,7 +238,8 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         padding: EdgeInsets.all(2.0),
                         decoration: BoxDecoration(
                             border: Border.all(color: grey),
-                            borderRadius: BorderRadius.all(Radius.circular(10))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
                         child: CustomTextField(
                           placeholder: "AUDITOR NAME",
                           controller: auditorNameController,
@@ -223,7 +260,8 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         padding: EdgeInsets.all(2.0),
                         decoration: BoxDecoration(
                             border: Border.all(color: grey),
-                            borderRadius: BorderRadius.all(Radius.circular(10))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
                         child: CustomTextField(
                           placeholder: "AUDITEE NAME",
                           controller: auditeeNameController,
@@ -244,7 +282,8 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         padding: EdgeInsets.all(2.0),
                         decoration: BoxDecoration(
                             border: Border.all(color: grey),
-                            borderRadius: BorderRadius.all(Radius.circular(10))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
                         child: CustomTextField(
                           placeholder: "SITE NAME",
                           controller: siteNameController,
@@ -265,7 +304,8 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         padding: EdgeInsets.all(2.0),
                         decoration: BoxDecoration(
                             border: Border.all(color: grey),
-                            borderRadius: BorderRadius.all(Radius.circular(10))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
                         child: CustomTextField(
                           placeholder: "CLIENT PERSON NAME",
                           controller: clientPersonNameController,
@@ -286,7 +326,8 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         padding: EdgeInsets.all(2.0),
                         decoration: BoxDecoration(
                             border: Border.all(color: grey),
-                            borderRadius: BorderRadius.all(Radius.circular(10))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
                         child: CustomTextField(
                           placeholder: "SBU NAME",
                           controller: sbuNameController,
@@ -307,7 +348,8 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         padding: EdgeInsets.all(2.0),
                         decoration: BoxDecoration(
                             border: Border.all(color: grey),
-                            borderRadius: BorderRadius.all(Radius.circular(10))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
                         child: CustomTextField(
                           placeholder: "OM / AOM / SUPERVISOR",
                           controller: aomController,
@@ -328,7 +370,8 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         padding: EdgeInsets.all(2.0),
                         decoration: BoxDecoration(
                             border: Border.all(color: grey),
-                            borderRadius: BorderRadius.all(Radius.circular(10))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
                         child: CustomTextField(
                           placeholder: "FEEDBACK TAKENBY",
                           controller: feedbackTakenByController,
@@ -349,7 +392,8 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         padding: EdgeInsets.all(2.0),
                         decoration: BoxDecoration(
                             border: Border.all(color: grey),
-                            borderRadius: BorderRadius.all(Radius.circular(10))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
                         child: CustomTextField(
                           placeholder: "FEEDBACK REP NAME",
                           controller: feedbackRepController,
@@ -370,7 +414,8 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         padding: EdgeInsets.all(2.0),
                         decoration: BoxDecoration(
                             border: Border.all(color: grey),
-                            borderRadius: BorderRadius.all(Radius.circular(10))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
                         child: CustomTextField(
                           placeholder: "FEEDBACK REP SIGN",
                           controller: feedbackRepSignController,
@@ -391,14 +436,14 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         padding: EdgeInsets.all(2.0),
                         decoration: BoxDecoration(
                             border: Border.all(color: grey),
-                            borderRadius: BorderRadius.all(Radius.circular(10))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
                         child: CustomTextField(
                           placeholder: "CLIENT SIGN",
                           controller: auditorNameController,
                           prefixIcon: Padding(
                             padding: const EdgeInsets.all(12.0),
-                            child:
-                            Expanded(
+                            child: Expanded(
                               child: Row(
                                 children: [
                                   Flexible(
@@ -427,7 +472,6 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         child: CustomButton(
                           buttonText: 'Submit',
                           onPressed: () => {
-
                             Navigator.pop(context),
                           },
                         ),
