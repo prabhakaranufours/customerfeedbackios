@@ -71,19 +71,26 @@ class _ScoreScreenState extends State<ScoreScreen> {
     int totalWeightage = 0;
 
     for (int i = 0; i < scoreCalculation.length; i++) {
-      var score = scoreCalculation[i]["score"];
+      // var score = scoreCalculation[i]["score"];
+      var score = scoreCalculation[i]["scoreid"];
       var weight = scoreCalculation[i]["weightage"];
-      int_score = (int_score! + int.parse(score));
-      int_weight = (int_weight! + int.parse(weight));
-      scoreWeight = int_score * int_weight;
-      totalWeightage = totalWeightage + scoreWeight;
+      var temp_score = int.parse(score);
+      int_score = int_score! + temp_score;
+      var temp_weight = int.parse(weight);
+      int_weight = int_weight! + temp_weight;
+      scoreWeight = temp_score * temp_weight;
+      totalWeightage = totalWeightage + scoreWeight!;
     }
+
+    print(int_weight);
+    print(totalWeightage);
 
     //Set the value in progress arc bar
     var final_totalScore = totalWeightage / int_weight!;
     final_totalScore = final_totalScore * 100;
     print(final_totalScore);
     percentage = (final_totalScore * 3.14) / 100;
+    // percentage = 3.14;
     print(percentage);
   }
 

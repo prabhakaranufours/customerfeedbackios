@@ -90,7 +90,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
     var sectorId = await SharedPreferencesHelper.getPrefString(
         SharedPreferencesHelper.SECTOR_ID, '');
 
-    q = await DatabaseHelper.instance.getCategoryDetails();
+    q = await DatabaseHelper.instance.getCategoryDetailsWithParameters(sbuId,
+        companyId, locationId, auditId, sectorId, categoryId);
     scoreDetails = await DatabaseHelper.instance.getAnswer(auditId);
 
     if ((q as List).isNotEmpty) {

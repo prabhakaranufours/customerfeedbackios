@@ -536,6 +536,17 @@ class DatabaseHelper {
 
   }
 
+  //Get the categoryData details with parameters
+  Future<List<Map>> getCategoryDetailsWithParameters(String sbuId,String compId,
+      String locId,String auditId,String sectorId,String catId) async{
+    Database? db = await instance.database;
+    return await db.rawQuery("Select * from $_categoryData where "
+        "$CatData_SbuId = $sbuId AND $CatData_CompanyId = $compId AND "
+        "$CatData_LocationId = $locId AND $CatData_AuditId = $auditId AND "
+        "$CataData_SectorId = $sectorId AND $CatData_CategoryId = $catId");
+
+  }
+
   //Get the scoreCalcualtion
   Future<List<Map>> getScoreCalculation(String sbuId, String companyId,
       String locationId,String auditId) async{
@@ -544,9 +555,12 @@ class DatabaseHelper {
         " on $_categoryData.$CatData_ScoreId = $_scoreDetails.$Score_Scorescore where $_scoreDetails.$Score_Scorescore != -1 AND $_categoryData.$CatData_SbuId  = $sbuId  AND"
         " $_categoryData.$CatData_CompanyId = $companyId AND $_categoryData.$CatData_LocationId = $locationId AND $_categoryData.$CatData_AuditId = $auditId";
     print(tex);
-    return await db.rawQuery("Select $Score_Scorescore,$CatData_Weightage from $_categoryData INNER JOIN $_scoreDetails"
-        " on $_categoryData.$CatData_ScoreId = $_scoreDetails.$Score_Scorescore where $_scoreDetails.$Score_Scorescore != -1 AND $_categoryData.$CatData_SbuId  = $sbuId  AND"
-        " $_categoryData.$CatData_CompanyId = $companyId AND $_categoryData.$CatData_LocationId = $locationId AND $_categoryData.$CatData_AuditId = $auditId");
+    // return await db.rawQuery("Select $Score_Scorescore,$CatData_Weightage from $_categoryData INNER JOIN $_scoreDetails"
+    //     " on $_categoryData.$CatData_ScoreId = $_scoreDetails.$Score_Scorescore where $_scoreDetails.$Score_Scorescore != -1 AND $_categoryData.$CatData_SbuId  = $sbuId  AND"
+    //     " $_categoryData.$CatData_CompanyId = $companyId AND $_categoryData.$CatData_LocationId = $locationId AND $_categoryData.$CatData_AuditId = $auditId");
+
+
+    return await db.rawQuery("Select $CatData_Weightage,$CatData_ScoreId from $_categoryData where $CatData_ScoreId != -1 AND  $CatData_SbuId  = $sbuId  AND $CatData_CompanyId = $companyId AND $CatData_LocationId = $locationId AND $CatData_AuditId = $auditId");
   }
 
   //Insert the user table
