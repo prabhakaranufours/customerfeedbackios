@@ -90,12 +90,12 @@ class ReturnData {
     if (json['Table'] != null) {
       table = [];
       json['Table'].forEach((v) {
-        table?.add(Table.fromJson(v));
+        table?.add(SBUTable.fromJson(v));
       });
     }
   }
-  List<Table>? table;
-ReturnData copyWith({  List<Table>? table,
+  List<SBUTable>? table;
+ReturnData copyWith({  List<SBUTable>? table,
 }) => ReturnData(  table: table ?? this.table,
 );
   Map<String, dynamic> toJson() {
@@ -108,20 +108,20 @@ ReturnData copyWith({  List<Table>? table,
 
 }
 
-class Table {
-  Table({
+class SBUTable {
+  SBUTable({
       this.locationsettingsid, 
       this.locationsettingsname,});
 
-  Table.fromJson(dynamic json) {
+  SBUTable.fromJson(dynamic json) {
     locationsettingsid = json['locationsettingsid'];
     locationsettingsname = json['locationsettingsname'];
   }
   num? locationsettingsid;
   String? locationsettingsname;
-Table copyWith({  num? locationsettingsid,
+  SBUTable copyWith({  num? locationsettingsid,
   String? locationsettingsname,
-}) => Table(  locationsettingsid: locationsettingsid ?? this.locationsettingsid,
+}) => SBUTable(  locationsettingsid: locationsettingsid ?? this.locationsettingsid,
   locationsettingsname: locationsettingsname ?? this.locationsettingsname,
 );
   Map<String, dynamic> toJson() {

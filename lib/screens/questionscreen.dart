@@ -57,26 +57,28 @@ class _QuestionScreenState extends State<QuestionScreen> {
   }
 
   //Insert in the categoryData table
-  void storeInDb(List<Categorydata> qnsDetails) {
+  Future storeInDb(List<Categorydata> qnsDetails) async{
     var percentage = 0;
-    int s = qnsDetails.where((element) => element.scoreid != 0).toList().length;
+    int s = qnsDetails.where((element) => element.scoreid != null).toList().length;
     var categoryId = qnsDetails[0].categoryid;
-    percentage = (s / qnsDetails.length) ~/ 100;
+    percentage = ((s / qnsDetails.length) * 100).toInt();
 
-    DatabaseHelper.instance
-        .updatePercentage(categoryId!, percentage.toString());
+    //This line for include percentage in CategoryData Table
+    qnsDetails.forEach((element) {element.percentage=percentage.toString();});
+    // print(jsonEncode(qnsDetails));
 
-    print(jsonEncode(qnsDetails));
+    //Update the percentage in category Details
+    await DatabaseHelper.instance.categoryDetailsPercentageUpdate(percentage.toString(),categoryId.toString());
 
     if (isUpdate) {
-      DatabaseHelper.instance.categoryDataUpdate(qnsDetails);
+      await DatabaseHelper.instance.categoryDataUpdate(qnsDetails);
     } else {
-      DatabaseHelper.instance.categoryDataInsert(qnsDetails);
+      await DatabaseHelper.instance.categoryDataInsert(qnsDetails);
     }
   }
 
   void get() async {
-    debugPrint('did changes');
+    // debugPrint('did changes');
 
     var categoryId = await SharedPreferencesHelper.getPrefString(
         SharedPreferencesHelper.CATEGORY_ID, '');
@@ -120,7 +122,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
               categorydone: e['categorydone']))
           .toList();
 
-      print(jsonEncode(qnsDetails));
+      // print(jsonEncode(qnsDetails));
     } else {
       // New
       isUpdate = false;
@@ -285,11 +287,11 @@ class _QuestionScreenState extends State<QuestionScreen> {
               margin: EdgeInsets.all(5),
               child: CustomButton(
                 buttonText: 'Submit Audit',
-                onPressed: () {
+                onPressed: ()  async{
                   print(jsonEncode(qnsDetails));
 
-                  storeInDb(qnsDetails);
-                  Navigator.pop(context);
+                  await storeInDb(qnsDetails);
+                  Navigator.pop(context,true);
                 },
               ),
             ),

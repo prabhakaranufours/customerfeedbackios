@@ -386,20 +386,6 @@ class _HomeScreenState extends State<HomeScreen> {
         });
   }
 
-  //This is used for showing the error message
-  static _showMessage(BuildContext context, String msg) {
-    var snackBar = SnackBar(
-      elevation: 0,
-      behavior: SnackBarBehavior.floating,
-      backgroundColor: Colors.transparent,
-      content: AwesomeSnackbarContent(
-        title: 'On Snap!',
-        message: msg,
-        contentType: ContentType.failure,
-      ),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
 
   @override
   void initState() {
@@ -418,13 +404,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   //Get location
   void _getLocation(String compId) async {
-    print('GetLocation');
+    debugPrint('GetLocation');
     locationDetails = await DatabaseHelper.instance.getLocation(compId, sbuId);
   }
 
   //get Feedback
   void _getFeedback(String sectorId) async {
-    print('GetFeedback');
+    debugPrint('GetFeedback');
     feedbackDetails = await DatabaseHelper.instance.getFeedback(sectorId);
   }
 
@@ -685,7 +671,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           }),
                         }
                       else
-                        {_showMessage(context, "Please select all items")}
+                        // {_showMessage(context, "Please select all items")}
+                      {
+                        Utils.showMessage(context, "Please select all items")
+                      }
                     },
                   ),
                 ],

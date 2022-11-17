@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:customerfeedbackios/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -22,16 +24,14 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-
-
   List<Map> categoryDetails = [];
+  var percentage;
 
   @override
   void initState() {
     // TODO: implement initState
     print(widget.data['companyId']);
     print(widget.data['feedbackId']);
-
   }
 
   @override
@@ -42,18 +42,44 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   //We cannot write setstate in between didchangeDependencies so write seperate
-  void get() async{
+  void get() async {
+    // var categoryId = await SharedPreferencesHelper.getPrefString(
+    //     SharedPreferencesHelper.CATEGORY_ID, '');
+    // var auditId = await SharedPreferencesHelper.getPrefString(
+    //     SharedPreferencesHelper.AUDIT_ID, '');
+    // var sbuId = await SharedPreferencesHelper.getPrefString(
+    //     SharedPreferencesHelper.SBU_ID, '');
+    // var companyId = await SharedPreferencesHelper.getPrefString(
+    //     SharedPreferencesHelper.COMPANY_ID, '');
+    // var locationId = await SharedPreferencesHelper.getPrefString(
+    //     SharedPreferencesHelper.LOCATION_ID, '');
+    // var sectorId = await SharedPreferencesHelper.getPrefString(
+    //     SharedPreferencesHelper.SECTOR_ID, '');
+
+    //Get the percentage of category from categoryData table
+    // percentage = await DatabaseHelper.instance.getCategoryDetailsPercentage(
+    //     sbuId, companyId, locationId, auditId, sectorId, categoryId);
+
+
     categoryDetails = await DatabaseHelper.instance
         .getCategory(widget.data['companyId']!, widget.data['feedbackId']!);
-    await SharedPreferencesHelper.setPrefString(SharedPreferencesHelper.AUDIT_ID,
-        widget.data['feedbackId']!);
+
+    debugPrint(jsonEncode(categoryDetails));
+
+    await SharedPreferencesHelper.setPrefString(
+        SharedPreferencesHelper.AUDIT_ID, widget.data['feedbackId']!);
     setState(() {});
   }
 
-  void nextPage(String categoryId) async{
-    await SharedPreferencesHelper.setPrefString(SharedPreferencesHelper.CATEGORY_ID,
-        categoryId);
-    Navigator.pushNamed(context, '/question');
+  void nextPage(String categoryId) async {
+    await SharedPreferencesHelper.setPrefString(
+        SharedPreferencesHelper.CATEGORY_ID, categoryId);
+    //After close the qns page it returns the result true
+    var result = await Navigator.pushNamed(context, '/question');
+    debugPrint('result is a $result');
+    if(result != null && result == true){
+      get();
+    }
   }
 
   @override
@@ -95,40 +121,42 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 itemCount: categoryDetails.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       nextPage(categoryDetails[index]["categoryid"]);
                     },
                     child: Card(
-                      elevation: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width:300,
-                              child: Text(
-                                '${categoryDetails[index]["categoryname"]}',
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                softWrap: false,
-                                style: TextStyle(fontSize: 18),
+                        elevation: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: 300,
+                                child: Text(
+                                  '${categoryDetails[index]["categoryname"]}',
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  softWrap: false,
+                                  style: TextStyle(fontSize: 18),
+                                ),
                               ),
-                            ),
-                            Container(
-                              height: 50,
-                              child: CircularPercentIndicator(
-                                radius: 25.0,
-                                lineWidth: 5.0,
-                                percent: 1.0,
-                                center: new Text("100%",style: TextStyle(fontSize: 12),),
-                                progressColor: Colors.blue,
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    ),
+                              Container(
+                                height: 50,
+                                child: CircularPercentIndicator(
+                                  radius: 25.0,
+                                  lineWidth: 5.0,
+                                  percent:  int.parse(categoryDetails[index]["percentage"] ?? "0") / 100,
+                                  center: new Text(
+                                    categoryDetails[index]["percentage"] ?? "0",
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                  progressColor: Colors.blue,
+                                ),
+                              )
+                            ],
+                          ),
+                        )),
                   );
                 },
               ),

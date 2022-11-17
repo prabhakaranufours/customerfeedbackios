@@ -112,7 +112,9 @@ class CategoryTable {
       this.auditid, 
       this.categoryname, 
       this.emailid, 
-      this.cdate,});
+      this.cdate,
+      this.percentage,
+  });
 
   CategoryTable.fromJson(dynamic json) {
     categoryid = json['categoryid'];
@@ -121,6 +123,7 @@ class CategoryTable {
     categoryname = json['categoryname'];
     emailid = json['emailid'];
     cdate = json['cdate'];
+    percentage = json['percentage'];
   }
   num? categoryid;
   num? companyid;
@@ -128,18 +131,21 @@ class CategoryTable {
   String? categoryname;
   String? emailid;
   String? cdate;
+  String? percentage;
 CategoryTable copyWith({  num? categoryid,
   num? companyid,
   num? auditid,
   String? categoryname,
   String? emailid,
   String? cdate,
+  String? percentage,
 }) => CategoryTable(  categoryid: categoryid ?? this.categoryid,
   companyid: companyid ?? this.companyid,
   auditid: auditid ?? this.auditid,
   categoryname: categoryname ?? this.categoryname,
   emailid: emailid ?? this.emailid,
   cdate: cdate ?? this.cdate,
+  percentage: percentage ?? this.percentage,
 );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -149,6 +155,7 @@ CategoryTable copyWith({  num? categoryid,
     map['categoryname'] = categoryname;
     map['emailid'] = emailid;
     map['cdate'] = cdate;
+    map['percentage'] = percentage;
     return map;
   }
 

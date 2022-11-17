@@ -111,7 +111,7 @@ Future<void> createFol(String folderName) async {
   } else if (Platform.isAndroid) {
     var androidInfo = await DeviceInfoPlugin().androidInfo;
     var release = androidInfo.version.sdkInt;
-    print('Android $release');
+    // print('Android $release');
 
     if (release >= 30) {
       createFolderInAppDocDir(folderName);
@@ -119,9 +119,9 @@ Future<void> createFol(String folderName) async {
       if (await Permission.storage.request().isGranted) {
         path = Directory("storage/emulated/0/$folderName");
         if ((await path.exists())) {
-          print("exist");
+          debugPrint("exist");
         } else {
-          print("not exist");
+          debugPrint("not exist");
           path.create();
         }
       }
@@ -249,12 +249,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             CustomButton(
                               buttonText: 'LOGIN',
                               onPressed: () => {
-
                                 if(emailController.text != "" && passwordController.text!= ""){
                                   api(context, emailController.text,
                                       passwordController.text),
                                 }else{
                                   //Show the alert dialog for enter details
+                                  Utils.showMessage(context, "Please Enter the fields")
                                 }
                               },
                             ),

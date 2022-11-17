@@ -6,6 +6,7 @@ import 'package:customerfeedbackios/models/companydetails.dart';
 import 'package:customerfeedbackios/models/locationdetails.dart';
 import 'package:customerfeedbackios/models/loginresponse.dart';
 import 'package:customerfeedbackios/models/questiondetails.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -101,6 +102,7 @@ class DatabaseHelper {
   static const Cat_Categoryname = 'categoryname';
   static const Cat_Emailid = 'emailid';
   static const Cat_Cdate = 'cdate';
+  static const Cat_Percentage = 'percentage';
 
   //Question Table
   static const QuesID = 'id';
@@ -285,7 +287,8 @@ class DatabaseHelper {
       $Cat_Auditid TEXT,
       $Cat_Categoryname TEXT,
       $Cat_Emailid TEXT,
-      $Cat_Cdate TEXT)
+      $Cat_Cdate TEXT,
+      $Cat_Percentage TEXT)
       ''');
 
     db.execute('''CREATE TABLE $_questionDetails(
@@ -389,7 +392,7 @@ class DatabaseHelper {
   }
 
   //Insert the SBU Table
-  Future<int> sbuInsert(List<Table>? sbuDetails) async {
+  Future<int> sbuInsert(List<SBUTable>? sbuDetails) async {
     Database? db = await instance.database;
     sbuDetails?.forEach((element) async {
       await db.insert(_sbuDetails, element.toJson());
@@ -470,11 +473,22 @@ class DatabaseHelper {
     return 1;
   }
 
+  //Update Category Details Percentage
+  Future<int> categoryDetailsPercentageUpdate(String percentage,String categoryId) async{
+    Database? db = await instance.database;
+    await db.update(_categoryDetails, {Cat_Percentage:percentage},where: 'categoryid = ?',whereArgs: [categoryId]);
+    return 1;
+  }
+
   //Update Categorydata percentage
   Future<List<Map<String, Object?>>> updatePercentage(String categoryId,String percentage) async{
     Database? db = await instance.database;
+    debugPrint("UPDATE $_categoryData SET $CatData_Percentage "
+        "= $percentage Where $CatData_CategoryId = $categoryId");
     return await db.rawQuery("UPDATE $_categoryData SET $CatData_Percentage "
         "= $percentage Where $CatData_CategoryId = $categoryId");
+
+    // return await db.update(_categoryData,percentage,where: 'categoryid = ?',whereArgs: categoryId);
 
   }
 
@@ -563,6 +577,18 @@ class DatabaseHelper {
 
     return await db.rawQuery("Select $CatData_Weightage,$CatData_ScoreId from $_categoryData where $CatData_ScoreId != -1 AND  $CatData_SbuId  = $sbuId  AND $CatData_CompanyId = $companyId AND $CatData_LocationId = $locationId AND $CatData_AuditId = $auditId");
   }
+
+  //Get the category details individual category percentage
+  Future<List<Map>> getCategoryDetailsPercentage(String sbuId,String compId,
+      String locId,String auditId,String sectorId,String catId) async{
+    Database? db = await instance.database;
+    return await db.rawQuery("Select $CatData_Percentage from $_categoryData where "
+        "$CatData_SbuId = $sbuId AND $CatData_CompanyId = $compId AND "
+        "$CatData_LocationId = $locId AND $CatData_AuditId = $auditId AND "
+        "$CataData_SectorId = $sectorId AND $CatData_CategoryId = $catId");
+
+  }
+
 
   //Insert the user table
   Future<int> insert(Map<String, dynamic> row) async {
