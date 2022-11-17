@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:toast/toast.dart';
@@ -25,21 +26,27 @@ class LoginScreen extends StatefulWidget {
 }
 
 //Get LoginDetails
-void api(BuildContext context) async {
+void api(BuildContext context,String emailId,String pwd) async {
   // Utils.showLoader(context);
-  // var email = await SharedPreferencesHelper.getPrefString(
-  //     SharedPreferencesHelper.USER_EMAIL, '');
-  var email = 'chitra.murali@i2isoftwares.com';
-  var password = 'Password0';
-  Loginresponse? response = await CustomerFeedbackApiCall().checkLogin(email, password);
-  if(response != null) {
+  var email = emailId;
+  var password = pwd;
+  Loginresponse? response =
+      await CustomerFeedbackApiCall().checkLogin(email, password);
+  if (response != null) {
     Utils.showToastMsg(response.message);
     if (response.status) {
       // _showConfirmationDialog(context, "\nLogin Successfully");
       DatabaseHelper.instance.userinsert(response.returnData.userDetails);
-      await SharedPreferencesHelper.setPrefString(SharedPreferencesHelper.USER_ID,
+      await SharedPreferencesHelper.setPrefString(
+          SharedPreferencesHelper.USER_EMAIL,
+          response.returnData.userDetails![0].emailID.toString());
+      await SharedPreferencesHelper.setPrefString(
+          SharedPreferencesHelper.USER_PASSWORD, password);
+      await SharedPreferencesHelper.setPrefString(
+          SharedPreferencesHelper.USER_ID,
           response.returnData.userDetails![0].userID.toString());
-      await SharedPreferencesHelper.setPrefString(SharedPreferencesHelper.USER_NAME,
+      await SharedPreferencesHelper.setPrefString(
+          SharedPreferencesHelper.USER_NAME,
           response.returnData.userDetails![0].userFirstName.toString());
 
       Navigator.pushReplacementNamed(context, '/download');
@@ -132,6 +139,18 @@ class _LoginScreenState extends State<LoginScreen> {
     // TODO: implement initState
     super.initState();
     ToastContext().init(context);
+    get();
+  }
+
+
+  get() async{
+    var email = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.USER_EMAIL, '');
+    var pwd = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.USER_PASSWORD, '');
+
+    emailController.text = email;
+    passwordController.text = pwd;
     createFol("CustomerFeedback_IOS");
   }
 
@@ -230,8 +249,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             CustomButton(
                               buttonText: 'LOGIN',
                               onPressed: () => {
-                                api(context),
 
+                                if(emailController.text != "" && passwordController.text!= ""){
+                                  api(context, emailController.text,
+                                      passwordController.text),
+                                }else{
+                                  //Show the alert dialog for enter details
+                                }
                               },
                             ),
                             SizedBox(height: 10),
@@ -283,5 +307,13 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 }
