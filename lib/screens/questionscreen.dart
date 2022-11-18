@@ -4,6 +4,7 @@ import 'package:customerfeedbackios/models/categorydata.dart';
 import 'package:customerfeedbackios/widgets/MyRadioOptions.dart';
 import 'package:flutter/material.dart';
 import 'package:i2iutils/helpers/image_picker_helper.dart';
+import 'package:i2iutils/widgets/boxedittext.dart';
 import '../database/database_helper.dart';
 import '../helpers/colors.dart';
 import '../helpers/shared_preferences_helper.dart';
@@ -20,12 +21,8 @@ class QuestionScreen extends StatefulWidget {
 
 class _QuestionScreenState extends State<QuestionScreen> {
   final remarksController = TextEditingController();
-  String? _groupValue;
-  bool isUpdate = false;
 
-  // ValueChanged<String?> _valueChangedHandler() {
-  //   return (value) => setState(() => _groupValue = value!);
-  // }
+  bool isUpdate = false;
 
   Map<String, dynamic> emojigrey = {
     '1': "assets/images/one_grey.png",
@@ -33,7 +30,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
     '3': "assets/images/three_grey.png",
     '4': "assets/images/four_grey.png",
     '5': "assets/images/five_grey.png",
-    'n/a': "assets/images/five_grey.png"
+    'n/a': "assets/images/na_unselect.png"
   };
   Map<String, dynamic> emojiSelect = {
     '1': "assets/images/one.png",
@@ -41,9 +38,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
     '3': "assets/images/three.png",
     '4': "assets/images/four.png",
     '5': "assets/images/five.png",
-    'n/a': "assets/images/five.png"
+    'n/a': "assets/images/na.png"
   };
-  var temp = ['2', '3', '1', '5', 'n/a', '4'];
 
   List<Categorydata> qnsDetails = [];
   List<Map> scoreDetails = [];
@@ -57,18 +53,22 @@ class _QuestionScreenState extends State<QuestionScreen> {
   }
 
   //Insert in the categoryData table
-  Future storeInDb(List<Categorydata> qnsDetails) async{
+  Future storeInDb(List<Categorydata> qnsDetails) async {
     var percentage = 0;
-    int s = qnsDetails.where((element) => element.scoreid != null).toList().length;
+    int s =
+        qnsDetails.where((element) => element.scoreid != null).toList().length;
     var categoryId = qnsDetails[0].categoryid;
     percentage = ((s / qnsDetails.length) * 100).toInt();
 
     //This line for include percentage in CategoryData Table
-    qnsDetails.forEach((element) {element.percentage=percentage.toString();});
+    qnsDetails.forEach((element) {
+      element.percentage = percentage.toString();
+    });
     // print(jsonEncode(qnsDetails));
 
     //Update the percentage in category Details
-    await DatabaseHelper.instance.categoryDetailsPercentageUpdate(percentage.toString(),categoryId.toString());
+    await DatabaseHelper.instance.categoryDetailsPercentageUpdate(
+        percentage.toString(), categoryId.toString());
 
     if (isUpdate) {
       await DatabaseHelper.instance.categoryDataUpdate(qnsDetails);
@@ -149,97 +149,73 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: customAppBar(
-          context,
-          title: Text(
-            'Questions',
-            style: Theme.of(context)
-                .textTheme
-                .bodyText1!
-                .apply(color: lightGrey)
-                .copyWith(fontWeight: FontWeight.bold),
-          ),
-          backgroundColor: primaryDark,
-          leading: GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(17.0),
-              child: Image.asset(
-                'assets/images/back arrow-8.png',
-              ),
-            ),
-          ),
-        ),
-        body: Column(
-          children: [
-            Utils.subHeader(
-                context, 'Bangalore', 'Audit > Category > Question'),
-            Expanded(
-              child: ListView.builder(
-                itemCount: qnsDetails.length,
-                shrinkWrap: true,
-                itemBuilder: (context, i) {
-                  return Card(
+    return Scaffold(
+      appBar: customAppBar(
+        context,
+        title: Text('Questions', style: TextStyle(fontWeight: FontWeight.bold)),
+        backgroundColor: primaryDark,
+      ),
+      body: Column(
+        children: [
+          Utils.subHeader(context, 'Bangalore', 'Audit > Category > Question'),
+          Expanded(
+            child: ListView.builder(
+              itemCount: qnsDetails.length,
+              shrinkWrap: true,
+              itemBuilder: (context, i) {
+                return Card(
                     elevation: 3,
-                    child: ListTile(
-                      title: Column(
+                    margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             '${qnsDetails[i].question}',
-                            style: TextStyle(fontSize: 18),
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w600),
                           ),
-                          SizedBox(
-                            height: 80,
-                            child: ListView.builder(
-                              itemCount: scoreDetails.length,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                return index == 5
-                                    ? Container(
-                                        height: 30,
-                                        width: 70,
-                                        margin: EdgeInsets.all(10),
-                                        child: CustomButton(
-                                            buttonText: 'n/a',
-                                            onPressed: () {
-                                              setState(() {
-                                                qnsDetails[i].categorydone =
-                                                    "false";
-                                                qnsDetails[i].scoreid =
-                                                    // '$i' + '6';
-                                                    '6';
-                                              });
-                                            }))
-                                    : MyRadioOption(
-                                        value:
-                                            // '$i${scoreDetails[index]['scorename']}',
-                                            '${scoreDetails[index]['scorename']}',
-                                        groupValue: qnsDetails[i].scoreid,
-                                        onChanged: (val) {
-                                          qnsDetails[i].scoreid = val;
-                                          qnsDetails[i].categorydone = "true";
-                                          print(jsonEncode(qnsDetails));
-
-                                          setState(() {});
-                                        },
-                                        label: scoreDetails[index]['scorename'],
-                                        text: emojigrey[scoreDetails[index]
-                                            ['scorename']],
-                                        selectedText: emojiSelect[
-                                            scoreDetails[index]['scorename']],
-                                      );
-                              },
-                            ),
+                          const SizedBox(
+                            height: 16,
                           ),
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: List.generate(
+                                scoreDetails.length,
+                                (index) => MyRadioOption(
+                                      value:
+                                          // '$i${scoreDetails[index]['scorename']}',
+                                          '${scoreDetails[index]['scorename']}',
+                                      groupValue: qnsDetails[i].scoreid,
+                                      onChanged: (val) {
+                                        qnsDetails[i].scoreid = val;
+                                        qnsDetails[i].categorydone =
+                                            index != 5 ? "true" : "false";
+                                        print(jsonEncode(qnsDetails));
+
+                                        setState(() {});
+                                      },
+                                      label: scoreDetails[index]['scorename'],
+                                      text: emojigrey[scoreDetails[index]
+                                              ['scorename']
+                                          .toString()
+                                          .toLowerCase()],
+                                      selectedText: emojiSelect[
+                                          scoreDetails[index]['scorename']
+                                              .toString()
+                                              .toLowerCase()],
+                                    )),
+                          ),
+                          const SizedBox(
+                            height: 24,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
-                                flex: 8,
-                                child: TextField(
+                                child: BoxEditText(
+                                  placeholder: 'Remarks',
                                   onChanged: (val) {
                                     qnsDetails[i].remarks = val;
                                   },
@@ -247,56 +223,54 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                       text: qnsDetails[i].remarks),
                                 ),
                               ),
-                              Expanded(
-                                flex: 2,
-                                child: InkWell(
-                                  onTap: () async {
-                                    var image = await getImage(
-                                        returnType: ImageReturnType.base64);
-                                    if (image != null)
-                                      qnsDetails[i].image = image;
-                                    setState(() {});
-                                  },
-                                  child: Container(
-                                    width: 40,
-                                    height: 40,
-                                    child: qnsDetails[i].image == null
-                                        ? ImageIcon(
-                                            AssetImage(
-                                                "assets/images/camera.png"),
-                                            color: Color(0xFF3A5A98),
-                                          )
-                                        : Image.memory(
-                                            base64Decode(qnsDetails[i].image!)),
-                                  ),
+                              const SizedBox(
+                                width: 12,
+                              ),
+                              InkWell(
+                                onTap: () async {
+                                  var image = await getImage(
+                                    context,
+                                      canDrawDateTime: true,
+                                      returnType: ImageReturnType.base64);
+                                  if (image != null)
+                                    qnsDetails[i].image = image;
+                                  setState(() {});
+                                },
+                                child: Container(
+                                  width: 40,
+                                  height: 40,
+                                  child: qnsDetails[i].image == null
+                                      ? ImageIcon(
+                                          AssetImage(
+                                              "assets/images/camera.png"),
+                                          color: Color(0xFF3A5A98),
+                                        )
+                                      : Image.memory(
+                                          base64Decode(qnsDetails[i].image!)),
                                 ),
                               ),
                             ],
                           ),
                           const SizedBox(
-                            height: 5,
+                            height: 12,
                           )
                         ],
                       ),
-                    ),
-                  );
-                },
-              ),
+                    ));
+              },
             ),
-            Container(
-              margin: EdgeInsets.all(5),
-              child: CustomButton(
-                buttonText: 'Submit Audit',
-                onPressed: ()  async{
-                  print(jsonEncode(qnsDetails));
+          ),
+          CustomButton(
+            buttonText: 'Submit Audit',
+            margin: EdgeInsets.only(left: 10, right: 10, bottom: 30),
+            onPressed: () async {
+              print(jsonEncode(qnsDetails));
 
-                  await storeInDb(qnsDetails);
-                  Navigator.pop(context,true);
-                },
-              ),
-            ),
-          ],
-        ),
+              await storeInDb(qnsDetails);
+              Navigator.pop(context, true);
+            },
+          ),
+        ],
       ),
     );
   }

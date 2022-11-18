@@ -10,6 +10,7 @@ import '../models/auditdata.dart';
 import '../widgets/app_bar.dart';
 import '../widgets/button.dart';
 import '../widgets/textfield.dart';
+import 'package:i2iutils/widgets/boxedittext.dart';
 
 class SubmitScreen extends StatefulWidget {
   const SubmitScreen({Key? key}) : super(key: key);
@@ -29,6 +30,9 @@ class _SubmitScreenState extends State<SubmitScreen> {
   final feedbackRepSignController = TextEditingController();
   final feedbackTakenByController = TextEditingController();
   final feedbackRepController = TextEditingController();
+
+  final signController=SignatureController();
+  final repSignController=SignatureController();
 
   String sectorId = "";
   String sbuId = "";
@@ -181,312 +185,232 @@ class _SubmitScreenState extends State<SubmitScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: customAppBar(
-          context,
-          title: Text(
-            'Submit',
-            style: Theme.of(context)
-                .textTheme
-                .bodyText1!
-                .apply(color: lightGrey)
-                .copyWith(fontWeight: FontWeight.bold),
-          ),
-          backgroundColor: primaryDark,
-          leading: GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(17.0),
-              child: Image.asset('assets/images/back arrow-8.png'),
-            ),
-          ),
+    return Scaffold(
+      appBar: customAppBar(
+        context,
+        title: Text(
+          'Submit',
+          style: TextStyle(fontWeight: FontWeight.bold)
         ),
-        body: Column(
-          children: [
-            Utils.subHeader(context, 'Chitra', ''),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.only(left: 10, right: 10),
-                  child: Column(
-                    children: [
-                      SizedBox(height: 30),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 50,
-                        padding: EdgeInsets.all(2.0),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: grey),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        child: CustomTextField(
-                          placeholder: "CUSTOMER NAME",
-                          controller: cNameController,
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Image.asset(
-                              'assets/images/username-8.png',
-                              height: 15,
-                              width: 15,
-                            ),
-                          ),
+        backgroundColor: primaryDark,
+      ),
+      body: Column(
+        children: [
+          Utils.subHeader(context, 'Chitra', ''),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  children: [
+                    SizedBox(height: 10),
+                    BoxEditText(placeholder: 'CUSTOMER NAME',
+                      controller: cNameController,
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Image.asset(
+                          'assets/images/username-8.png',
+                          height: 15,
+                          width: 15,
                         ),
                       ),
-                      SizedBox(height: 20),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 50,
-                        padding: EdgeInsets.all(2.0),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: grey),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        child: CustomTextField(
-                          placeholder: "AUDITOR NAME",
-                          controller: auditorNameController,
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Image.asset(
-                              'assets/images/username-8.png',
-                              height: 15,
-                              width: 15,
-                            ),
-                          ),
+                    ),
+
+                    SizedBox(height: 20),
+                    BoxEditText(placeholder: 'AUDITOR NAME',
+                      controller: auditorNameController,
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Image.asset(
+                          'assets/images/username-8.png',
+                          height: 15,
+                          width: 15,
                         ),
                       ),
-                      SizedBox(height: 20),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 50,
-                        padding: EdgeInsets.all(2.0),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: grey),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        child: CustomTextField(
-                          placeholder: "AUDITEE NAME",
-                          controller: auditeeNameController,
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Image.asset(
-                              'assets/images/username-8.png',
-                              height: 15,
-                              width: 15,
-                            ),
-                          ),
+                    ),
+
+                    SizedBox(height: 20),
+                    BoxEditText(placeholder: 'AUDITEE NAME',
+                      controller: auditeeNameController,
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Image.asset(
+                          'assets/images/username-8.png',
+                          height: 15,
+                          width: 15,
                         ),
                       ),
-                      SizedBox(height: 20),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 50,
-                        padding: EdgeInsets.all(2.0),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: grey),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        child: CustomTextField(
-                          placeholder: "SITE NAME",
-                          controller: siteNameController,
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Image.asset(
-                              'assets/images/username-8.png',
-                              height: 15,
-                              width: 15,
-                            ),
-                          ),
+                    ),
+
+                    SizedBox(height: 20),
+                    BoxEditText(placeholder: 'SITE NAME',
+                      controller: siteNameController,
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Image.asset(
+                          'assets/images/username-8.png',
+                          height: 15,
+                          width: 15,
                         ),
                       ),
-                      SizedBox(height: 20),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 50,
-                        padding: EdgeInsets.all(2.0),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: grey),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        child: CustomTextField(
-                          placeholder: "CLIENT PERSON NAME",
-                          controller: clientPersonNameController,
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Image.asset(
-                              'assets/images/username-8.png',
-                              height: 15,
-                              width: 15,
-                            ),
-                          ),
+                    ),
+
+
+                    SizedBox(height: 20),
+                    BoxEditText(placeholder: 'CLIENT PERSON NAME',
+                      controller: clientPersonNameController,
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Image.asset(
+                          'assets/images/username-8.png',
+                          height: 15,
+                          width: 15,
                         ),
                       ),
-                      SizedBox(height: 20),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 50,
-                        padding: EdgeInsets.all(2.0),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: grey),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        child: CustomTextField(
-                          placeholder: "SBU NAME",
-                          controller: sbuNameController,
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Image.asset(
-                              'assets/images/username-8.png',
-                              height: 15,
-                              width: 15,
-                            ),
-                          ),
+                    ),
+
+                    SizedBox(height: 20),
+                    BoxEditText(placeholder: 'SBU NAME',
+                      controller: sbuNameController,
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Image.asset(
+                          'assets/images/username-8.png',
+                          height: 15,
+                          width: 15,
                         ),
                       ),
-                      SizedBox(height: 20),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 50,
-                        padding: EdgeInsets.all(2.0),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: grey),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        child: CustomTextField(
-                          placeholder: "OM / AOM / SUPERVISOR",
-                          controller: aomController,
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Image.asset(
-                              'assets/images/username-8.png',
-                              height: 15,
-                              width: 15,
-                            ),
-                          ),
+                    ),
+
+                    SizedBox(height: 20),
+                    BoxEditText(placeholder: 'OM / AOM / SUPERVISOR',
+                      controller: aomController,
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Image.asset(
+                          'assets/images/username-8.png',
+                          height: 15,
+                          width: 15,
                         ),
                       ),
-                      SizedBox(height: 20),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 50,
-                        padding: EdgeInsets.all(2.0),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: grey),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        child: CustomTextField(
-                          placeholder: "FEEDBACK TAKENBY",
-                          controller: feedbackTakenByController,
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Image.asset(
-                              'assets/images/username-8.png',
-                              height: 15,
-                              width: 15,
-                            ),
-                          ),
+                    ),
+
+                    SizedBox(height: 20),
+                    BoxEditText(placeholder: 'FEEDBACK TAKENBY',
+                      controller: feedbackTakenByController,
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Image.asset(
+                          'assets/images/username-8.png',
+                          height: 15,
+                          width: 15,
                         ),
                       ),
-                      SizedBox(height: 20),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 50,
-                        padding: EdgeInsets.all(2.0),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: grey),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        child: CustomTextField(
-                          placeholder: "FEEDBACK REP NAME",
-                          controller: feedbackRepController,
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Image.asset(
-                              'assets/images/username-8.png',
-                              height: 15,
-                              width: 15,
-                            ),
-                          ),
+                    ),
+
+                    SizedBox(height: 20),
+                    BoxEditText(placeholder: 'FEEDBACK REP NAME',
+                      controller: feedbackRepController,
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Image.asset(
+                          'assets/images/username-8.png',
+                          height: 15,
+                          width: 15,
                         ),
                       ),
-                      SizedBox(height: 20),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 50,
-                        padding: EdgeInsets.all(2.0),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: grey),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        child: CustomTextField(
-                          placeholder: "FEEDBACK REP SIGN",
-                          controller: feedbackRepSignController,
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Image.asset(
-                              'assets/images/username-8.png',
-                              height: 15,
-                              width: 15,
-                            ),
-                          ),
+                    ),
+
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "REP Signature",
                         ),
-                      ),
-                      SizedBox(height: 20),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 90,
-                        padding: EdgeInsets.all(2.0),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: grey),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        child: CustomTextField(
-                          placeholder: "CLIENT SIGN",
-                          controller: auditorNameController,
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Expanded(
-                              child: Row(
-                                children: [
-                                  Flexible(
-                                    child: Image.asset(
-                                      'assets/images/username-8.png',
-                                      height: 15,
-                                      width: 15,
-                                    ),
-                                  ),
-                                  Flexible(
-                                    child: Signature(
-                                      controller: _controller,
-                                      height: 70,
-                                      backgroundColor: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      Container(
-                        margin: EdgeInsets.all(5),
-                        child: CustomButton(
-                          buttonText: 'Submit',
-                          onPressed: () => {
-                            Navigator.pop(context),
+                        InkWell(
+                          onTap: () {
+                            repSignController.clear();
                           },
+                          child: Text(
+                            "Clear Sign",
+                            style: TextStyle(
+                                color: primaryDark,
+                                decoration: TextDecoration.underline),
+                          ),
                         ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: primaryDark),
+                          borderRadius: BorderRadius.circular(8)
                       ),
-                    ],
-                  ),
+                      height: 160,
+                      child: Signature(
+                        controller: repSignController,
+                        height: 150,
+                        backgroundColor: Colors.white,
+                      ),
+                    ),
+
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Client Signature",
+                        ),
+                        InkWell(
+                          onTap: () {
+                            signController.clear();
+                          },
+                          child: Text(
+                            "Clear Sign",
+                            style: TextStyle(
+                                color: primaryDark,
+                                decoration: TextDecoration.underline),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: primaryDark),
+                        borderRadius: BorderRadius.circular(8)
+                      ),
+                      height: 160,
+                      child: Signature(
+                        controller: signController,
+                        height: 150,
+                        backgroundColor: Colors.white,
+                      ),
+                    ),
+
+                    SizedBox(height: 32),
+                    CustomButton(
+                      buttonText: 'Submit',
+                      margin: EdgeInsets.only(bottom: 30),
+                      onPressed: () => {
+                        Navigator.pop(context),
+                      },
+                    ),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

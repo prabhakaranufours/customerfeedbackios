@@ -36,9 +36,9 @@ class _SplashScreenState extends State<SplashScreen> {
                 SharedPreferencesHelper.IS_LOGIN)
             .then((isLoggedIn) {
           if (isLoggedIn) {
-            Navigator.pushReplacementNamed(context, '/home');
+            Navigator.popAndPushNamed(context, '/home');
           } else {
-            Navigator.pushReplacementNamed(context, '/login');
+            Navigator.popAndPushNamed(context, '/login');
           }
         });
       }

@@ -20,26 +20,15 @@ class MyRadioOption<T> extends StatelessWidget {
 
   Widget _buildLabel() {
     final bool isSelected = value == groupValue;
-    return isSelected ? Image.asset(selectedText,width: 40,): Image.asset(text,width: 40,);
+    return isSelected ? Image.asset(selectedText,width: 45,): Image.asset(text,width: 45,);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(5),
-      child: InkWell(
-        onTap: () => onChanged(value),
-        splashColor: Colors.teal.withOpacity(0.5),
-        child: Padding(
-          padding: EdgeInsets.all(5),
-          child: Row(
-            children: [
-              _buildLabel(),
-              const SizedBox(width: 2),
-            ],
-          ),
-        ),
-      ),
+    return InkWell(
+      onTap: () => onChanged(value),
+      splashColor: Colors.amber.withOpacity(0.1),
+      child: _buildLabel(),
     );
   }
 }

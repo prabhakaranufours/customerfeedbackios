@@ -45,6 +45,13 @@ class _HomeScreenState extends State<HomeScreen> {
           SharedPreferencesHelper.SBU_ID, sbuId);
       SharedPreferencesHelper.setPrefString(
           SharedPreferencesHelper.SBU_NAME, sbuText);
+
+      companyText="Select Company";
+      companyId='';
+      locationText="Select Location";
+      locationId='';
+      feedbackText="Select Feedback";
+      feedbackId='';
     });
   }
 
@@ -58,6 +65,11 @@ class _HomeScreenState extends State<HomeScreen> {
       SharedPreferencesHelper.setPrefString(
           SharedPreferencesHelper.COMPANY_NAME, companyText);
 
+      locationText="Select Location";
+      locationId='';
+      feedbackText="Select Feedback";
+      feedbackId='';
+
     });
   }
 
@@ -68,6 +80,9 @@ class _HomeScreenState extends State<HomeScreen> {
       //Store the locationId in sharedPreference
       SharedPreferencesHelper.setPrefString(
           SharedPreferencesHelper.LOCATION_ID, locationId);
+
+      feedbackText="Select Feedback";
+      feedbackId='';
     });
   }
 
@@ -103,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             onSubmitted: (_) =>
                                 FocusScope.of(context).unfocus(),
                             onChanged: (val) async {
-                              if (val == null || val == "") {
+                              if (val == "") {
                                 sbuDetails =
                                     await DatabaseHelper.instance.getSBU();
                               } else {
@@ -135,6 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   sbuDetails[index]["locationsettingsname"],
                                   sbuDetails[index]["locationsettingsid"],
                                 );
+
                                 Navigator.of(context).pop();
                                 // _getLocation();
                               },
@@ -178,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             onSubmitted: (_) =>
                                 FocusScope.of(context).unfocus(),
                             onChanged: (val) async {
-                              if (val == null || val == "") {
+                              if (val == "") {
                                 companyDetails =
                                     await DatabaseHelper.instance.getCompany();
                               } else {
@@ -206,6 +222,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             itemCount: companyDetails.length,
                             itemBuilder: (context, index) => ListTile(
                               onTap: () {
+                                debugPrint('setstate');
+                                // locationText="Select Location";
                                 setCompanyData(
                                     companyDetails[index]["CompanyName"],
                                     companyDetails[index]["CompanyID"]);
@@ -406,6 +424,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _getLocation(String compId) async {
     debugPrint('GetLocation');
     locationDetails = await DatabaseHelper.instance.getLocation(compId, sbuId);
+    setState(() {});
   }
 
   //get Feedback
@@ -416,269 +435,252 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: WillPopScope(
-        onWillPop: () async {
-          Utils.showExitDialog(context);
-          return true;
-        },
-        child: Scaffold(
-          appBar: customAppBar(
-            context,
-            title: Text(
-              'Home',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1!
-                  .apply(color: lightGrey)
-                  .copyWith(fontWeight: FontWeight.bold),
-            ),
-            backgroundColor: primaryDark,
-            leading: GestureDetector(
-              onTap: () {},
-              child: Padding(
-                padding: const EdgeInsets.all(17.0),
-                child: Image.asset(
-                  'assets/images/menubar-8.png',
-                ),
-              ),
-            ),
-            actions: [
-              InkWell(
-                onTap: () {
-                  // List<UserDetails> userd = [];
-                  // var s = UserDetails();
-                  // s.emailID = "prabhakaran.s@ufours.com";
-                  // s.isWorkstationLogin = 1;
-                  // userd.add(s);
-                  // DatabaseHelper.instance.userinsert(userd);
-                },
-                child: Padding(
-                  padding: EdgeInsets.all(14),
-                  child: Image.asset(
-                    'assets/images/QRcode-8.png',
-                    height: 35,
-                    width: 35,
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () {},
-                child: Padding(
-                  padding: EdgeInsets.all(12.0),
-                  child: Image.asset(
-                    'assets/images/cloud-computing.png',
-                    height: 25,
-                    width: 25,
-                    fit: BoxFit.contain,
-                  ),
-                ),
-              ),
-              SizedBox(width: 20),
-            ],
+    return WillPopScope(
+      onWillPop: () async {
+        Utils.showExitDialog(context);
+        return true;
+      },
+      child: Scaffold(
+        appBar: customAppBar(
+          context,
+          title: Text(
+            'HOME',
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          body: SingleChildScrollView(
-            padding: EdgeInsets.zero,
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(left: 10.0, right: 10.0),
-              child: Column(
+          backgroundColor: primaryDark,
+          actions: [
+            InkWell(
+              onTap: () {},
+              child: Stack(
                 children: [
-                  SizedBox(height: 40),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    padding: EdgeInsets.all(2.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: grey),
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        elevation: 7,
-                        foregroundColor:
-                            Colors.black, // foreground (text) color
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '$sbuText',
-                            style:
-                                Theme.of(context).textTheme.bodyText1!.copyWith(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 15,
-                                    ),
-                          ),
-                          // SizedBox(width: 10),
-                          Image.asset(
-                            'assets/images/downarrow.png',
-                            height: 10,
-                            width: 10,
-                          ),
-                        ],
-                      ),
-                      onPressed: () {
-                        _showSBU(context);
-                      },
+                  Padding(
+                    padding: EdgeInsets.all(12.0),
+                    child: Image.asset(
+                      'assets/images/cloud-computing.png',
+                      height: 25,
+                      width: 25,
+                      fit: BoxFit.contain,
                     ),
                   ),
-                  SizedBox(height: 30),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    padding: EdgeInsets.all(2.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: grey),
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        elevation: 7,
-                        foregroundColor:
-                            Colors.black, // foreground (text) color
+                  Positioned(
+                    top: 8,
+                    right: 0,
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '$companyText',
-                            style:
-                                Theme.of(context).textTheme.bodyText1!.copyWith(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 15,
-                                    ),
-                          ),
-                          // SizedBox(width: 10),
-                          Image.asset(
-                            'assets/images/downarrow.png',
-                            height: 10,
-                            width: 10,
-                          ),
-                        ],
-                      ),
-                      onPressed: () {
-                        _showCompany(context);
-                      },
+                      child: Text('15', style: TextStyle(color: Colors.black),textAlign: TextAlign.center,),
                     ),
-                  ),
-                  SizedBox(height: 30),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    padding: EdgeInsets.all(2.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: grey),
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        elevation: 7,
-                        foregroundColor:
-                            Colors.black, // foreground (text) color
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '$locationText',
-                            style:
-                                Theme.of(context).textTheme.bodyText1!.copyWith(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 15,
-                                    ),
-                          ),
-                          // SizedBox(width: 10),
-                          Image.asset(
-                            'assets/images/downarrow.png',
-                            height: 10,
-                            width: 10,
-                          ),
-                        ],
-                      ),
-                      onPressed: () {
-                        _showLocation(context);
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 30),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    padding: EdgeInsets.all(2.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: grey),
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        elevation: 7,
-                        foregroundColor:
-                            Colors.black, // foreground (text) color
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '$feedbackText',
-                            style:
-                                Theme.of(context).textTheme.bodyText1!.copyWith(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 15,
-                                    ),
-                          ),
-                          // SizedBox(width: 10),
-                          Image.asset(
-                            'assets/images/downarrow.png',
-                            height: 10,
-                            width: 10,
-                          ),
-                        ],
-                      ),
-                      onPressed: () {
-                        _showFeedback(context);
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 30),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: Text('Sector',
-                        style: TextStyle(fontSize: 15.0),
-                        textAlign: TextAlign.left),
-                  ),
-                  SizedBox(height: 30),
-                  CustomButton(
-                    buttonText: 'Feedback',
-                    onPressed: () => {
-                      if (sbuId != "" &&
-                          companyId != "" &&
-                          locationId != "" &&
-                          feedbackId != "")
-                        {
-                          Navigator.pushNamed(context, '/category', arguments: {
-                            "companyId": companyId,
-                            "feedbackId": feedbackId
-                          }),
-                        }
-                      else
-                        // {_showMessage(context, "Please select all items")}
-                      {
-                        Utils.showMessage(context, "Please select all items")
-                      }
-                    },
-                  ),
+                  )
                 ],
               ),
+            ),
+            const SizedBox(width: 12,)
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.only(left: 10.0, right: 10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 40),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  padding: EdgeInsets.all(2.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: grey),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      elevation: 7,
+                      foregroundColor:
+                          Colors.black, // foreground (text) color
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '$sbuText',
+                          style:
+                              Theme.of(context).textTheme.bodyText1!.copyWith(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 15,
+                                  ),
+                        ),
+                        // SizedBox(width: 10),
+                        Image.asset(
+                          'assets/images/downarrow.png',
+                          height: 10,
+                          width: 10,
+                        ),
+                      ],
+                    ),
+                    onPressed: () {
+                      _showSBU(context);
+                    },
+                  ),
+                ),
+                SizedBox(height: 30),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  padding: EdgeInsets.all(2.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: grey),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      elevation: 7,
+                      foregroundColor:
+                          Colors.black, // foreground (text) color
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '$companyText',
+                          style:
+                              Theme.of(context).textTheme.bodyText1!.copyWith(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 15,
+                                  ),
+                        ),
+                        // SizedBox(width: 10),
+                        Image.asset(
+                          'assets/images/downarrow.png',
+                          height: 10,
+                          width: 10,
+                        ),
+                      ],
+                    ),
+                    onPressed: () {
+                      _showCompany(context);
+                    },
+                  ),
+                ),
+                SizedBox(height: 30),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  padding: EdgeInsets.all(2.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: grey),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      elevation: 7,
+                      foregroundColor:
+                          Colors.black, // foreground (text) color
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '$locationText',
+                          style:
+                              Theme.of(context).textTheme.bodyText1!.copyWith(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 15,
+                                  ),
+                        ),
+                        // SizedBox(width: 10),
+                        Image.asset(
+                          'assets/images/downarrow.png',
+                          height: 10,
+                          width: 10,
+                        ),
+                      ],
+                    ),
+                    onPressed: () {
+                      _showLocation(context);
+                    },
+                  ),
+                ),
+                SizedBox(height: 30),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  padding: EdgeInsets.all(2.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: grey),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      elevation: 7,
+                      foregroundColor:
+                          Colors.black, // foreground (text) color
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '$feedbackText',
+                          style:
+                              Theme.of(context).textTheme.bodyText1!.copyWith(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 15,
+                                  ),
+                        ),
+                        // SizedBox(width: 10),
+                        Image.asset(
+                          'assets/images/downarrow.png',
+                          height: 10,
+                          width: 10,
+                        ),
+                      ],
+                    ),
+                    onPressed: () {
+                      _showFeedback(context);
+                    },
+                  ),
+                ),
+                SizedBox(height: 30),
+                // Container(
+                //   width: MediaQuery.of(context).size.width,
+                //   child: Text('Sector',
+                //       style: TextStyle(fontSize: 15.0),
+                //       textAlign: TextAlign.left),
+                // ),
+                // SizedBox(height: 30),
+                CustomButton(
+                  buttonText: 'Feedback',
+                  onPressed: () => {
+                    if (sbuId != "" &&
+                        companyId != "" &&
+                        locationId != "" &&
+                        feedbackId != "")
+                      {
+                        Navigator.pushNamed(context, '/category', arguments: {
+                          "companyId": companyId,
+                          "feedbackId": feedbackId
+                        }),
+                      }
+                    else
+                      // {_showMessage(context, "Please select all items")}
+                    {
+                      Utils.showMessage(context, "Please select all items")
+                    }
+                  },
+                ),
+              ],
             ),
           ),
         ),

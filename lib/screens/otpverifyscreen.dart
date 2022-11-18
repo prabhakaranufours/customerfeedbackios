@@ -1,6 +1,7 @@
 import 'package:customerfeedbackios/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:i2iutils/helpers/common_functions.dart';
 
 import '../api/customerfeedback_api_call.dart';
 import '../database/database_helper.dart';
@@ -18,20 +19,19 @@ class OTPVerifyScreen extends StatefulWidget {
 }
 
 class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
-
-  String apiGetOTP  = "";
+  String apiGetOTP = "";
+  String typedCode = "";
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getOTP();
   }
 
-  @override
-  void didChangeDependencies() async {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
 
+  //This method is used for get the otp from the apiu
+  void getOTP() async {
     var companyId = await SharedPreferencesHelper.getPrefString(
         SharedPreferencesHelper.COMPANY_ID, '');
     var locationId = await SharedPreferencesHelper.getPrefString(
@@ -39,102 +39,85 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
     var userId = await SharedPreferencesHelper.getPrefString(
         SharedPreferencesHelper.USER_ID, '');
 
-    getOTP(companyId, locationId, userId);
-  }
-
-
-  //This method is used for get the otp from the apiu
-  void getOTP(String compId, String locationId, String userId) async {
-
-    Otpdetails? response =
-    await CustomerFeedbackApiCall().getOTPDetails(compId,locationId,userId);
+    Otpdetails? response = await CustomerFeedbackApiCall()
+        .getOTPDetails(companyId, locationId, userId);
     if (response != null) {
       // Utils.showToastMsg(response.message);
       if (response.status == 1) {
         apiGetOTP = response.otp!;
 
-        print('OTP CHECK'+response.otp!);
+        print('OTP CHECK' + response.otp!);
       }
     }
   }
 
+  verifyOtp(){
+    if (apiGetOTP == typedCode) {
+      Navigator.pushNamed(context, '/submit');
+    } else {
+      showToastMsg('OTP Wrong');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       appBar: customAppBar(
-        context,
-        title: Text(
-          'OTP Verify',
-          style: Theme.of(context)
-              .textTheme
-              .bodyText1!
-              .apply(color: lightGrey)
-              .copyWith(fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: primaryDark,
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(17.0),
-            child: Image.asset('assets/images/back arrow-8.png'),
-          ),
-        ),
+    context,
+    title: Text(
+      'OTP Verify',
+      style: TextStyle(fontWeight: FontWeight.bold)
+    ),
+    backgroundColor: primaryDark,
+
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          OtpTextField(
-            numberOfFields: 6,
-            borderColor: Color(0xFF512DA8),
-            //set to true to show as box or false to show as dash
-            showFieldAsBox: true,
-            //runs when a code is typed in
-            onCodeChanged: (String code) {
-              //handle validation or checks here
-            },
-            //runs when every textfield is filled
-            onSubmit: (String verificationCode) {
-              //Check api return value and this verificationCode
-              if(apiGetOTP == verificationCode){
-                Navigator.pushNamed(context, '/submit');
-              }else{
-                print('OTP Wrong');
-              }
-            }, // end onSubmit
-          ),
-          SizedBox(
-            height: 40,
-          ),
-          Container(
-            margin: EdgeInsets.all(10.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: CustomButton(
-                      buttonText: 'RESEND OTP',
-                      textSize: 15,
-                      onPressed: () => {}),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  child: CustomButton(
-                      buttonText: 'NEXT',
-                      textSize: 15,
-                      onPressed: () => {
-                            Navigator.pushNamed(context, '/submit'),
-                          }),
-                ),
-              ],
-            ),
-          ),
-        ],
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+
+      Image.asset('assets/images/otp_enter.png',width: 250,height: 250,),
+      const SizedBox(height: 64,),
+      OtpTextField(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        numberOfFields: 6,
+        borderColor: Color(0xFF90151A),
+        //set to true to show as box or false to show as dash
+        showFieldAsBox: true,
+        //runs when every textfield is filled
+        onSubmit: (val) {
+          debugPrint('sub $val');
+          typedCode=val;
+          verifyOtp();
+        }, // end onSubmit
       ),
-    ));
+      SizedBox(
+        height: 40,
+      ),
+      Container(
+        margin: EdgeInsets.all(10.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: CustomButton(
+                  buttonText: 'RESEND OTP',
+                  textSize: 15,
+                  buttonType: ButtonType.third,
+                  onPressed: () => getOTP()),
+            ),
+            SizedBox(
+              width: 16,
+            ),
+            Expanded(
+              child: CustomButton(
+                  buttonText: 'NEXT',
+                  textSize: 15,
+                  onPressed: ()=>verifyOtp()),
+            ),
+          ],
+        ),
+      ),
+    ],
+      ),
+    );
   }
 }

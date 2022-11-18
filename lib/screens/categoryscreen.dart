@@ -84,95 +84,77 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: customAppBar(
-          context,
-          title: Text(
-            'Select Category',
-            style: Theme.of(context)
-                .textTheme
-                .bodyText1!
-                .apply(color: lightGrey)
-                .copyWith(fontWeight: FontWeight.bold),
-          ),
-          backgroundColor: primaryDark,
-          leading: GestureDetector(
-            onTap: () {
-              // Navigator.pop(context,true);
-              Navigator.pop(context);
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(17.0),
-              child: Image.asset(
-                'assets/images/back arrow-8.png',
-              ),
-            ),
-          ),
+    return Scaffold(
+      appBar: customAppBar(
+        context,
+        title: Text(
+          'Select Category',
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        body: Column(
-          children: [
-            Utils.subHeader(context, 'Bangalore', ''),
-            SizedBox(
-              height: 12,
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: categoryDetails.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      nextPage(categoryDetails[index]["categoryid"]);
-                    },
-                    child: Card(
-                        elevation: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                width: 300,
-                                child: Text(
-                                  '${categoryDetails[index]["categoryname"]}',
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                  softWrap: false,
-                                  style: TextStyle(fontSize: 18),
-                                ),
+        backgroundColor: primaryDark,
+      ),
+      body: Column(
+        children: [
+          Utils.subHeader(context, 'Bangalore', ''),
+          SizedBox(
+            height: 12,
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: categoryDetails.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    nextPage(categoryDetails[index]["categoryid"]);
+                  },
+                  child: Card(
+                      elevation: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: 300,
+                              child: Text(
+                                '${categoryDetails[index]["categoryname"]}',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                softWrap: false,
+                                style: TextStyle(fontSize: 18),
                               ),
-                              Container(
-                                height: 50,
-                                child: CircularPercentIndicator(
-                                  radius: 25.0,
-                                  lineWidth: 5.0,
-                                  percent:  int.parse(categoryDetails[index]["percentage"] ?? "0") / 100,
-                                  center: new Text(
-                                    categoryDetails[index]["percentage"] ?? "0",
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                  progressColor: Colors.blue,
+                            ),
+                            Container(
+                              height: 50,
+                              child: CircularPercentIndicator(
+                                radius: 25.0,
+                                lineWidth: 5.0,
+                                percent:  int.parse(categoryDetails[index]["percentage"] ?? "0") / 100,
+                                center: new Text(
+                                  categoryDetails[index]["percentage"] ?? "0",
+                                  style: TextStyle(fontSize: 12),
                                 ),
-                              )
-                            ],
-                          ),
-                        )),
-                  );
-                },
-              ),
+                                progressColor: Colors.blue,
+                              ),
+                            )
+                          ],
+                        ),
+                      )),
+                );
+              },
             ),
-            Container(
-              padding: EdgeInsets.only(left: 10.0, right: 10.0),
-              child: CustomButton(
-                buttonText: 'Next Feedback',
-                borderColor: primaryDark,
-                onPressed: () => {
-                  Navigator.pushNamed(context, '/score'),
-                },
-              ),
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 10.0, right: 10.0,bottom: 32),
+            child: CustomButton(
+              buttonText: 'Next Feedback',
+              borderColor: primaryDark,
+              onPressed: () => {
+                Navigator.pushNamed(context, '/score'),
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

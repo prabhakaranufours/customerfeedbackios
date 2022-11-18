@@ -4,6 +4,7 @@ import 'package:customerfeedbackios/models/categorydetails.dart';
 import 'package:customerfeedbackios/models/otpdetails.dart';
 import 'package:customerfeedbackios/models/scoredetails.dart';
 import 'package:dio/dio.dart';
+import 'package:i2iutils/helpers/common_functions.dart';
 
 import '../helpers/url_utils.dart';
 import '../helpers/utils.dart';
@@ -42,7 +43,7 @@ class CustomerFeedbackApiCall {
       return Loginresponse.fromJson(response.data);
     } else {
       // showToastMsg(response.statusMessage ?? 'Error');
-      Utils.showToastMsg("Something went wrong!");
+      showToastMsg("Something went wrong!");
       return null;
     }
   }
@@ -60,7 +61,7 @@ class CustomerFeedbackApiCall {
       return Sbudetails.fromJson(response.data);
     } else {
       // showToastMsg(response.statusMessage ?? 'Error');
-      Utils.showToastMsg("Something went wrong!");
+      showToastMsg("Something went wrong!");
       return null;
     }
   }
@@ -78,7 +79,7 @@ class CustomerFeedbackApiCall {
       return Companydetails.fromJson(response.data);
     } else {
       // showToastMsg(response.statusMessage ?? 'Error');
-      Utils.showToastMsg("Something went wrong!");
+      showToastMsg("Something went wrong!");
       return null;
     }
   }
@@ -96,7 +97,7 @@ class CustomerFeedbackApiCall {
       return Locationdetails.fromJson(response.data);
     } else {
       // showToastMsg(response.statusMessage ?? 'Error');
-      Utils.showToastMsg("Something went wrong!");
+      showToastMsg("Something went wrong!");
       return null;
     }
   }
@@ -115,7 +116,7 @@ class CustomerFeedbackApiCall {
     if ((response.statusCode ?? -1) <= 205) {
       return Auditdetails.fromJson(response.data);
     } else {
-      Utils.showToastMsg("Something went wrong!");
+      showToastMsg("Something went wrong!");
       return null;
     }
   }
@@ -134,7 +135,7 @@ class CustomerFeedbackApiCall {
     if ((response.statusCode ?? -1) <= 205) {
       return Categorydetails.fromJson(response.data);
     } else {
-      Utils.showToastMsg("Something went wrong!");
+      showToastMsg("Something went wrong!");
       return null;
     }
   }
@@ -153,7 +154,7 @@ class CustomerFeedbackApiCall {
     if ((response.statusCode ?? -1) <= 205) {
       return Questiondetails.fromJson(response.data);
     } else {
-      Utils.showToastMsg("Something went wrong!");
+      showToastMsg("Something went wrong!");
       return null;
     }
   }
@@ -172,7 +173,7 @@ class CustomerFeedbackApiCall {
     if ((response.statusCode ?? -1) <= 205) {
       return Scoredetails.fromJson(response.data);
     } else {
-      Utils.showToastMsg("Something went wrong!");
+      showToastMsg("Something went wrong!");
       return null;
     }
   }
@@ -191,7 +192,7 @@ class CustomerFeedbackApiCall {
     if ((response.statusCode ?? -1) <= 205) {
       return Otpdetails.fromJson(response.data);
     } else {
-      Utils.showToastMsg("Something went wrong!");
+      showToastMsg("Something went wrong!");
       return null;
     }
   }

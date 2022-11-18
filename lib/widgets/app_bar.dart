@@ -16,20 +16,7 @@ PreferredSizeWidget customAppBar(
     bottom: bottom,
     backgroundColor: backgroundColor,
     iconTheme: iconTheme,
-    leading: noLeading
-        ? null
-        : leading ??
-            IconButton(
-              icon: Image.asset(
-                'assets/images/back arrow-8.png',
-                height: 22,
-                width: 22,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              iconSize: 12,
-            ),
+    leading: leading,
     actions: actions,
     title: title,
     centerTitle: centerTitle,

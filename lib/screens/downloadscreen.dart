@@ -8,6 +8,7 @@ import 'package:customerfeedbackios/models/sbudetails.dart';
 import 'package:customerfeedbackios/models/scoredetails.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:i2iutils/helpers/common_functions.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../api/customerfeedback_api_call.dart';
@@ -49,7 +50,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
         SharedPreferencesHelper.USER_ID, '');
     Sbudetails? response = await CustomerFeedbackApiCall().getSbu(userId);
     if (response != null) {
-      Utils.showToastMsg(response.message);
+      showToastMsg(response.message);
       if (response.status) {
         // _showConfirmationDialog(context, "\nLogin Successfully");
         DatabaseHelper.instance.sbuInsert(response.returnData.table);
@@ -69,7 +70,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
     Companydetails? response =
     await CustomerFeedbackApiCall().getCompanyDetails(userId);
     if (response != null) {
-      Utils.showToastMsg(response.message);
+      showToastMsg(response.message);
       if (response.status) {
         DatabaseHelper.instance.companyInsert(response.returnData.table);
         locationApi(context);
@@ -87,7 +88,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
     Locationdetails? response =
     await CustomerFeedbackApiCall().getLocationDetails(userId);
     if (response != null) {
-      Utils.showToastMsg(response.message);
+      showToastMsg(response.message);
       if (response.status!) {
         DatabaseHelper.instance.locationInsert(response.returnData?.table);
         auditApi(context);
@@ -105,7 +106,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
     Auditdetails? response =
     await CustomerFeedbackApiCall().getAuditDetails(userId);
     if (response != null) {
-      Utils.showToastMsg(response.message);
+      showToastMsg(response.message);
       if (response.status!) {
         DatabaseHelper.instance.auditInsert(response.returnData?.table);
         categoryApi(context);
@@ -123,7 +124,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
     Categorydetails? response =
     await CustomerFeedbackApiCall().getCategoryDetails(userId);
     if (response != null) {
-      Utils.showToastMsg(response.message);
+      showToastMsg(response.message);
       if (response.status!) {
         DatabaseHelper.instance.categoryInsert(response.returnData?.table);
         questionApi(context);
@@ -141,7 +142,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
     Questiondetails? response =
     await CustomerFeedbackApiCall().getQuestionDetails(userId);
     if (response != null) {
-      Utils.showToastMsg(response.message);
+      showToastMsg(response.message);
       if (response.status!) {
         DatabaseHelper.instance.questionInsert(response.returnData?.table);
         scoreApi(context);
@@ -159,13 +160,13 @@ class _DownloadScreenState extends State<DownloadScreen> {
     Scoredetails? response =
     await CustomerFeedbackApiCall().getScoreDetails(userId);
     if (response != null) {
-      Utils.showToastMsg(response.message);
+      showToastMsg(response.message);
       if (response.status!) {
         DatabaseHelper.instance.answerInsert(response.returnData?.table);
         percentage = 100;
         setState(() {
         });
-        Navigator.pushReplacementNamed(context, '/home');
+        Navigator.popAndPushNamed(context, '/home');
       }
     }
   }

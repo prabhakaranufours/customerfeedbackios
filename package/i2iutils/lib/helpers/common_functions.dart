@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:datetime_setting/datetime_setting.dart';
@@ -6,17 +7,54 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:safe_device/safe_device.dart';
-import 'package:connectivity/connectivity.dart';
 
 import '../widgets/button.dart';
 
-var connectivity = Connectivity();
-Future<bool> isNetworkAvailable() async {
-  bool res =
-      (await connectivity.checkConnectivity()) != ConnectivityResult.none;
-  // if (!res) showNetworkError();
-  return res;
+Future<bool> isNetConnected() async {
+
+  try {
+    final result = await InternetAddress.lookup('google.com');
+    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+      return true;
+    } else {
+      // showToastMsg('Check Your Internet Connection',
+      //     title: 'Network Error', background: colorPrimary);
+      showToastMsg('Check your internet connection');
+      return false;
+    }
+  } catch (_) {
+    showToastMsg('Check your internet connection');
+    // showToastMsg('Check Your Internet Connection',
+    //     title: 'Network Error', background: colorPrimary);
+    return false;
+  }
+
 }
+
+showToastMsg(String? msg,{
+  bool longToast=false,
+}){
+  Fluttertoast.showToast(
+    msg: msg ?? 'Something went wrong',
+    toastLength: longToast ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT,
+    gravity: ToastGravity.SNACKBAR,
+  );
+}
+
+// showSnackbar(
+//     String msg, {
+//       String? title,
+//       Color? background,
+//     }) {
+//   AdvanceSnackBar(
+//     message: msg,
+//     bgColor: background ?? const Color(0xFF323232),
+//     textColor: background != null ? Colors.white : const Color(0xFFffffff),
+//     isFixed: true,
+//     fontWeight: FontWeight.w400,
+//     textSize: 15,
+//   ).show(Get.context!);
+// }
 
 String getDate({String format = 'dd/MM/yyyy', DateTime? dateTime}) {
   return DateFormat(format).format(dateTime ?? DateTime.now());
@@ -47,8 +85,20 @@ Future<String?> getDeviceUniqueId() async {
   return null;
 }
 
+Future<dynamic> getDeviceOs() async {
+  var deviceInfo = DeviceInfoPlugin();
+  if (Platform.isIOS) { // import 'dart:io'
+    var iosDeviceInfo = await deviceInfo.iosInfo;
+    return iosDeviceInfo.systemVersion;
+  } else if(Platform.isAndroid) {
+    var androidDeviceInfo = await deviceInfo.androidInfo;
+    return androidDeviceInfo.version.sdkInt; //
+  }
+  return null;
+}
+
 String getCustomUniqueId() {
-  var uuid = Uuid();
+  var uuid = const Uuid();
   return uuid.v1();
 }
 
@@ -147,4 +197,62 @@ checkRootedDevice(BuildContext context) async {
           );
         });
   }
+}
+
+
+void showMessage(String title, String message, BuildContext context,
+    {Widget? actionBtn, Widget? cancelBtn, bool? isDismiss}) {
+  showDialog(
+    context: context,
+    barrierDismissible: isDismiss ?? true,
+    builder: (BuildContext con) {
+      return WillPopScope(
+        onWillPop: () async => isDismiss ?? true,
+        child: Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                      fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  message,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.black,
+                  ),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                cancelBtn != null
+                    ? Row(
+                  children: [
+                    Expanded(child: cancelBtn),
+                    const SizedBox(
+                      width: 6,
+                    ),
+                    Expanded(child: actionBtn ?? const SizedBox.shrink())
+                  ],
+                )
+                    : Align(
+                    alignment: Alignment.centerRight,
+                    child: actionBtn ?? const SizedBox.shrink()),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
 }

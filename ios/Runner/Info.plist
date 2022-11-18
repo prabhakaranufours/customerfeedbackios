@@ -47,5 +47,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<key>NSCameraUsageDescription</key>
+    <string>Customer feedback would like to use your camera for capture feedback photos</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Customer feedback would like access to your photo gallery for getting feedback image</string>
+
 </dict>
 </plist>

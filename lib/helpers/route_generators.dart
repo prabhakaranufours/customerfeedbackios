@@ -4,7 +4,6 @@ import 'package:customerfeedbackios/screens/otpverifyscreen.dart';
 import 'package:customerfeedbackios/screens/questionscreen.dart';
 import 'package:customerfeedbackios/screens/submitscreen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 import '../screens/homescreen.dart';
 import '../screens/loginscreen.dart';
@@ -16,61 +15,52 @@ class RouteGenerator {
     final args = settings.arguments;
     switch (settings.name) {
       case '/':
-        return platformPageRoute(
-          context: context,
+        return MaterialPageRoute(
           builder: (_) => SplashScreen(),
           settings: settings,
         );
       case '/login':
-        return platformPageRoute(
-          context: context,
+        return MaterialPageRoute(
           builder: (_) => LoginScreen(),
           settings: settings,
         );
       case '/download':
-        return platformPageRoute(
-          context: context,
+        return MaterialPageRoute(
           builder: (_) => DownloadScreen(),
           settings: settings,
         );
       case '/home':
-        return platformPageRoute(
-          context: context,
+        return MaterialPageRoute(
           builder: (_) => HomeScreen(),
           settings: settings,
         );
 
       case '/category':
-        return platformPageRoute(
-          context: context,
+        return MaterialPageRoute(
           // builder: (_) => CategoryScreen(companyId: String, auditId: args),
           builder: (_) => CategoryScreen(data: args as Map<String, String>),
           settings: settings,
         );
 
       case '/question':
-        return platformPageRoute(
-          context: context,
+        return MaterialPageRoute(
           builder: (_) => QuestionScreen(),
           settings: settings,
         );
 
       case '/score':
-        return platformPageRoute(
-          context: context,
+        return MaterialPageRoute(
           builder: (_) => ScoreScreen(),
           settings: settings,
         );
       case '/otp':
-        return platformPageRoute(
-          context: context,
+        return MaterialPageRoute(
           builder: (_) => OTPVerifyScreen(),
           settings: settings,
         );
 
       case '/submit':
-        return platformPageRoute(
-          context: context,
+        return MaterialPageRoute(
           builder: (_) => SubmitScreen(),
           settings: settings,
         );

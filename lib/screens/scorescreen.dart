@@ -103,110 +103,87 @@ class _ScoreScreenState extends State<ScoreScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: customAppBar(
-          context,
-          title: Text(
-            'Score',
-            style: Theme.of(context)
-                .textTheme
-                .bodyText1!
-                .apply(color: lightGrey)
-                .copyWith(fontWeight: FontWeight.bold),
+    return Scaffold(
+      appBar: customAppBar(
+        context,
+        title: Text(
+          'Score',
+          style: TextStyle(fontWeight: FontWeight.bold)
+        ),
+        backgroundColor: primaryDark,
+      ),
+      body: Column(
+        children: [
+          Utils.subHeader(context, 'Bangalore', 'Audit > Category > Score'),
+          SizedBox(
+            height: 12,
           ),
-          backgroundColor: primaryDark,
-          leading: GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Circular_arc(percentage),
+          ),
+          SizedBox(
+            height: 12,
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: feedbackDetails.length,
+              itemBuilder: (context, index) {
+                return Card(
+                    elevation: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: 300,
+                            child: Text(
+                              '${feedbackDetails[index]["auditname"]}',
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              softWrap: false,
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            height: 50,
+                            child: CircularPercentIndicator(
+                              radius: 25.0,
+                              lineWidth: 5.0,
+                              percent: 1.0,
+                              center: auditId ==
+                                  feedbackDetails[index]
+                                  ["auditid"]
+                                  ? Text(
+                                "100%",
+                                style: TextStyle(fontSize: 12),
+                              )
+                                  : Text(
+                                "0%",
+                                style: TextStyle(fontSize: 12),
+                              ),
+                              progressColor: Colors.blue,
+                            ),
+                          )
+                        ],
+                      ),
+                    ));
+              },
+            ),
+          ),
+          CustomButton(
+            margin: EdgeInsets.only(left: 10,right: 10,bottom: 32),
+            buttonText: 'SUBMIT',
+            onPressed: () => {
+              Navigator.pushNamed(context, '/otp'),
             },
-            child: Padding(
-              padding: const EdgeInsets.all(17.0),
-              child: Image.asset('assets/images/back arrow-8.png'),
-            ),
           ),
-        ),
-        body: Column(
-          children: [
-            Utils.subHeader(context, 'Bangalore', 'Audit > Category > Score'),
-            Container(
-              // height: MediaQuery.of(context).size.height,
-              margin: EdgeInsets.all(5),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Circular_arc(percentage),
-                  ),
-                  Container(
-                    height: 300,
-                    width: MediaQuery.of(context).size.width,
-                    child: ListView.builder(
-                      itemCount: feedbackDetails.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {},
-                          child: Card(
-                              elevation: 2,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    SizedBox(
-                                      width: 300,
-                                      child: Text(
-                                        '${feedbackDetails[index]["auditname"]}',
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                        softWrap: false,
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 50,
-                                      child: CircularPercentIndicator(
-                                        radius: 25.0,
-                                        lineWidth: 5.0,
-                                        percent: 1.0,
-                                        center: auditId ==
-                                                feedbackDetails[index]
-                                                    ["auditid"]
-                                            ? Text(
-                                                "100%",
-                                                style: TextStyle(fontSize: 12),
-                                              )
-                                            : Text(
-                                                "0%",
-                                                style: TextStyle(fontSize: 12),
-                                              ),
-                                        progressColor: Colors.blue,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )),
-                        );
-                      },
-                    ),
-                  ),
-                  CustomButton(
-                    buttonText: 'SUBMIT',
-                    onPressed: () => {
-                      Navigator.pushNamed(context, '/otp'),
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+
+        ],
       ),
     );
   }
@@ -244,27 +221,26 @@ class _Circular_arcState extends State<Circular_arc>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Stack(
-        children: [
-          CustomPaint(
-            size: Size(300, 300),
-            painter: ProgressArc(null, Colors.black54, true),
+    return Stack(
+      children: [
+
+        CustomPaint(
+          size: Size(300, 170),
+          painter: ProgressArc(null, Colors.grey.shade300, true),
+        ),
+        CustomPaint(
+          size: Size(300, 170),
+          painter: ProgressArc(widget.percentage, primary, false),
+        ),
+        Positioned(
+          bottom: 0,
+          left: 130,
+          child: Text(
+            "${(widget.percentage / 3.14 * 100).round()}%",
+            style: TextStyle(color: Colors.black, fontSize: 30),
           ),
-          CustomPaint(
-            size: Size(300, 300),
-            painter: ProgressArc(widget.percentage, Colors.redAccent, false),
-          ),
-          Positioned(
-            top: 120,
-            left: 130,
-            child: Text(
-              "${(widget.percentage / 3.14 * 100).round()}%",
-              style: TextStyle(color: Colors.black, fontSize: 30),
-            ),
-          )
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
