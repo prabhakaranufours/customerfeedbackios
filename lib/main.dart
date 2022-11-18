@@ -60,7 +60,6 @@ class MyApp extends StatelessWidget {
       ),
       builder: EasyLoading.init(),
       initialRoute: "/",
-      
       onGenerateRoute: (settings) => RouteGenerator.generateRoute(settings, context),
 
     );

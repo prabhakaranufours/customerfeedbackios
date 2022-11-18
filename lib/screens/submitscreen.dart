@@ -106,7 +106,8 @@ class _SubmitScreenState extends State<SubmitScreen> {
 
   //Insert in the AuditData table
   void storeInDb(List<Auditdata> auditDetails) {
-    Auditdata(
+
+     Auditdata(
       strClientfeedback: "",
       strAdditionalinformatin: "",
       clientsign: "",
@@ -135,6 +136,9 @@ class _SubmitScreenState extends State<SubmitScreen> {
       observation: "",
       isfeedback: ""
     );
+
+    
+
   }
 
   @override
