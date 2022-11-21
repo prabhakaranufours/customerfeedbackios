@@ -11,6 +11,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+import '../models/auditdata.dart';
 import '../models/categorydata.dart';
 import '../models/sbudetails.dart';
 import '../models/scoredetails.dart';
@@ -185,8 +186,6 @@ class DatabaseHelper {
   static const FeedbackImage_companyId = "companyId";
   static const FeedbackImage_sbuId = "sbuId";
   static const FeedbackImage_imageName = "imageName";
-
-
 
   DatabaseHelper._privateConstructor();
 
@@ -365,7 +364,6 @@ class DatabaseHelper {
       $AuditData_isfeedback TEXT)    
      ''');
 
-
     db.execute('''CREATE TABLE $_feedbackImages(
       $FeedbackImageID INTEGER PRIMARY KEY,
       $FeedbackImage_deviceId TEXT,
@@ -379,8 +377,6 @@ class DatabaseHelper {
       $FeedbackImage_imageName TEXT)    
      ''');
   }
-
-
 
   //Insert the user table
   Future<int> userinsert(List<UserDetails>? userDetails) async {
@@ -455,7 +451,7 @@ class DatabaseHelper {
   }
 
   //Insert CategoryData Table
-  Future<int> categoryDataInsert(List<Categorydata> qnsDetails) async{
+  Future<int> categoryDataInsert(List<Categorydata> qnsDetails) async {
     Database? db = await instance.database;
     qnsDetails?.forEach((element) async {
       await db.insert(_categoryData, element.toJson());
@@ -463,25 +459,38 @@ class DatabaseHelper {
     return 1;
   }
 
+  //Insert AuditData Table
+  Future<int> auditDataInsert(List<Auditdata> auditDetails) async {
+    Database? db = await instance.database;
+    auditDetails?.forEach((element) async {
+      await db.insert(_auditData, element.toJson());
+    });
+    return 1;
+  }
+
   //Update CategoryData Table
-  Future<int> categoryDataUpdate(List<Categorydata> qnsDetails) async{
+  Future<int> categoryDataUpdate(List<Categorydata> qnsDetails) async {
     Database? db = await instance.database;
     qnsDetails.forEach((element) async {
       print(element.toJson());
-      await db.update(_categoryData, element.toJson(),where: 'id = ?',whereArgs: [element.id]);
+      await db.update(_categoryData, element.toJson(),
+          where: 'id = ?', whereArgs: [element.id]);
     });
     return 1;
   }
 
   //Update Category Details Percentage
-  Future<int> categoryDetailsPercentageUpdate(String percentage,String categoryId) async{
+  Future<int> categoryDetailsPercentageUpdate(
+      String percentage, String categoryId) async {
     Database? db = await instance.database;
-    await db.update(_categoryDetails, {Cat_Percentage:percentage},where: 'categoryid = ?',whereArgs: [categoryId]);
+    await db.update(_categoryDetails, {Cat_Percentage: percentage},
+        where: 'categoryid = ?', whereArgs: [categoryId]);
     return 1;
   }
 
   //Update Categorydata percentage
-  Future<List<Map<String, Object?>>> updatePercentage(String categoryId,String percentage) async{
+  Future<List<Map<String, Object?>>> updatePercentage(
+      String categoryId, String percentage) async {
     Database? db = await instance.database;
     debugPrint("UPDATE $_categoryData SET $CatData_Percentage "
         "= $percentage Where $CatData_CategoryId = $categoryId");
@@ -489,9 +498,7 @@ class DatabaseHelper {
         "= $percentage Where $CatData_CategoryId = $categoryId");
 
     // return await db.update(_categoryData,percentage,where: 'categoryid = ?',whereArgs: categoryId);
-
   }
-
 
   //Get the sbuDetails
   Future<List<Map>> getSBU() async {
@@ -545,28 +552,32 @@ class DatabaseHelper {
   }
 
   //Get the categoryData details
-  Future<List<Map>> getCategoryDetails() async{
+  Future<List<Map>> getCategoryDetails() async {
     Database? db = await instance.database;
     return await db.rawQuery("Select * from $_categoryData");
-
   }
 
   //Get the categoryData details with parameters
-  Future<List<Map>> getCategoryDetailsWithParameters(String sbuId,String compId,
-      String locId,String auditId,String sectorId,String catId) async{
+  Future<List<Map>> getCategoryDetailsWithParameters(
+      String sbuId,
+      String compId,
+      String locId,
+      String auditId,
+      String sectorId,
+      String catId) async {
     Database? db = await instance.database;
     return await db.rawQuery("Select * from $_categoryData where "
         "$CatData_SbuId = $sbuId AND $CatData_CompanyId = $compId AND "
         "$CatData_LocationId = $locId AND $CatData_AuditId = $auditId AND "
         "$CataData_SectorId = $sectorId AND $CatData_CategoryId = $catId");
-
   }
 
   //Get the scoreCalcualtion
-  Future<List<Map>> getScoreCalculation(String sbuId, String companyId,
-      String locationId,String auditId) async{
+  Future<List<Map>> getScoreCalculation(
+      String sbuId, String companyId, String locationId, String auditId) async {
     Database? db = await instance.database;
-    var tex = "Select $Score_Scorescore,$CatData_Weightage from $_categoryData INNER JOIN $_scoreDetails"
+    var tex =
+        "Select $Score_Scorescore,$CatData_Weightage from $_categoryData INNER JOIN $_scoreDetails"
         " on $_categoryData.$CatData_ScoreId = $_scoreDetails.$Score_Scorescore where $_scoreDetails.$Score_Scorescore != -1 AND $_categoryData.$CatData_SbuId  = $sbuId  AND"
         " $_categoryData.$CatData_CompanyId = $companyId AND $_categoryData.$CatData_LocationId = $locationId AND $_categoryData.$CatData_AuditId = $auditId";
     print(tex);
@@ -574,21 +585,20 @@ class DatabaseHelper {
     //     " on $_categoryData.$CatData_ScoreId = $_scoreDetails.$Score_Scorescore where $_scoreDetails.$Score_Scorescore != -1 AND $_categoryData.$CatData_SbuId  = $sbuId  AND"
     //     " $_categoryData.$CatData_CompanyId = $companyId AND $_categoryData.$CatData_LocationId = $locationId AND $_categoryData.$CatData_AuditId = $auditId");
 
-
-    return await db.rawQuery("Select $CatData_Weightage,$CatData_ScoreId from $_categoryData where $CatData_ScoreId != -1 AND  $CatData_SbuId  = $sbuId  AND $CatData_CompanyId = $companyId AND $CatData_LocationId = $locationId AND $CatData_AuditId = $auditId");
+    return await db.rawQuery(
+        "Select $CatData_Weightage,$CatData_ScoreId from $_categoryData where $CatData_ScoreId != -1 AND  $CatData_SbuId  = $sbuId  AND $CatData_CompanyId = $companyId AND $CatData_LocationId = $locationId AND $CatData_AuditId = $auditId");
   }
 
   //Get the category details individual category percentage
-  Future<List<Map>> getCategoryDetailsPercentage(String sbuId,String compId,
-      String locId,String auditId,String sectorId,String catId) async{
+  Future<List<Map>> getCategoryDetailsPercentage(String sbuId, String compId,
+      String locId, String auditId, String sectorId, String catId) async {
     Database? db = await instance.database;
-    return await db.rawQuery("Select $CatData_Percentage from $_categoryData where "
-        "$CatData_SbuId = $sbuId AND $CatData_CompanyId = $compId AND "
-        "$CatData_LocationId = $locId AND $CatData_AuditId = $auditId AND "
-        "$CataData_SectorId = $sectorId AND $CatData_CategoryId = $catId");
-
+    return await db
+        .rawQuery("Select $CatData_Percentage from $_categoryData where "
+            "$CatData_SbuId = $sbuId AND $CatData_CompanyId = $compId AND "
+            "$CatData_LocationId = $locId AND $CatData_AuditId = $auditId AND "
+            "$CataData_SectorId = $sectorId AND $CatData_CategoryId = $catId");
   }
-
 
   //Insert the user table
   Future<int> insert(Map<String, dynamic> row) async {
@@ -601,8 +611,6 @@ class DatabaseHelper {
     Database db = await instance.database;
     return await db.query(_userDetails);
   }
-
-
 
   //Delete the data from the user table
   Future<int> delete(int userName) async {

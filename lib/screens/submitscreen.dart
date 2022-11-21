@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:customerfeedbackios/database/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:signature/signature.dart';
 
@@ -31,8 +32,8 @@ class _SubmitScreenState extends State<SubmitScreen> {
   final feedbackTakenByController = TextEditingController();
   final feedbackRepController = TextEditingController();
 
-  final signController=SignatureController();
-  final repSignController=SignatureController();
+  final signController = SignatureController();
+  final repSignController = SignatureController();
 
   String sectorId = "";
   String sbuId = "";
@@ -45,7 +46,6 @@ class _SubmitScreenState extends State<SubmitScreen> {
   String userName = "";
 
   List<Auditdata> auditDataDetails = [];
-
 
   final SignatureController _controller = SignatureController(
     penStrokeWidth: 1,
@@ -109,40 +109,52 @@ class _SubmitScreenState extends State<SubmitScreen> {
   // }
 
   //Insert in the AuditData table
-  void storeInDb(List<Auditdata> auditDetails) {
 
-     Auditdata(
-      strClientfeedback: "",
-      strAdditionalinformatin: "",
-      clientsign: "",
-      auditsign: "",
-      auditdate: "",
-      userid: "",
-      guid: "",
-      deviceid: "",
-      uploadguid: "",
-      uploadfilename: "",
-      auditeename: "",
-      auditorname: "",
-      oamname: "",
-      sbuname: "",
-      clientperson: "",
-      ssano: "",
-      sitename: "",
-      clientname: "",
-      xmldata: "",
-      categoryid: "",
-      auditid: "",
-      sectorid: "",
-      locationid: "",
-      companyid: "",
-      sbuid: "",
-      observation: "",
-      isfeedback: ""
-    );
+  void storeInDb() {
+    if (auditeeNameController.text != "" &&
+        auditorNameController.text != "" &&
+        aomController.text != "" &&
+        sbuNameController.text != "" &&
+        clientPersonNameController.text != "" &&
+        siteNameController.text != "") {
 
-    
+      auditDataDetails = [Auditdata(
+          strClientfeedback: "",
+          strAdditionalinformatin: "",
+          clientsign: "",
+          auditsign: "",
+          auditdate: "",
+          userid: userId,
+          guid: "",
+          deviceid: "",
+          uploadguid: "",
+          uploadfilename: "",
+          auditeename: auditeeNameController.text,
+          auditorname: auditorNameController.text,
+          oamname: aomController.text,
+          sbuname: sbuNameController.text,
+          clientperson: clientPersonNameController.text,
+          ssano: "",
+          sitename: siteNameController.text,
+          clientname: "",
+          xmldata: "",
+          categoryid: categoryId,
+          auditid: auditId,
+          sectorid: sectorId,
+          locationid: locationId,
+          companyid: companyId,
+          sbuid: sbuId,
+          observation: "",
+          isfeedback: "")];
 
+      // var auditDataJSON = auditData.toJson();
+      // debugPrint('AUidtDataJSON $auditDataJSON');
+      //Take the object to set in db
+      DatabaseHelper.instance.auditDataInsert(auditDataDetails);
+      Navigator.pop(context);
+    } else {
+      Utils.showMessage(context, "Please Enter the fields");
+    }
   }
 
   @override
@@ -188,10 +200,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
     return Scaffold(
       appBar: customAppBar(
         context,
-        title: Text(
-          'Submit',
-          style: TextStyle(fontWeight: FontWeight.bold)
-        ),
+        title: Text('Submit', style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: primaryDark,
       ),
       body: Column(
@@ -204,7 +213,8 @@ class _SubmitScreenState extends State<SubmitScreen> {
                 child: Column(
                   children: [
                     SizedBox(height: 10),
-                    BoxEditText(placeholder: 'CUSTOMER NAME',
+                    BoxEditText(
+                      placeholder: 'CUSTOMER NAME',
                       controller: cNameController,
                       prefixIcon: Padding(
                         padding: const EdgeInsets.all(12),
@@ -215,9 +225,9 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         ),
                       ),
                     ),
-
                     SizedBox(height: 20),
-                    BoxEditText(placeholder: 'AUDITOR NAME',
+                    BoxEditText(
+                      placeholder: 'AUDITOR NAME',
                       controller: auditorNameController,
                       prefixIcon: Padding(
                         padding: const EdgeInsets.all(12),
@@ -228,9 +238,9 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         ),
                       ),
                     ),
-
                     SizedBox(height: 20),
-                    BoxEditText(placeholder: 'AUDITEE NAME',
+                    BoxEditText(
+                      placeholder: 'AUDITEE NAME',
                       controller: auditeeNameController,
                       prefixIcon: Padding(
                         padding: const EdgeInsets.all(12),
@@ -241,9 +251,9 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         ),
                       ),
                     ),
-
                     SizedBox(height: 20),
-                    BoxEditText(placeholder: 'SITE NAME',
+                    BoxEditText(
+                      placeholder: 'SITE NAME',
                       controller: siteNameController,
                       prefixIcon: Padding(
                         padding: const EdgeInsets.all(12),
@@ -254,10 +264,9 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         ),
                       ),
                     ),
-
-
                     SizedBox(height: 20),
-                    BoxEditText(placeholder: 'CLIENT PERSON NAME',
+                    BoxEditText(
+                      placeholder: 'CLIENT PERSON NAME',
                       controller: clientPersonNameController,
                       prefixIcon: Padding(
                         padding: const EdgeInsets.all(12),
@@ -268,9 +277,9 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         ),
                       ),
                     ),
-
                     SizedBox(height: 20),
-                    BoxEditText(placeholder: 'SBU NAME',
+                    BoxEditText(
+                      placeholder: 'SBU NAME',
                       controller: sbuNameController,
                       prefixIcon: Padding(
                         padding: const EdgeInsets.all(12),
@@ -281,9 +290,9 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         ),
                       ),
                     ),
-
                     SizedBox(height: 20),
-                    BoxEditText(placeholder: 'OM / AOM / SUPERVISOR',
+                    BoxEditText(
+                      placeholder: 'OM / AOM / SUPERVISOR',
                       controller: aomController,
                       prefixIcon: Padding(
                         padding: const EdgeInsets.all(12),
@@ -294,9 +303,9 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         ),
                       ),
                     ),
-
                     SizedBox(height: 20),
-                    BoxEditText(placeholder: 'FEEDBACK TAKENBY',
+                    BoxEditText(
+                      placeholder: 'FEEDBACK TAKENBY',
                       controller: feedbackTakenByController,
                       prefixIcon: Padding(
                         padding: const EdgeInsets.all(12),
@@ -307,9 +316,9 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         ),
                       ),
                     ),
-
                     SizedBox(height: 20),
-                    BoxEditText(placeholder: 'FEEDBACK REP NAME',
+                    BoxEditText(
+                      placeholder: 'FEEDBACK REP NAME',
                       controller: feedbackRepController,
                       prefixIcon: Padding(
                         padding: const EdgeInsets.all(12),
@@ -320,7 +329,6 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         ),
                       ),
                     ),
-
                     SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -348,8 +356,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                       padding: EdgeInsets.all(6),
                       decoration: BoxDecoration(
                           border: Border.all(color: primaryDark),
-                          borderRadius: BorderRadius.circular(8)
-                      ),
+                          borderRadius: BorderRadius.circular(8)),
                       height: 160,
                       child: Signature(
                         controller: repSignController,
@@ -357,7 +364,6 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         backgroundColor: Colors.white,
                       ),
                     ),
-
                     const SizedBox(
                       height: 20,
                     ),
@@ -386,9 +392,8 @@ class _SubmitScreenState extends State<SubmitScreen> {
                     Container(
                       padding: EdgeInsets.all(6),
                       decoration: BoxDecoration(
-                        border: Border.all(color: primaryDark),
-                        borderRadius: BorderRadius.circular(8)
-                      ),
+                          border: Border.all(color: primaryDark),
+                          borderRadius: BorderRadius.circular(8)),
                       height: 160,
                       child: Signature(
                         controller: signController,
@@ -396,13 +401,12 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         backgroundColor: Colors.white,
                       ),
                     ),
-
                     SizedBox(height: 32),
                     CustomButton(
                       buttonText: 'Submit',
                       margin: EdgeInsets.only(bottom: 30),
                       onPressed: () => {
-                        Navigator.pop(context),
+                        storeInDb(),
                       },
                     ),
                   ],

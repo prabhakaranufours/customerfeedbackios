@@ -50,7 +50,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
         SharedPreferencesHelper.USER_ID, '');
     Sbudetails? response = await CustomerFeedbackApiCall().getSbu(userId);
     if (response != null) {
-      showToastMsg(response.message);
+      // showToastMsg(response.message);
       if (response.status) {
         // _showConfirmationDialog(context, "\nLogin Successfully");
         DatabaseHelper.instance.sbuInsert(response.returnData.table);
@@ -70,7 +70,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
     Companydetails? response =
     await CustomerFeedbackApiCall().getCompanyDetails(userId);
     if (response != null) {
-      showToastMsg(response.message);
+      // showToastMsg(response.message);
       if (response.status) {
         DatabaseHelper.instance.companyInsert(response.returnData.table);
         locationApi(context);
@@ -88,7 +88,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
     Locationdetails? response =
     await CustomerFeedbackApiCall().getLocationDetails(userId);
     if (response != null) {
-      showToastMsg(response.message);
+      // showToastMsg(response.message);
       if (response.status!) {
         DatabaseHelper.instance.locationInsert(response.returnData?.table);
         auditApi(context);
@@ -106,7 +106,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
     Auditdetails? response =
     await CustomerFeedbackApiCall().getAuditDetails(userId);
     if (response != null) {
-      showToastMsg(response.message);
+      // showToastMsg(response.message);
       if (response.status!) {
         DatabaseHelper.instance.auditInsert(response.returnData?.table);
         categoryApi(context);
@@ -124,7 +124,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
     Categorydetails? response =
     await CustomerFeedbackApiCall().getCategoryDetails(userId);
     if (response != null) {
-      showToastMsg(response.message);
+      // showToastMsg(response.message);
       if (response.status!) {
         DatabaseHelper.instance.categoryInsert(response.returnData?.table);
         questionApi(context);
@@ -142,7 +142,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
     Questiondetails? response =
     await CustomerFeedbackApiCall().getQuestionDetails(userId);
     if (response != null) {
-      showToastMsg(response.message);
+      // showToastMsg(response.message);
       if (response.status!) {
         DatabaseHelper.instance.questionInsert(response.returnData?.table);
         scoreApi(context);
@@ -160,7 +160,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
     Scoredetails? response =
     await CustomerFeedbackApiCall().getScoreDetails(userId);
     if (response != null) {
-      showToastMsg(response.message);
+      // showToastMsg(response.message);
       if (response.status!) {
         DatabaseHelper.instance.answerInsert(response.returnData?.table);
         percentage = 100;
