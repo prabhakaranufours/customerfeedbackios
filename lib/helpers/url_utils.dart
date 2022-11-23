@@ -10,3 +10,5 @@ const String categoryApi = "getallcategoryNew_Company";
 const String questionApi = "getallquestion_New";
 const String scoreApi = "getAllScore";
 const String otpApi = "FeedBackOTPSMS";
+const String insertFeedbackApi = "InsertTransaction";
+const String uploadImagesApi = "Uploadimages";

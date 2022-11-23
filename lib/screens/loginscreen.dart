@@ -249,6 +249,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             buttonText: 'LOGIN',
                             onPressed: () => {
                               if(emailController.text != "" && passwordController.text!= ""){
+
                                 api(context, emailController.text,
                                     passwordController.text),
                               }else{

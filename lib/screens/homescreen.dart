@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:customerfeedbackios/database/database_helper.dart';
 import 'package:customerfeedbackios/helpers/utils.dart';
@@ -35,6 +37,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   TextEditingController searchController = TextEditingController();
   var sbuTextController = TextEditingController();
+
+  Timer? timer;
+  int count = 0;
+
+
+
 
   //After click the list item in sbu then set the value in text
   void setSbuData(String value, String id) {
@@ -409,7 +417,28 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    checkCount();
   }
+
+  //Timer used for count show
+  void  checkCount() {
+    timer= Timer.periodic(Duration(seconds: 10), (t) async{
+      count = (await DatabaseHelper.instance.getAuditDataTableCount())[0]["count"] ?? 0;
+      setState(() {});
+      if(count == 0){
+        timer?.cancel();
+      }
+    });
+
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    timer?.cancel();
+  }
+
 
   @override
   void didChangeDependencies() async {
@@ -450,7 +479,9 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: primaryDark,
           actions: [
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, '/offline');
+              },
               child: Stack(
                 children: [
                   Padding(
@@ -472,7 +503,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Colors.white,
                         shape: BoxShape.circle,
                       ),
-                      child: Text('15', style: TextStyle(color: Colors.black),textAlign: TextAlign.center,),
+                      child: Text('$count', style: TextStyle(color: Colors.black),textAlign: TextAlign.center,),
                     ),
                   )
                 ],

@@ -557,6 +557,24 @@ class DatabaseHelper {
     return await db.rawQuery("Select * from $_categoryData");
   }
 
+  //Get the count of audit Data table
+  Future<List<Map>> getAuditDataTableCount() async {
+    Database? db = await instance.database;
+    return await db.rawQuery("Select count(id) as count from $_auditData");
+  }
+
+  //Get the auditData table
+  Future<List<Map>> getAuditData() async {
+    Database? db = await instance.database;
+    return await db.rawQuery("Select * from $_auditData");
+  }
+
+  //Get image from image table
+  Future<List<Map>> getImageData() async {
+    Database? db = await instance.database;
+    return await db.rawQuery("Select * from $_feedbackImages");
+  }
+
   //Get the categoryData details with parameters
   Future<List<Map>> getCategoryDetailsWithParameters(
       String sbuId,

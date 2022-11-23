@@ -179,7 +179,9 @@ class _ScoreScreenState extends State<ScoreScreen> {
             margin: EdgeInsets.only(left: 10,right: 10,bottom: 32),
             buttonText: 'SUBMIT',
             onPressed: () => {
-              Navigator.pushNamed(context, '/otp'),
+              // Navigator.popAndPushNamed(context, '/otp'),
+              Navigator.popAndPushNamed(context, '/submit'),
+
             },
           ),
 

@@ -1,5 +1,6 @@
 import 'package:customerfeedbackios/screens/categoryscreen.dart';
 import 'package:customerfeedbackios/screens/downloadscreen.dart';
+import 'package:customerfeedbackios/screens/offlinedatascreen.dart';
 import 'package:customerfeedbackios/screens/otpverifyscreen.dart';
 import 'package:customerfeedbackios/screens/questionscreen.dart';
 import 'package:customerfeedbackios/screens/submitscreen.dart';
@@ -62,6 +63,12 @@ class RouteGenerator {
       case '/submit':
         return MaterialPageRoute(
           builder: (_) => SubmitScreen(),
+          settings: settings,
+        );
+
+      case '/offline':
+        return MaterialPageRoute(
+          builder: (_) => OfflineDataScreen(),
           settings: settings,
         );
       default:

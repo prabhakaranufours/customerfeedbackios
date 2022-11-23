@@ -53,7 +53,7 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
 
   verifyOtp(){
     if (apiGetOTP == typedCode) {
-      Navigator.pushNamed(context, '/submit');
+      Navigator.popAndPushNamed(context, '/submit');
     } else {
       showToastMsg('OTP Wrong');
     }

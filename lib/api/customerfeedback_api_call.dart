@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:customerfeedbackios/models/categorydetails.dart';
+import 'package:customerfeedbackios/models/insertuploadimages.dart';
 import 'package:customerfeedbackios/models/otpdetails.dart';
 import 'package:customerfeedbackios/models/scoredetails.dart';
 import 'package:dio/dio.dart';
@@ -8,12 +9,15 @@ import 'package:i2iutils/helpers/common_functions.dart';
 
 import '../helpers/url_utils.dart';
 import '../helpers/utils.dart';
+import '../models/auditdata.dart';
 import '../models/auditdetails.dart';
 import '../models/companydetails.dart';
+import '../models/insertfeedback_response.dart';
 import '../models/locationdetails.dart';
 import '../models/loginresponse.dart';
 import '../models/questiondetails.dart';
 import '../models/sbudetails.dart';
+import '../models/uploadimages_response.dart';
 
 class CustomerFeedbackApiCall {
   static final CustomerFeedbackApiCall _instance =
@@ -196,6 +200,35 @@ class CustomerFeedbackApiCall {
       return null;
     }
   }
+
+
+  //Submit AuditData
+  Future<InsertFeedbackResponse?> submitFeedback(Auditdata auditData) async {
+
+    print('${_dio.options.baseUrl} $insertFeedbackApi');
+    final response = await _dio.post(insertFeedbackApi, data: auditData.toJson());
+
+    if ((response.statusCode ?? -1) <= 205) {
+      return InsertFeedbackResponse.fromJson(response.data);
+    } else {
+      showToastMsg("Something went wrong!");
+      return null;
+    }
+  }
+
+  //Submit Images
+  Future<UploadImagesResponse?> uploadImages(InsertUploadImages insertUploadImages) async{
+    print('${_dio.options.baseUrl} $uploadImagesApi');
+    final response =  await _dio.post(uploadImagesApi,data: insertUploadImages.toJson());
+
+    if((response.statusCode ?? -1) <= 205){
+      return UploadImagesResponse.fromJson(response.data);
+    }else{
+      showToastMsg('Something went wrong!');
+      return null;
+    }
+  }
+
 }
 
 
