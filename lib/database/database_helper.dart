@@ -618,6 +618,17 @@ class DatabaseHelper {
             "$CataData_SectorId = $sectorId AND $CatData_CategoryId = $catId");
   }
 
+  //Get the offline list from the audit data table
+  Future<List<Map>> getOfflineData(String compId,String locId,String auditId) async{
+    Database? db = await instance.database;
+    return await db
+        .rawQuery("Select $Company_CompanyName,$Location_LocationName ,$Audit_Auditname from $_auditData"
+        "inner join $_companyDetails"
+        "inner join $_locationDetails"
+        "inner join $_auditDetails"
+        "where $CompanyID = $compId AND $LocationID = $locId AND $AudID = $auditId");
+  }
+
   //Insert the user table
   Future<int> insert(Map<String, dynamic> row) async {
     Database? db = await instance.database;

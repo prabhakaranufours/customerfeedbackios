@@ -88,6 +88,8 @@ class _HomeScreenState extends State<HomeScreen> {
       //Store the locationId in sharedPreference
       SharedPreferencesHelper.setPrefString(
           SharedPreferencesHelper.LOCATION_ID, locationId);
+      SharedPreferencesHelper.setPrefString(
+          SharedPreferencesHelper.LOCATION_NAME, locationText);
 
       feedbackText="Select Feedback";
       feedbackId='';
@@ -100,6 +102,8 @@ class _HomeScreenState extends State<HomeScreen> {
       feedbackId = id;
       SharedPreferencesHelper.setPrefString(
           SharedPreferencesHelper.FEEDBACK_ID, feedbackId);
+      SharedPreferencesHelper.setPrefString(
+          SharedPreferencesHelper.FEEDBACK_NAME, feedbackText);
     });
   }
 

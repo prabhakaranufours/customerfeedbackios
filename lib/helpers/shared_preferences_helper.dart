@@ -15,7 +15,9 @@ class SharedPreferencesHelper {
   static final String SBU_ID = "SBU_ID";
   static final String SBU_NAME = "SBU_NAME";
   static final String LOCATION_ID = "LOCATION_ID";
+  static final String LOCATION_NAME = "LOCATION_NAME";
   static final String FEEDBACK_ID = "FEEDBACK_ID";
+  static final String FEEDBACK_NAME = "FEEDBACK_NAME";
   static final String SECTOR_ID = "SECTOR_ID";
   static final String CATEGORY_ID = "CATEGORY_ID";
   static final String AUDIT_ID = "AUDIT_ID";
