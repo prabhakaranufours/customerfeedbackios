@@ -27,7 +27,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 //Get LoginDetails
-void api(BuildContext context,String emailId,String pwd) async {
+void api(BuildContext context, String emailId, String pwd) async {
   // Utils.showLoader(context);
   var email = emailId;
   var password = pwd;
@@ -92,7 +92,7 @@ Future<void> createFolderInAppDocDir(String folderName) async {
       //if folder already exists return path
     } else {
       //if folder not exists create folder and then return its path
-          await _appDocDirFolder.create(recursive: true);
+      await _appDocDirFolder.create(recursive: true);
     }
   }
 }
@@ -143,8 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
     get();
   }
 
-
-  get() async{
+  get() async {
     var email = await SharedPreferencesHelper.getPrefString(
         SharedPreferencesHelper.USER_EMAIL, '');
     var pwd = await SharedPreferencesHelper.getPrefString(
@@ -247,15 +246,27 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(height: 25),
                           CustomButton(
                             buttonText: 'LOGIN',
-                            onPressed: () => {
-                              if(emailController.text != "" && passwordController.text!= ""){
-
-                                api(context, emailController.text,
-                                    passwordController.text),
-                              }else{
-                                //Show the alert dialog for enter details
-                                Utils.showMessage(context, "Please Enter the fields")
-                              }
+                            onPressed: () async => {
+                              if (emailController.text != "" &&
+                                  passwordController.text != "")
+                                {
+                                  if (await isNetConnected())
+                                    {
+                                      api(context, emailController.text,
+                                          passwordController.text),
+                                    }
+                                  else
+                                    {
+                                      Utils.showMessage(
+                                          context, "Please check Internet")
+                                    }
+                                }
+                              else
+                                {
+                                  //Show the alert dialog for enter details
+                                  Utils.showMessage(
+                                      context, "Please Enter the fields")
+                                }
                             },
                           ),
                           SizedBox(height: 10),

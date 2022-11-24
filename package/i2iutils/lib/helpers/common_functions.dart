@@ -19,11 +19,11 @@ Future<bool> isNetConnected() async {
     } else {
       // showToastMsg('Check Your Internet Connection',
       //     title: 'Network Error', background: colorPrimary);
-      showToastMsg('Check your internet connection');
+      // showToastMsg('Check your internet connection');
       return false;
     }
   } catch (_) {
-    showToastMsg('Check your internet connection');
+    // showToastMsg('Check your internet connection');
     // showToastMsg('Check Your Internet Connection',
     //     title: 'Network Error', background: colorPrimary);
     return false;
