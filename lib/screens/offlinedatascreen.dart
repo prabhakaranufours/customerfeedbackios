@@ -1,4 +1,5 @@
 import 'package:customerfeedbackios/database/database_helper.dart';
+import 'package:customerfeedbackios/helpers/colors.dart';
 import 'package:customerfeedbackios/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -13,36 +14,28 @@ class OfflineDataScreen extends StatefulWidget {
 
 class _OfflineDataScreenState extends State<OfflineDataScreen> {
 
-  String auditId = "";
-  String companyId = "";
-  String locationId = "";
+  List<Map> offlineList = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    // get();
+    get();
   }
 
   void get() async{
 
-    auditId = await SharedPreferencesHelper.getPrefString(
-        SharedPreferencesHelper.FEEDBACK_ID, '');
-    companyId = await SharedPreferencesHelper.getPrefString(
-        SharedPreferencesHelper.COMPANY_ID, '');
-    locationId = await SharedPreferencesHelper.getPrefString(
-        SharedPreferencesHelper.LOCATION_ID, '');
-
-    await DatabaseHelper.instance.getOfflineData(companyId,locationId,auditId);
+    offlineList =  await DatabaseHelper.instance.getOfflineData();
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: customAppBar(context, title: Text('Offline Data')),
+        appBar: customAppBar(context, title: Text('Offline Data'),backgroundColor: primaryDark),
         body: Container(
           child: ListView.builder(
-            itemCount: 10,
+            itemCount: offlineList.length,
             itemBuilder: (context, index) {
               return Card(
                 margin: EdgeInsets.all(3),
@@ -53,9 +46,9 @@ class _OfflineDataScreenState extends State<OfflineDataScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("I2ISoftwares - Bangalore"),
-                        Text("Covid Feedback"),
-                        Text("Bangalore"),
+                        Text(offlineList[index]["CompanyName"]),
+                        Text(offlineList[index]["auditname"]),
+                        Text(offlineList[index]["LocationName"]),
                       ],
                     ),
                     Column(

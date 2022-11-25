@@ -619,14 +619,11 @@ class DatabaseHelper {
   }
 
   //Get the offline list from the audit data table
-  Future<List<Map>> getOfflineData(String compId,String locId,String auditId) async{
+  Future<List<Map>> getOfflineData() async {
     Database? db = await instance.database;
-    return await db
-        .rawQuery("Select $Company_CompanyName,$Location_LocationName ,$Audit_Auditname from $_auditData"
-        "inner join $_companyDetails"
-        "inner join $_locationDetails"
-        "inner join $_auditDetails"
-        "where $CompanyID = $compId AND $LocationID = $locId AND $AudID = $auditId");
+    debugPrint("Select CompanyName, LocationName, auditname,auditData.auditid  from auditData left join companyDetails  on companyDetails.CompanyID = auditData.companyid  left join auditDetails on auditDetails.auditid = auditData.auditid   left join locationDetails on locationDetails.LocationID= auditData.locationid group by auditData.auditid");
+    return await db.rawQuery(
+        "Select CompanyName, LocationName, auditname,auditData.auditid  from auditData left join companyDetails  on companyDetails.CompanyID = auditData.companyid  left join auditDetails on auditDetails.auditid = auditData.auditid   left join locationDetails on locationDetails.LocationID= auditData.locationid group by auditData.auditid");
   }
 
   //Insert the user table
