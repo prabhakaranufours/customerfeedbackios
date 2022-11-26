@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:customerfeedbackios/database/database_helper.dart';
 import 'package:customerfeedbackios/helpers/utils.dart';
+import 'package:customerfeedbackios/screens/loginscreen.dart';
 import 'package:flutter/material.dart';
 
 import '../helpers/colors.dart';
@@ -41,9 +42,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Timer? timer;
   int count = 0;
 
-
-
-
   //After click the list item in sbu then set the value in text
   void setSbuData(String value, String id) {
     setState(() {
@@ -54,12 +52,12 @@ class _HomeScreenState extends State<HomeScreen> {
       SharedPreferencesHelper.setPrefString(
           SharedPreferencesHelper.SBU_NAME, sbuText);
 
-      companyText="Select Company";
-      companyId='';
-      locationText="Select Location";
-      locationId='';
-      feedbackText="Select Feedback";
-      feedbackId='';
+      companyText = "Select Company";
+      companyId = '';
+      locationText = "Select Location";
+      locationId = '';
+      feedbackText = "Select Feedback";
+      feedbackId = '';
     });
   }
 
@@ -73,11 +71,10 @@ class _HomeScreenState extends State<HomeScreen> {
       SharedPreferencesHelper.setPrefString(
           SharedPreferencesHelper.COMPANY_NAME, companyText);
 
-      locationText="Select Location";
-      locationId='';
-      feedbackText="Select Feedback";
-      feedbackId='';
-
+      locationText = "Select Location";
+      locationId = '';
+      feedbackText = "Select Feedback";
+      feedbackId = '';
     });
   }
 
@@ -91,8 +88,8 @@ class _HomeScreenState extends State<HomeScreen> {
       SharedPreferencesHelper.setPrefString(
           SharedPreferencesHelper.LOCATION_NAME, locationText);
 
-      feedbackText="Select Feedback";
-      feedbackId='';
+      feedbackText = "Select Feedback";
+      feedbackId = '';
     });
   }
 
@@ -319,8 +316,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 _getFeedback(
                                     locationDetails[index]["sectorid"]);
                                 //SectorId store in sharedPreference
-                                SharedPreferencesHelper.setPrefString(SharedPreferencesHelper.SECTOR_ID,
-                                    locationDetails[index]["sectorid"] );
+                                SharedPreferencesHelper.setPrefString(
+                                    SharedPreferencesHelper.SECTOR_ID,
+                                    locationDetails[index]["sectorid"]);
 
                                 Navigator.of(context).pop();
                                 // _getLocation();
@@ -416,24 +414,29 @@ class _HomeScreenState extends State<HomeScreen> {
         });
   }
 
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     checkCount();
+    setCount();
   }
 
   //Timer used for count show
-  void  checkCount() {
-    timer= Timer.periodic(Duration(seconds: 10), (t) async{
-      count = (await DatabaseHelper.instance.getAuditDataTableCount())[0]["count"] ?? 0;
-      setState(() {});
-      if(count == 0){
-        timer?.cancel();
-      }
+  void checkCount() {
+    timer = Timer.periodic(Duration(seconds: 10), (t) async {
+      setCount();
     });
+  }
 
+  //This for timer
+  setCount() async {
+    count = (await DatabaseHelper.instance.getAuditDataTableCount())[0]
+            ["count"] ?? 0;
+    setState(() {});
+    if (count == 0) {
+      timer?.cancel();
+    }
   }
 
   @override
@@ -442,7 +445,6 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
     timer?.cancel();
   }
-
 
   @override
   void didChangeDependencies() async {
@@ -507,13 +509,31 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Colors.white,
                         shape: BoxShape.circle,
                       ),
-                      child: Text('$count', style: TextStyle(color: Colors.black),textAlign: TextAlign.center,),
+                      child: Text(
+                        '$count',
+                        style: TextStyle(color: Colors.black),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   )
                 ],
               ),
             ),
-            const SizedBox(width: 12,)
+            const SizedBox(
+              width: 12,
+            ),
+            InkWell(
+              onTap: () async{
+                await SharedPreferencesHelper.setPrefBool(
+                    SharedPreferencesHelper.IS_LOGIN,false);
+                Navigator.pushAndRemoveUntil(context,MaterialPageRoute(
+                    builder: (context) => LoginScreen()
+                ),(Route<dynamic> route) =>false);
+              },
+                child: Icon(Icons.logout)),
+            const SizedBox(
+              width: 12,
+            )
           ],
         ),
         body: SingleChildScrollView(
@@ -536,8 +556,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                       elevation: 7,
-                      foregroundColor:
-                          Colors.black, // foreground (text) color
+                      foregroundColor: Colors.black, // foreground (text) color
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -577,8 +596,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                       elevation: 7,
-                      foregroundColor:
-                          Colors.black, // foreground (text) color
+                      foregroundColor: Colors.black, // foreground (text) color
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -618,8 +636,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                       elevation: 7,
-                      foregroundColor:
-                          Colors.black, // foreground (text) color
+                      foregroundColor: Colors.black, // foreground (text) color
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -659,8 +676,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                       elevation: 7,
-                      foregroundColor:
-                          Colors.black, // foreground (text) color
+                      foregroundColor: Colors.black, // foreground (text) color
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -710,9 +726,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       }
                     else
                       // {_showMessage(context, "Please select all items")}
-                    {
-                      Utils.showMessage(context, "Please select all items")
-                    }
+                      {Utils.showMessage(context, "Please select all items")}
                   },
                 ),
               ],

@@ -1,10 +1,10 @@
-import 'package:customerfeedbackios/database/database_helper.dart';
-
-import '../api/customerfeedback_api_call.dart';
-
-typedef onCompleteFunc = Function();
-typedef onErrorFunc = Function(String);
-
+// import 'package:customerfeedbackios/database/database_helper.dart';
+//
+// import '../api/customerfeedback_api_call.dart';
+//
+// typedef onCompleteFunc = Function();
+// typedef onErrorFunc = Function(String);
+//
 // class SyncData {
 //   final Map<String, dynamic> extraParams;
 //   final onCompleteFunc onComplete;

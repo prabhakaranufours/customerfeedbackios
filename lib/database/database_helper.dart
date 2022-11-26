@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:customerfeedbackios/models/auditdetails.dart';
 import 'package:customerfeedbackios/models/categorydetails.dart';
 import 'package:customerfeedbackios/models/companydetails.dart';
+import 'package:customerfeedbackios/models/feedbackimages.dart';
 import 'package:customerfeedbackios/models/locationdetails.dart';
 import 'package:customerfeedbackios/models/loginresponse.dart';
 import 'package:customerfeedbackios/models/questiondetails.dart';
@@ -382,7 +383,7 @@ class DatabaseHelper {
   Future<int> userinsert(List<UserDetails>? userDetails) async {
     Database? db = await instance.database;
     userDetails?.forEach((element) async {
-      await db.insert(_userDetails, element.toJson());
+      await db?.insert(_userDetails, element.toJson());
     });
     return 1;
   }
@@ -391,14 +392,14 @@ class DatabaseHelper {
   Future<int> sbuInsert(List<SBUTable>? sbuDetails) async {
     Database? db = await instance.database;
     sbuDetails?.forEach((element) async {
-      await db.insert(_sbuDetails, element.toJson());
+      await db?.insert(_sbuDetails, element.toJson());
     });
     return 1;
   }
 
   //Insert Company Table
   Future<int> companyInsert(List<CompanyTable>? compyDetails) async {
-    Database? db = await instance.database;
+    Database db = await instance.database;
     compyDetails?.forEach((element) async {
       await db.insert(_companyDetails, element.toJson());
     });
@@ -409,7 +410,7 @@ class DatabaseHelper {
   Future<int> locationInsert(List<LocationTable>? locationDetails) async {
     Database? db = await instance.database;
     locationDetails?.forEach((element) async {
-      await db.insert(_locationDetails, element.toJson());
+      await db?.insert(_locationDetails, element.toJson());
     });
     return 1;
   }
@@ -418,7 +419,7 @@ class DatabaseHelper {
   Future<int> auditInsert(List<AuditTable>? auditDetails) async {
     Database? db = await instance.database;
     auditDetails?.forEach((element) async {
-      await db.insert(_auditDetails, element.toJson());
+      await db?.insert(_auditDetails, element.toJson());
     });
     return 1;
   }
@@ -427,7 +428,7 @@ class DatabaseHelper {
   Future<int> categoryInsert(List<CategoryTable>? categoryDetails) async {
     Database? db = await instance.database;
     categoryDetails?.forEach((element) async {
-      await db.insert(_categoryDetails, element.toJson());
+      await db?.insert(_categoryDetails, element.toJson());
     });
     return 1;
   }
@@ -436,7 +437,7 @@ class DatabaseHelper {
   Future<int> questionInsert(List<QuestionTable>? questionDetails) async {
     Database? db = await instance.database;
     questionDetails?.forEach((element) async {
-      await db.insert(_questionDetails, element.toJson());
+      await db?.insert(_questionDetails, element.toJson());
     });
     return 1;
   }
@@ -445,7 +446,7 @@ class DatabaseHelper {
   Future<int> answerInsert(List<ScoreTable>? scoreDetails) async {
     Database? db = await instance.database;
     scoreDetails?.forEach((element) async {
-      await db.insert(_scoreDetails, element.toJson());
+      await db?.insert(_scoreDetails, element.toJson());
     });
     return 1;
   }
@@ -454,7 +455,7 @@ class DatabaseHelper {
   Future<int> categoryDataInsert(List<Categorydata> qnsDetails) async {
     Database? db = await instance.database;
     qnsDetails?.forEach((element) async {
-      await db.insert(_categoryData, element.toJson());
+      await db?.insert(_categoryData, element.toJson());
     });
     return 1;
   }
@@ -462,7 +463,7 @@ class DatabaseHelper {
   //Insert AuditData Table
   Future<int> auditDataInsert(List<Auditdata> auditDetails) async {
     Database? db = await instance.database;
-    auditDetails?.forEach((element) async {
+    auditDetails.forEach((element) async {
       await db.insert(_auditData, element.toJson());
     });
     return 1;
@@ -475,6 +476,16 @@ class DatabaseHelper {
       print(element.toJson());
       await db.update(_categoryData, element.toJson(),
           where: 'id = ?', whereArgs: [element.id]);
+    });
+    return 1;
+  }
+
+  //Feedback Images insert
+  Future<int> feedbackImagesInsert(List<FeedbackImages> feedbackImagesList) async{
+    Database? db = await instance.database;
+    feedbackImagesList.forEach((element) async {
+      print(element.toJson());
+      await db.insert(_feedbackImages, element.toJson(),);
     });
     return 1;
   }

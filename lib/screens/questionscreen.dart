@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:ffi';
 import 'package:customerfeedbackios/models/categorydata.dart';
+import 'package:customerfeedbackios/models/feedbackimages.dart';
 import 'package:customerfeedbackios/widgets/MyRadioOptions.dart';
 import 'package:flutter/material.dart';
+import 'package:i2iutils/helpers/common_functions.dart';
 import 'package:i2iutils/helpers/image_picker_helper.dart';
 import 'package:i2iutils/widgets/boxedittext.dart';
 import '../database/database_helper.dart';
@@ -42,7 +44,14 @@ class _QuestionScreenState extends State<QuestionScreen> {
   };
 
   List<Categorydata> qnsDetails = [];
+  List<FeedbackImages> feedbackImageList = [];
   List<Map> scoreDetails = [];
+  String categoryId = "";
+  String auditId = "";
+  String companyId = "";
+  String locationId = "";
+  String sbuId = "";
+
   var q;
 
   @override
@@ -70,9 +79,34 @@ class _QuestionScreenState extends State<QuestionScreen> {
     await DatabaseHelper.instance.categoryDetailsPercentageUpdate(
         percentage.toString(), categoryId.toString());
 
+    var deviceId = await getDeviceUniqueId();
+
+
+    //Insert images in feedback image table
+    feedbackImageList =
+
+        qnsDetails
+        .where((element) => element.image?.isNotEmpty ?? false)
+        .map((e) => FeedbackImages(
+            auditId: auditId,
+            categoryid: categoryId,
+            companyId: companyId,
+            deviceId: deviceId,
+            image: e.image,
+            imageGUID: getCustomUniqueId(),
+            imageName: '${getCustomUniqueId()}.png',
+            locationId: locationId,
+            sbuId: sbuId))
+        .toList();
+
+    debugPrint(feedbackImageList.toString());
+    await DatabaseHelper.instance.feedbackImagesInsert(feedbackImageList);
+
     if (isUpdate) {
+
       await DatabaseHelper.instance.categoryDataUpdate(qnsDetails);
     } else {
+
       await DatabaseHelper.instance.categoryDataInsert(qnsDetails);
     }
   }
@@ -80,15 +114,15 @@ class _QuestionScreenState extends State<QuestionScreen> {
   void get() async {
     // debugPrint('did changes');
 
-    var categoryId = await SharedPreferencesHelper.getPrefString(
+    categoryId = await SharedPreferencesHelper.getPrefString(
         SharedPreferencesHelper.CATEGORY_ID, '');
-    var auditId = await SharedPreferencesHelper.getPrefString(
+    auditId = await SharedPreferencesHelper.getPrefString(
         SharedPreferencesHelper.AUDIT_ID, '');
-    var sbuId = await SharedPreferencesHelper.getPrefString(
+    sbuId = await SharedPreferencesHelper.getPrefString(
         SharedPreferencesHelper.SBU_ID, '');
-    var companyId = await SharedPreferencesHelper.getPrefString(
+    companyId = await SharedPreferencesHelper.getPrefString(
         SharedPreferencesHelper.COMPANY_ID, '');
-    var locationId = await SharedPreferencesHelper.getPrefString(
+    locationId = await SharedPreferencesHelper.getPrefString(
         SharedPreferencesHelper.LOCATION_ID, '');
     var sectorId = await SharedPreferencesHelper.getPrefString(
         SharedPreferencesHelper.SECTOR_ID, '');
@@ -228,8 +262,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                               ),
                               InkWell(
                                 onTap: () async {
-                                  var image = await getImage(
-                                    context,
+                                  var image = await getImage(context,
                                       canDrawDateTime: true,
                                       returnType: ImageReturnType.base64);
                                   if (image != null)

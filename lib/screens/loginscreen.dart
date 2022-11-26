@@ -29,8 +29,11 @@ class LoginScreen extends StatefulWidget {
 //Get LoginDetails
 void api(BuildContext context, String emailId, String pwd) async {
   // Utils.showLoader(context);
+
+  //Take the user to login
   var email = emailId;
   var password = pwd;
+
   Loginresponse? response =
       await CustomerFeedbackApiCall().checkLogin(email, password);
   if (response != null) {
@@ -46,6 +49,8 @@ void api(BuildContext context, String emailId, String pwd) async {
       await SharedPreferencesHelper.setPrefString(
           SharedPreferencesHelper.USER_ID,
           response.returnData.userDetails![0].userID.toString());
+      await SharedPreferencesHelper.setPrefBool(
+          SharedPreferencesHelper.IS_LOGIN, true);
       await SharedPreferencesHelper.setPrefString(
           SharedPreferencesHelper.USER_NAME,
           response.returnData.userDetails![0].userFirstName.toString());

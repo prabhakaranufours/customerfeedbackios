@@ -99,7 +99,8 @@ Future<dynamic> getDeviceOs() async {
 
 String getCustomUniqueId() {
   var uuid = const Uuid();
-  return uuid.v1();
+  // return uuid.v1();
+  return uuid.v4();
 }
 
 checkTimeSetting(BuildContext context) async {

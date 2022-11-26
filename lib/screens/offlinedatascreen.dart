@@ -34,40 +34,60 @@ class _OfflineDataScreenState extends State<OfflineDataScreen> {
     return Scaffold(
         appBar: customAppBar(context, title: Text('Offline Data'),backgroundColor: primaryDark),
         body: Container(
-          child: ListView.builder(
+          margin: EdgeInsets.only(top: 10),
+          child: ListView.separated(
             itemCount: offlineList.length,
             itemBuilder: (context, index) {
-              return Card(
-                margin: EdgeInsets.all(3),
-                elevation: 1,
+              return Container(
+                padding: EdgeInsets.all(5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(offlineList[index]["CompanyName"]),
-                        Text(offlineList[index]["auditname"]),
-                        Text(offlineList[index]["LocationName"]),
+                        Row(
+                          children: [
+                            Icon(Icons.location_city,size: 20),
+                            SizedBox(width: 8,),
+                            Text(offlineList[index]["CompanyName"],style: TextStyle(fontWeight: FontWeight.bold),),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Icon(Icons.pin_drop,size: 20),
+                            SizedBox(width: 8,),
+                            Text(offlineList[index]["LocationName"],style: TextStyle(fontWeight: FontWeight.w500),),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Icon(Icons.ac_unit,size: 20),
+                            SizedBox(width: 8,),
+                            Text(offlineList[index]["auditname"],),
+                          ],
+                        ),
                       ],
                     ),
                     Column(
                       children: [
                         Container(
-                          padding: EdgeInsets.all(6),
+                          height: 30,
+                          width: 30,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                            color: Colors.orange,
+                            color: primaryDark,
+                            shape: BoxShape.circle,
                           ),
-                          child: Text("00"),
+                          child: Center(child: Text("0",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)),
                         ),
-                        Text("Image"),
+                        Text("Image",style: TextStyle(fontSize: 10),),
                       ],
                     ),
                   ],
                 ),
               );
-            },
+
+            }, separatorBuilder: (BuildContext context, int index) => Divider(),
           ),
         ));
   }
