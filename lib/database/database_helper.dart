@@ -481,11 +481,15 @@ class DatabaseHelper {
   }
 
   //Feedback Images insert
-  Future<int> feedbackImagesInsert(List<FeedbackImages> feedbackImagesList) async{
+  Future<int> feedbackImagesInsert(
+      List<FeedbackImages> feedbackImagesList) async {
     Database? db = await instance.database;
     feedbackImagesList.forEach((element) async {
       print(element.toJson());
-      await db.insert(_feedbackImages, element.toJson(),);
+      await db.insert(
+        _feedbackImages,
+        element.toJson(),
+      );
     });
     return 1;
   }
@@ -568,6 +572,12 @@ class DatabaseHelper {
     return await db.rawQuery("Select * from $_categoryData");
   }
 
+  // //Get the categoryData with parameters
+  // Future<List<Map>> getCategoryDetailsWithParameters() async{
+  //   Database? db = await instance.database;
+  //   return await db.rawQuery("Select * from $_categoryData");
+  // }
+
   //Get the count of audit Data table
   Future<List<Map>> getAuditDataTableCount() async {
     Database? db = await instance.database;
@@ -632,7 +642,8 @@ class DatabaseHelper {
   //Get the offline list from the audit data table
   Future<List<Map>> getOfflineData() async {
     Database? db = await instance.database;
-    debugPrint("Select CompanyName, LocationName, auditname,auditData.auditid  from auditData left join companyDetails  on companyDetails.CompanyID = auditData.companyid  left join auditDetails on auditDetails.auditid = auditData.auditid   left join locationDetails on locationDetails.LocationID= auditData.locationid group by auditData.auditid");
+    debugPrint(
+        "Select CompanyName, LocationName, auditname,auditData.auditid  from auditData left join companyDetails  on companyDetails.CompanyID = auditData.companyid  left join auditDetails on auditDetails.auditid = auditData.auditid   left join locationDetails on locationDetails.LocationID= auditData.locationid group by auditData.auditid");
     return await db.rawQuery(
         "Select CompanyName, LocationName, auditname,auditData.auditid  from auditData left join companyDetails  on companyDetails.CompanyID = auditData.companyid  left join auditDetails on auditDetails.auditid = auditData.auditid   left join locationDetails on locationDetails.LocationID= auditData.locationid group by auditData.auditid");
   }
@@ -696,5 +707,11 @@ class DatabaseHelper {
   Future<int> scoreDelete() async {
     Database db = await instance.database;
     return await db.delete(_scoreDetails);
+  }
+
+  //Delete FeedbackImages data using imageGUID
+  Future<int> ImageDelete(String? guid) async {
+    Database db = await instance.database;
+    return await db.delete(_feedbackImages,where: '$FeedbackImage_imageGUID = ?',whereArgs: [guid]);
   }
 }

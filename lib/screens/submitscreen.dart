@@ -1,14 +1,17 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:customerfeedbackios/database/database_helper.dart';
 import 'package:customerfeedbackios/screens/homescreen.dart';
 import 'package:flutter/material.dart';
+import 'package:i2iutils/helpers/common_functions.dart';
 import 'package:signature/signature.dart';
 
 import '../helpers/colors.dart';
 import '../helpers/shared_preferences_helper.dart';
 import '../helpers/utils.dart';
 import '../models/auditdata.dart';
+import '../models/categorydata.dart';
 import '../widgets/app_bar.dart';
 import '../widgets/button.dart';
 import '../widgets/textfield.dart';
@@ -47,6 +50,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
   String userName = "";
 
   List<Auditdata> auditDataDetails = [];
+  List<Categorydata> categoryDetails = [];
 
   final SignatureController _controller = SignatureController(
     penStrokeWidth: 1,
@@ -111,7 +115,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
 
   //Insert in the AuditData table
 
-  void storeInDb() {
+  void storeInDb() async{
     if (auditeeNameController.text != "" &&
         auditorNameController.text != "" &&
         aomController.text != "" &&
@@ -119,17 +123,21 @@ class _SubmitScreenState extends State<SubmitScreen> {
         clientPersonNameController.text != "" &&
         siteNameController.text != "") {
 
-      auditDataDetails = [Auditdata(
+      var deviceId = await getDeviceUniqueId();
+      var catData = await DatabaseHelper.instance.getCategoryDetailsWithParameters(
+          sbuId,companyId,locationId,auditId,sectorId,categoryId);
+
+      auditDataDetails = [ Auditdata(
           strClientfeedback: "",
           strAdditionalinformatin: "",
-          clientsign: "",
-          auditsign: "",
-          auditdate: "",
+          clientsign: base64Encode((await repSignController.toPngBytes())?.toList() ?? []),
+          auditsign: base64Encode((await signController.toPngBytes()) ?.toList() ?? []),
+          auditdate: getDate(),
           userid: userId,
-          guid: "",
-          deviceid: "",
-          uploadguid: "",
-          uploadfilename: "",
+          guid: getCustomUniqueId(),
+          deviceid: deviceId,
+          uploadguid: getCustomUniqueId(),
+          uploadfilename: getCustomUniqueId(),
           auditeename: auditeeNameController.text,
           auditorname: auditorNameController.text,
           oamname: aomController.text,
@@ -138,7 +146,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
           ssano: "",
           sitename: siteNameController.text,
           clientname: "",
-          xmldata: "",
+          xmldata: xmlData(catData),
           categoryid: categoryId,
           auditid: auditId,
           sectorid: sectorId,
@@ -149,7 +157,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
           isfeedback: "")];
 
       // var auditDataJSON = auditData.toJson();
-      // debugPrint('AUidtDataJSON $auditDataJSON');
+      debugPrint('AUidtDataJSON $auditDataDetails');
       //Take the object to set in db
       DatabaseHelper.instance.auditDataInsert(auditDataDetails);
       Navigator.pushAndRemoveUntil(context,MaterialPageRoute(
@@ -159,6 +167,14 @@ class _SubmitScreenState extends State<SubmitScreen> {
     } else {
       Utils.showMessage(context, "Please Enter the fields");
     }
+  }
+
+  xmlData(List<Map<dynamic, dynamic>> catData){
+
+    return catData.map((e) =>
+    "<facilityaudit auditid=${e['auditid']} categoryid=${e['categoryid']}  questionid=${e['questionid']} scoreid=${e['scoreid']} uploadfilename= ${e['uploadfilename'] ?? ""} uploadfileGUID=${e['uploadfilename'] ?? ""} remarks=${e['remarks']}>"
+    ).toList().join(',');
+
   }
 
   @override

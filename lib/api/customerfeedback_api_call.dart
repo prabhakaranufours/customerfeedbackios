@@ -203,10 +203,10 @@ class CustomerFeedbackApiCall {
 
 
   //Submit AuditData
-  Future<InsertFeedbackResponse?> submitFeedback(Auditdata auditData) async {
+  Future<InsertFeedbackResponse?> submitFeedback(Auditdata element) async {
 
     print('${_dio.options.baseUrl} $insertFeedbackApi');
-    final response = await _dio.post(insertFeedbackApi, data: auditData.toJson());
+    final response = await _dio.post(insertFeedbackApi, data: element);
 
     if ((response.statusCode ?? -1) <= 205) {
       return InsertFeedbackResponse.fromJson(response.data);
@@ -217,9 +217,9 @@ class CustomerFeedbackApiCall {
   }
 
   //Submit Images
-  Future<UploadImagesResponse?> uploadImages(InsertUploadImages insertUploadImages) async{
+  Future<UploadImagesResponse?> uploadImages(InsertUploadImages element) async{
     print('${_dio.options.baseUrl} $uploadImagesApi');
-    final response =  await _dio.post(uploadImagesApi,data: insertUploadImages.toJson());
+    final response =  await _dio.post(uploadImagesApi,data: jsonEncode(element));
 
     if((response.statusCode ?? -1) <= 205){
       return UploadImagesResponse.fromJson(response.data);

@@ -4,6 +4,7 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:customerfeedbackios/database/database_helper.dart';
 import 'package:customerfeedbackios/helpers/utils.dart';
 import 'package:customerfeedbackios/screens/loginscreen.dart';
+import 'package:customerfeedbackios/utils/sync_data.dart';
 import 'package:flutter/material.dart';
 
 import '../helpers/colors.dart';
@@ -420,6 +421,8 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     checkCount();
     setCount();
+
+    pushOfflineData();
   }
 
   //Timer used for count show
@@ -432,7 +435,8 @@ class _HomeScreenState extends State<HomeScreen> {
   //This for timer
   setCount() async {
     count = (await DatabaseHelper.instance.getAuditDataTableCount())[0]
-            ["count"] ?? 0;
+            ["count"] ??
+        0;
     setState(() {});
     if (count == 0) {
       timer?.cancel();
@@ -523,13 +527,14 @@ class _HomeScreenState extends State<HomeScreen> {
               width: 12,
             ),
             InkWell(
-              onTap: () async{
-                await SharedPreferencesHelper.setPrefBool(
-                    SharedPreferencesHelper.IS_LOGIN,false);
-                Navigator.pushAndRemoveUntil(context,MaterialPageRoute(
-                    builder: (context) => LoginScreen()
-                ),(Route<dynamic> route) =>false);
-              },
+                onTap: () async {
+                  await SharedPreferencesHelper.setPrefBool(
+                      SharedPreferencesHelper.IS_LOGIN, false);
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                      (Route<dynamic> route) => false);
+                },
                 child: Icon(Icons.logout)),
             const SizedBox(
               width: 12,
@@ -735,5 +740,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  //Push offline data from audit data table
+  void pushOfflineData() {
+    SyncData(() {}, (val) {}).execute();
   }
 }

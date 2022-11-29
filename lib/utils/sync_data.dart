@@ -1,73 +1,83 @@
-// import 'package:customerfeedbackios/database/database_helper.dart';
-//
-// import '../api/customerfeedback_api_call.dart';
-//
-// typedef onCompleteFunc = Function();
-// typedef onErrorFunc = Function(String);
-//
-// class SyncData {
-//   final Map<String, dynamic> extraParams;
-//   final onCompleteFunc onComplete;
-//   final onErrorFunc errorFunc;
-//
-//   // SyncData(this.checklistDao, this.logsheetDao, this.extraParams,
-//   //     this.onComplete, this.errorFunc);
-//
-//   SyncData(this.extraParams,
-//       this.onComplete, this.errorFunc);
-//
-//   execute() async {
-//     // var feedback = await checklistDao.getAllChecklistTransaction();
-//     var feedback = await DatabaseHelper.instance.getAuditData();
-//     var images = await DatabaseHelper.instance.getImageData();
-//
-//     //Images
-//     if (images.isNotEmpty) {
-//       images.forEach((element) async {
-//         var params = element.toJson();
-//         params.addAll(extraParams);
-//
-//         var response = await CustomerFeedbackApiCall().uploadImages(params);
-//
-//         if (response != null) {
-//           if (response.status!) {
-//             // var guid=response['result']['deviceguid'];
-//             // checklistDao.updateChecklistTransaction(element.guid);
-//             errorFunc('Upload Failed');
-//           } else {
-//             errorFunc('Upload Failed');
-//           }
-//         } else {
-//           errorFunc('Something wrong');
-//         }
-//       });
-//     }
-//
-//     checklistDao.updateIsSyncing();
-//
-//     //Feedback
-//     if (feedback.isNotEmpty) {
-//       feedback.forEach((element) async {
-//         var params = element.toJson();
-//         params.addAll(extraParams);
-//
-//         var response = await CustomerFeedbackApiCall().submitFeedback(params);
-//         if (response != null) {
-//           if (response.status!) {
-//             // var guid=response['result']['deviceguid'];
-//             // logsheetDao.updateLogsheetTransaction(element.guid);
-//             errorFunc(response.message!);
-//           } else {
-//             errorFunc(response.message!);
-//           }
-//         } else {
-//           errorFunc('Something wrong');
-//         }
-//       });
-//     }
-//
-//     logsheetDao.updateIsSyncing();
-//
-//     onComplete();
-//   }
-// }
+import 'dart:convert';
+
+import 'package:customerfeedbackios/database/database_helper.dart';
+import 'package:customerfeedbackios/models/auditdata.dart';
+import 'package:customerfeedbackios/models/insertuploadimages.dart';
+import '../api/customerfeedback_api_call.dart';
+
+typedef onCompleteFunc = Function();
+typedef onErrorFunc = Function(String);
+
+List<InsertUploadImages> insertUploadImages = [];
+
+
+class SyncData {
+  final onCompleteFunc onComplete;
+  final onErrorFunc errorFunc;
+
+  SyncData(this.onComplete, this.errorFunc);
+
+  execute() async {
+    var feedback = await DatabaseHelper.instance.getAuditData();
+    var images = await DatabaseHelper.instance.getImageData();
+
+    insertUploadImages = (images as List)
+        .map((e) => InsertUploadImages(
+            deviceid: e['deviceId'], fileName: e['imageName'], guid: e['imageGUID'], strBase64: e['image']))
+        .toList();
+
+    //Images
+    if (insertUploadImages.isNotEmpty) {
+      insertUploadImages.forEach((element) async {
+        // var params = jsonEncode(element);
+        var response = await CustomerFeedbackApiCall().uploadImages(element);
+
+        if (response != null) {
+          if (response.status!) {
+            //Delete the image in feedback Images using guid
+            DatabaseHelper.instance.ImageDelete(response.guid);
+            errorFunc('Upload Failed');
+          } else {
+            errorFunc('Upload Failed');
+          }
+        } else {
+          errorFunc('Something wrong');
+        }
+      });
+    }
+
+
+    // List<Auditdata> auditDataList = [
+    //   Auditdata.fromJson(feedback)
+    // ];
+    //
+    //
+
+    //Feedback
+    if (feedback.isNotEmpty) {
+
+      List<Auditdata> auditDataList = feedback.map((e) => Auditdata.fromJson(e)).toList();
+
+
+      auditDataList.forEach((element) async {
+        // var params = element.toJson();
+        // params.addAll(extraParams);
+
+        var response = await CustomerFeedbackApiCall().submitFeedback(element);
+        if (response != null) {
+          if (response.status!) {
+            // var guid=response['result']['deviceguid'];
+            // logsheetDao.updateLogsheetTransaction(element.guid);
+            errorFunc(response.message!);
+          } else {
+            errorFunc(response.message!);
+          }
+        } else {
+          errorFunc('Something wrong');
+        }
+      });
+    }
+
+    onComplete();
+  }
+}
