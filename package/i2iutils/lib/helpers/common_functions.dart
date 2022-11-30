@@ -56,7 +56,7 @@ showToastMsg(String? msg,{
 //   ).show(Get.context!);
 // }
 
-String getDate({String format = 'dd/MM/yyyy', DateTime? dateTime}) {
+String getDate({String format = 'MM/dd/yyyy', DateTime? dateTime}) {
   return DateFormat(format).format(dateTime ?? DateTime.now());
 }
 

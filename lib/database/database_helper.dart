@@ -710,8 +710,15 @@ class DatabaseHelper {
   }
 
   //Delete FeedbackImages data using imageGUID
-  Future<int> ImageDelete(String? guid) async {
+  Future<int> imageDelete(String? guid) async {
     Database db = await instance.database;
-    return await db.delete(_feedbackImages,where: '$FeedbackImage_imageGUID = ?',whereArgs: [guid]);
+    return await db.delete(_feedbackImages,
+        where: '$FeedbackImage_imageGUID = ?', whereArgs: [guid]);
+  }
+
+  //Delete Feedback data after push to server using guid
+  Future<int> feedbackDelete(String guid) async {
+    Database db = await instance.database;
+    return await db.delete(_auditData,where: '$AuditData_guid = ?',whereArgs: [guid]);
   }
 }

@@ -46,6 +46,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
   String categoryId = "";
   String companyId = "";
   String locationId = "";
+  String locationName = "";
   String userId = "";
   String userName = "";
 
@@ -90,91 +91,71 @@ class _SubmitScreenState extends State<SubmitScreen> {
     );
   }
 
-  // Future<void> exportSVG(BuildContext context) async {
-  //   if (_controller.isEmpty) {
-  //     ScaffoldMessenger.of(context)
-  //         .showSnackBar(const SnackBar(content: Text('No content')));
-  //     return;
-  //   }
-  //
-  //   final SvgPicture data = _controller.toSVG()!;
-  //
-  //   await Navigator.of(context).push(
-  //     MaterialPageRoute<void>(
-  //       builder: (BuildContext context) {
-  //         return Scaffold(
-  //           appBar: AppBar(),
-  //           body: Center(
-  //             child: Container(color: Colors.grey[300], child: data),
-  //           ),
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
-
-  //Insert in the AuditData table
-
-  void storeInDb() async{
+  void storeInDb() async {
     if (auditeeNameController.text != "" &&
         auditorNameController.text != "" &&
         aomController.text != "" &&
         sbuNameController.text != "" &&
         clientPersonNameController.text != "" &&
         siteNameController.text != "") {
-
       var deviceId = await getDeviceUniqueId();
-      var catData = await DatabaseHelper.instance.getCategoryDetailsWithParameters(
-          sbuId,companyId,locationId,auditId,sectorId,categoryId);
+      var catData = await DatabaseHelper.instance
+          .getCategoryDetailsWithParameters(
+              sbuId, companyId, locationId, auditId, sectorId, categoryId);
 
-      auditDataDetails = [ Auditdata(
-          strClientfeedback: "",
-          strAdditionalinformatin: "",
-          clientsign: base64Encode((await repSignController.toPngBytes())?.toList() ?? []),
-          auditsign: base64Encode((await signController.toPngBytes()) ?.toList() ?? []),
-          auditdate: getDate(),
-          userid: userId,
-          guid: getCustomUniqueId(),
-          deviceid: deviceId,
-          uploadguid: getCustomUniqueId(),
-          uploadfilename: getCustomUniqueId(),
-          auditeename: auditeeNameController.text,
-          auditorname: auditorNameController.text,
-          oamname: aomController.text,
-          sbuname: sbuNameController.text,
-          clientperson: clientPersonNameController.text,
-          ssano: "",
-          sitename: siteNameController.text,
-          clientname: "",
-          xmldata: xmlData(catData),
-          categoryid: categoryId,
-          auditid: auditId,
-          sectorid: sectorId,
-          locationid: locationId,
-          companyid: companyId,
-          sbuid: sbuId,
-          observation: "",
-          isfeedback: "")];
+      auditDataDetails = [
+        Auditdata(
+            strClientfeedback: "",
+            strAdditionalinformatin: "",
+            clientsign: base64Encode(
+                (await repSignController.toPngBytes())?.toList() ?? []),
+            auditsign: base64Encode(
+                (await signController.toPngBytes())?.toList() ?? []),
+            auditdate: getDate(),
+            userid: userId,
+            guid: getCustomUniqueId(),
+            deviceid: deviceId,
+            uploadguid: getCustomUniqueId(),
+            uploadfilename: getCustomUniqueId(),
+            auditeename: auditeeNameController.text,
+            auditorname: auditorNameController.text,
+            oamname: aomController.text,
+            sbuname: sbuNameController.text,
+            clientperson: clientPersonNameController.text,
+            ssano: "",
+            sitename: siteNameController.text,
+            clientname: "",
+            xmldata: xmlData(catData),
+            categoryid: categoryId,
+            auditid: auditId,
+            sectorid: sectorId,
+            locationid: locationId,
+            companyid: companyId,
+            sbuid: sbuId,
+            observation: "",
+            isfeedback: "")
+      ];
 
       // var auditDataJSON = auditData.toJson();
       debugPrint('AUidtDataJSON $auditDataDetails');
       //Take the object to set in db
       DatabaseHelper.instance.auditDataInsert(auditDataDetails);
-      Navigator.pushAndRemoveUntil(context,MaterialPageRoute(
-          builder: (context) => HomeScreen()
-      ),(Route<dynamic> route) =>false);
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+          (Route<dynamic> route) => false);
       // Navigator.pop(context);
     } else {
       Utils.showMessage(context, "Please Enter the fields");
     }
   }
 
-  xmlData(List<Map<dynamic, dynamic>> catData){
-
-    return catData.map((e) =>
-    "<facilityaudit auditid=${e['auditid']} categoryid=${e['categoryid']}  questionid=${e['questionid']} scoreid=${e['scoreid']} uploadfilename= ${e['uploadfilename'] ?? ""} uploadfileGUID=${e['uploadfilename'] ?? ""} remarks=${e['remarks']}>"
-    ).toList().join(',');
-
+  xmlData(List<Map<dynamic, dynamic>> catData) {
+    return catData
+        .map((e) =>
+            "<facilityaudit auditid=${e['auditid']} categoryid=${e['categoryid']}  questionid=${e['questionid']} scoreid=${e['scoreid']} uploadfilename= ${e['uploadfilename'] ?? ""} uploadfileGUID=${e['uploadfilename'] ?? ""} remarks=${e['remarks']}>")
+        .toList()
+        .join(',');
   }
 
   @override
@@ -191,8 +172,6 @@ class _SubmitScreenState extends State<SubmitScreen> {
     get();
   }
 
-
-
   //We cannot write setstate in between didchangeDependencies so write seperate
   void get() async {
     sbuId = await SharedPreferencesHelper.getPrefString(
@@ -207,6 +186,8 @@ class _SubmitScreenState extends State<SubmitScreen> {
         SharedPreferencesHelper.COMPANY_ID, '');
     locationId = await SharedPreferencesHelper.getPrefString(
         SharedPreferencesHelper.LOCATION_ID, '');
+    locationName = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.LOCATION_NAME, '');
     userId = await SharedPreferencesHelper.getPrefString(
         SharedPreferencesHelper.USER_ID, '');
     userName = await SharedPreferencesHelper.getPrefString(
@@ -214,13 +195,19 @@ class _SubmitScreenState extends State<SubmitScreen> {
     sectorId = await SharedPreferencesHelper.getPrefString(
         SharedPreferencesHelper.SECTOR_ID, '');
 
+    //Set the default values for some fields
+    auditorNameController.text = userName;
+    clientPersonNameController.text = locationName;
+    sbuNameController.text = locationName;
+    aomController.text = userName;
+
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: ()async{
+      onWillPop: () async {
         //This for back functionality
         return false;
       },
@@ -256,6 +243,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                       BoxEditText(
                         placeholder: 'AUDITOR NAME',
                         controller: auditorNameController,
+                        readOnly: true,
                         prefixIcon: Padding(
                           padding: const EdgeInsets.all(12),
                           child: Image.asset(
@@ -295,6 +283,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                       BoxEditText(
                         placeholder: 'CLIENT PERSON NAME',
                         controller: clientPersonNameController,
+                        readOnly: true,
                         prefixIcon: Padding(
                           padding: const EdgeInsets.all(12),
                           child: Image.asset(
@@ -308,6 +297,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                       BoxEditText(
                         placeholder: 'SBU NAME',
                         controller: sbuNameController,
+                        readOnly: true,
                         prefixIcon: Padding(
                           padding: const EdgeInsets.all(12),
                           child: Image.asset(
@@ -321,6 +311,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                       BoxEditText(
                         placeholder: 'OM / AOM / SUPERVISOR',
                         controller: aomController,
+                        readOnly: true,
                         prefixIcon: Padding(
                           padding: const EdgeInsets.all(12),
                           child: Image.asset(

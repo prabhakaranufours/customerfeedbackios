@@ -203,13 +203,13 @@ class CustomerFeedbackApiCall {
 
 
   //Submit AuditData
-  Future<InsertFeedbackResponse?> submitFeedback(Auditdata element) async {
+  Future<dynamic> submitFeedback(Auditdata element) async {
 
     print('${_dio.options.baseUrl} $insertFeedbackApi');
     final response = await _dio.post(insertFeedbackApi, data: element);
 
     if ((response.statusCode ?? -1) <= 205) {
-      return InsertFeedbackResponse.fromJson(response.data);
+      return response.data;
     } else {
       showToastMsg("Something went wrong!");
       return null;

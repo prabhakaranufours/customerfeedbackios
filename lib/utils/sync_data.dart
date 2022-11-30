@@ -35,7 +35,7 @@ class SyncData {
         if (response != null) {
           if (response.status!) {
             //Delete the image in feedback Images using guid
-            DatabaseHelper.instance.ImageDelete(response.guid);
+            DatabaseHelper.instance.imageDelete(response.guid);
             errorFunc('Upload Failed');
           } else {
             errorFunc('Upload Failed');
@@ -47,11 +47,6 @@ class SyncData {
     }
 
 
-    // List<Auditdata> auditDataList = [
-    //   Auditdata.fromJson(feedback)
-    // ];
-    //
-    //
 
     //Feedback
     if (feedback.isNotEmpty) {
@@ -60,17 +55,20 @@ class SyncData {
 
 
       auditDataList.forEach((element) async {
-        // var params = element.toJson();
+        var params = element.toJson();
+        var test = jsonEncode(element);
         // params.addAll(extraParams);
 
         var response = await CustomerFeedbackApiCall().submitFeedback(element);
         if (response != null) {
-          if (response.status!) {
+          if (response['Status']) {
             // var guid=response['result']['deviceguid'];
             // logsheetDao.updateLogsheetTransaction(element.guid);
-            errorFunc(response.message!);
+
+            DatabaseHelper.instance.feedbackDelete(response['ReturnData']['Table'][0]['gid']);
+            errorFunc(response['Message']);
           } else {
-            errorFunc(response.message!);
+            errorFunc(response['Message']);
           }
         } else {
           errorFunc('Something wrong');
