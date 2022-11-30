@@ -1,12 +1,15 @@
 import 'dart:io';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:customerfeedbackios/helpers/shared_preferences_helper.dart';
 import 'package:customerfeedbackios/models/loginresponse.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:toast/toast.dart';
+
+import '../screens/loginscreen.dart';
 
 class Utils {
 
@@ -27,7 +30,7 @@ class Utils {
   }
 
   //This dialog used for exit show dialog in home page [Prabhakaran]
-  static Future<void> showExitDialog(BuildContext context) async {
+  static Future<void> showExitDialog(BuildContext context,String msg,Function() onPressed) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -37,7 +40,7 @@ class Utils {
             child: ListBody(
               children: [
                 Text(
-                  'Do you want to exit from the app',
+                  '$msg',
                   style: Theme.of(context)
                       .textTheme
                       .subtitle2!
@@ -49,17 +52,26 @@ class Utils {
           actions: [
             TextButton(
               child: Text('Yes'),
-              onPressed: () {
+              onPressed: ()=> onPressed(),
+                 /* () {
                 // Navigator.of(context).pop();
                 //It clear all stack
-                SystemNavigator.pop(animated: true);
-              },
+               msg == 'Do you want to exit from the app' ? SystemNavigator.pop(animated: true)
+                   : SharedPreferencesHelper.setPrefBool(
+                   SharedPreferencesHelper.IS_LOGIN, false);
+               Navigator.pushAndRemoveUntil(
+                   context,
+                   MaterialPageRoute(builder: (context) => LoginScreen()),
+                       (Route<dynamic> route) => false);
+              },*/
             ),
           ],
         );
       },
     );
   }
+
+
 
   //This Subheader will use in all pages [Prabhakaran]
   static Widget subHeader(BuildContext context, String msg, String msg1) {

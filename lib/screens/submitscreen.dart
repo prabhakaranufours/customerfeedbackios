@@ -153,10 +153,12 @@ class _SubmitScreenState extends State<SubmitScreen> {
   xmlData(List<Map<dynamic, dynamic>> catData) {
     return catData
         .map((e) =>
-            "<facilityaudit auditid=${e['auditid']} categoryid=${e['categoryid']}  questionid=${e['questionid']} scoreid=${e['scoreid']} uploadfilename= ${e['uploadfilename'] ?? ""} uploadfileGUID=${e['uploadfilename'] ?? ""} remarks=${e['remarks']}>")
+    "\u003cfacilityaudit  auditid\u003d\"${e['auditid']}\" categoryid\u003d\"${e['categoryid']}\" questionid\u003d\"${e['questionid']}\" scoreid\u003d\"${e['scoreid']}\" uploadfilename\u003d\"${e['uploadfilename'] ?? ''}\" uploadfileGUID\u003d\"${e['uploadfilename'] ?? ""}\" remarks\u003d\"${e['remarks']}\" /\u003e")
+            // "<facilityaudit auditid=${e['auditid']} categoryid=${e['categoryid']}  questionid=${e['questionid']} scoreid=${e['scoreid']} uploadfilename= ${e['uploadfilename'] ?? ""} uploadfileGUID=${e['uploadfilename'] ?? ""} remarks=${e['remarks']}>")
         .toList()
         .join(',');
   }
+
 
   @override
   void initState() {
@@ -209,7 +211,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
     return WillPopScope(
       onWillPop: () async {
         //This for back functionality
-        return false;
+        return true;
       },
       child: Scaffold(
         appBar: customAppBar(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:customerfeedbackios/models/categorydetails.dart';
+import 'package:customerfeedbackios/models/insertfeedback_request.dart';
 import 'package:customerfeedbackios/models/insertuploadimages.dart';
 import 'package:customerfeedbackios/models/otpdetails.dart';
 import 'package:customerfeedbackios/models/scoredetails.dart';
@@ -203,10 +204,10 @@ class CustomerFeedbackApiCall {
 
 
   //Submit AuditData
-  Future<dynamic> submitFeedback(Auditdata element) async {
+  Future<dynamic> submitFeedback(InsertfeedbackRequest element) async {
 
-    print('${_dio.options.baseUrl} $insertFeedbackApi');
-    final response = await _dio.post(insertFeedbackApi, data: element);
+    print('${_dio.options.baseUrl} $insertFeedbackApi ');
+    final response = await _dio.post(insertFeedbackApi, data: jsonEncode(element));
 
     if ((response.statusCode ?? -1) <= 205) {
       return response.data;

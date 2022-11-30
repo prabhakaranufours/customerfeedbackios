@@ -30,6 +30,7 @@ dependencies:
   percent_indicator: ^4.0.1
   signature: ^5.2.1
   google_fonts:
+  page_transition: ^2.0.9
 
 
 dev_dependencies:

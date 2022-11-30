@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:customerfeedbackios/database/database_helper.dart';
-import 'package:customerfeedbackios/models/auditdata.dart';
+import 'package:customerfeedbackios/models/insertfeedback_request.dart';
 import 'package:customerfeedbackios/models/insertuploadimages.dart';
 import '../api/customerfeedback_api_call.dart';
 
@@ -9,7 +9,7 @@ typedef onCompleteFunc = Function();
 typedef onErrorFunc = Function(String);
 
 List<InsertUploadImages> insertUploadImages = [];
-
+List<InsertfeedbackRequest> insertFeedbackRequest = [];
 
 class SyncData {
   final onCompleteFunc onComplete;
@@ -23,7 +23,10 @@ class SyncData {
 
     insertUploadImages = (images as List)
         .map((e) => InsertUploadImages(
-            deviceid: e['deviceId'], fileName: e['imageName'], guid: e['imageGUID'], strBase64: e['image']))
+            deviceid: e['deviceId'],
+            fileName: e['imageName'],
+            guid: e['imageGUID'],
+            strBase64: e['image']))
         .toList();
 
     //Images
@@ -46,26 +49,42 @@ class SyncData {
       });
     }
 
-
-
     //Feedback
     if (feedback.isNotEmpty) {
+      insertFeedbackRequest = (feedback as List)
+          .map((e) => InsertfeedbackRequest(
+              guid: e['guid'],
+              locationId: int.parse(e['locationid']),
+              companyId: int.parse(e['companyid']),
+              categoryid: e['categoryid'],
+              auditId: int.parse(e['auditid']),
+              aomname: e[''],
+              auditDate: e['auditdate'],
+              auditeename: e['auditeename'],
+              auditSign: e['auditsign'],
+              clientname: e['clientname'],
+              clientPerson: e['clientperson'],
+              clientSign: e['clientsign'],
+              deviceID: e['deviceid'],
+              id: e['id'],
+              isfeedback: e['isfeedback'],
+              sbuid: int.parse(e['sbuid']),
+              sbuName: e['sbuname'],
+              sectorId: int.parse(e['sectorid']),
+              siteName: e['sitename'],
+              sSano: e['ssano'],
+              uploadfileGUID: e['uploadguid'],
+              uploadfilename: e['uploadfilename'],
+              userID: e['userid'],
+              xml: e['xmldata']))
+          .toList();
 
-      List<Auditdata> auditDataList = feedback.map((e) => Auditdata.fromJson(e)).toList();
-
-
-      auditDataList.forEach((element) async {
-        var params = element.toJson();
-        var test = jsonEncode(element);
-        // params.addAll(extraParams);
-
+      insertFeedbackRequest.forEach((element) async {
         var response = await CustomerFeedbackApiCall().submitFeedback(element);
         if (response != null) {
           if (response['Status']) {
-            // var guid=response['result']['deviceguid'];
-            // logsheetDao.updateLogsheetTransaction(element.guid);
-
-            DatabaseHelper.instance.feedbackDelete(response['ReturnData']['Table'][0]['gid']);
+            DatabaseHelper.instance
+                .feedbackDelete(response['ReturnData']['Table'][0]['gid']);
             errorFunc(response['Message']);
           } else {
             errorFunc(response['Message']);
