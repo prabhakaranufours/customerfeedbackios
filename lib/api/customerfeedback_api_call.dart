@@ -207,6 +207,7 @@ class CustomerFeedbackApiCall {
   Future<dynamic> submitFeedback(InsertfeedbackRequest element) async {
 
     print('${_dio.options.baseUrl} $insertFeedbackApi ');
+    var test= jsonEncode(element);
     final response = await _dio.post(insertFeedbackApi, data: jsonEncode(element));
 
     if ((response.statusCode ?? -1) <= 205) {

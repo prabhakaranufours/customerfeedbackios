@@ -8,7 +8,7 @@ import 'package:http/http.dart';
 import 'package:i2iutils/helpers/common_functions.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:toast/toast.dart';
+// import 'package:toast/toast.dart';
 
 import '../database/database_helper.dart';
 import '../helpers/colors.dart';
@@ -144,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    ToastContext().init(context);
+    // ToastContext().init(context);
     get();
   }
 

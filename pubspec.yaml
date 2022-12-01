@@ -15,7 +15,7 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   flutter_easyloading: 3.0.5
-  toast: 0.3.0
+#  toast: 0.3.0
   shared_preferences: ^2.0.15
   http: ^0.13.5
 #  flutter_platform_widgets: ^2.0.0

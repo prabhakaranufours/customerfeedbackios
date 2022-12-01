@@ -93,12 +93,8 @@ class _ScoreScreenState extends State<ScoreScreen> {
     //Store the total score in shared preference
     await SharedPreferencesHelper.setPrefString(SharedPreferencesHelper.TOTAL_SCORE,
         final_totalScore.toString());
-    // final_totalScore = final_totalScore * 100;
-    // print(final_totalScore);
-    // percentage = (final_totalScore * 3.14) / 100;
     percentage = (convertToPercentage * 3.14) / 100;
     // percentage = 3.14;
-    print(percentage);
   }
 
   @override
@@ -179,8 +175,8 @@ class _ScoreScreenState extends State<ScoreScreen> {
             margin: EdgeInsets.only(left: 10,right: 10,bottom: 32),
             buttonText: 'SUBMIT',
             onPressed: () => {
-              // Navigator.popAndPushNamed(context, '/otp'),
-              Navigator.popAndPushNamed(context, '/submit'),
+              Navigator.popAndPushNamed(context, '/otp'),
+              // Navigator.popAndPushNamed(context, '/submit'),
 
             },
           ),
@@ -214,10 +210,10 @@ class _Circular_arcState extends State<Circular_arc>
     final curvedAnimation = CurvedAnimation(
         parent: animationController, curve: Curves.easeInOutCubic);
 
-    animation = Tween<double>(begin: 0.0, end: 3.14).animate(curvedAnimation)
-      ..addListener(() {
-        setState(() {});
-      });
+    // animation = Tween<double>(begin: 0.0, end: 3.14).animate(curvedAnimation)
+    //   ..addListener(() {
+    //     setState(() {});
+    //   });
     animationController.repeat(reverse: false);
   }
 
