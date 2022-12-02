@@ -49,6 +49,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
   String locationName = "";
   String userId = "";
   String userName = "";
+  String isFeedback = "";
 
   List<Auditdata> auditDataDetails = [];
   List<Categorydata> categoryDetails = [];
@@ -125,7 +126,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
             ssano: "",
             sitename: siteNameController.text,
             clientname: "",
-            xmldata: xmlData(catData),
+            xmldata: '\u003croot\u003e${xmlData(catData)}\u003c/root\u003e',
             categoryid: categoryId,
             auditid: auditId,
             sectorid: sectorId,
@@ -133,7 +134,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
             companyid: companyId,
             sbuid: sbuId,
             observation: "",
-            isfeedback: "")
+            isfeedback: isFeedback)
       ];
 
       // var auditDataJSON = auditData.toJson();
@@ -196,6 +197,8 @@ class _SubmitScreenState extends State<SubmitScreen> {
         SharedPreferencesHelper.USER_NAME, '');
     sectorId = await SharedPreferencesHelper.getPrefString(
         SharedPreferencesHelper.SECTOR_ID, '');
+    isFeedback = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.IS_FEEDBACK, '');
 
     //Set the default values for some fields
     auditorNameController.text = userName;

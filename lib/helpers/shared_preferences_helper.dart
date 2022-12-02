@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SharedPreferencesHelper {
 
   static final String IS_LOGIN = "is_login";
+  static final String IS_FEEDBACK = "is_feedback";
   static final String LOGIN_RESPONSE = "login_response";
   static final String USER_EMAIL = "USER_EMAIL";
   static final String USER_PASSWORD = "USER_PASSWORD";
