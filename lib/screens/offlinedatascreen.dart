@@ -78,7 +78,7 @@ class _OfflineDataScreenState extends State<OfflineDataScreen> {
                             color: primaryDark,
                             shape: BoxShape.circle,
                           ),
-                          child: Center(child: Text("0",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)),
+                          child: Center(child: Text(offlineList[index]["count"].toString(),style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)),
                         ),
                         Text("Image",style: TextStyle(fontSize: 10),),
                       ],

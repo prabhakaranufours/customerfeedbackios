@@ -643,8 +643,11 @@ class DatabaseHelper {
     Database? db = await instance.database;
     debugPrint(
         "Select CompanyName, LocationName, auditname,auditData.auditid  from auditData left join companyDetails  on companyDetails.CompanyID = auditData.companyid  left join auditDetails on auditDetails.auditid = auditData.auditid   left join locationDetails on locationDetails.LocationID= auditData.locationid group by auditData.auditid");
+    // return await db.rawQuery(
+    //     "Select CompanyName, LocationName, auditname,auditData.auditid  from auditData left join companyDetails  on companyDetails.CompanyID = auditData.companyid  left join auditDetails on auditDetails.auditid = auditData.auditid   left join locationDetails on locationDetails.LocationID= auditData.locationid group by auditData.auditid");
+
     return await db.rawQuery(
-        "Select CompanyName, LocationName, auditname,auditData.auditid  from auditData left join companyDetails  on companyDetails.CompanyID = auditData.companyid  left join auditDetails on auditDetails.auditid = auditData.auditid   left join locationDetails on locationDetails.LocationID= auditData.locationid group by auditData.auditid");
+        "Select CompanyName, LocationName, auditname,auditData.auditid,(select count(id) from feedbackImages where auditid = auditid)  as count  from auditData left join companyDetails  on companyDetails.CompanyID = auditData.companyid  left join auditDetails on auditDetails.auditid = auditData.auditid   left join locationDetails on locationDetails.LocationID= auditData.locationid group by auditData.auditid");
   }
 
   //Insert the user table
@@ -712,12 +715,6 @@ class DatabaseHelper {
   Future<List<Map<String, Object?>>> catDataDelete(String sbuId, String compId,
       String locId, String auditId, String sectorId, String catId) async {
     Database db = await instance.database;
-    // return await db.delete(_categoryData,where:'$CatData_SbuId= ? and $CatData_CompanyId= ?'
-    //     ' and $CatData_LocationId= ? and $CatData_AuditId = ? and $CatData_CategoryId = ?',
-    //     whereArgs: [sbuId,compId,locId,auditId,catId]);
-
-    var test = "Delete from $_categoryData where $CatData_SbuId =$sbuId AND $CatData_CompanyId= $compId AND $CatData_LocationId= $locId AND $CatData_AuditId = $auditId";
-
     return await db.rawQuery(
         "Delete from $_categoryData where $CatData_SbuId =$sbuId AND $CatData_CompanyId= $compId AND $CatData_LocationId= $locId AND $CatData_AuditId = $auditId");
   }
