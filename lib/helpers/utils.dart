@@ -53,17 +53,11 @@ class Utils {
             TextButton(
               child: Text('Yes'),
               onPressed: ()=> onPressed(),
-                 /* () {
-                // Navigator.of(context).pop();
-                //It clear all stack
-               msg == 'Do you want to exit from the app' ? SystemNavigator.pop(animated: true)
-                   : SharedPreferencesHelper.setPrefBool(
-                   SharedPreferencesHelper.IS_LOGIN, false);
-               Navigator.pushAndRemoveUntil(
-                   context,
-                   MaterialPageRoute(builder: (context) => LoginScreen()),
-                       (Route<dynamic> route) => false);
-              },*/
+
+            ),
+            TextButton(
+              child: Text('No'),
+              onPressed: ()=> Navigator.pop(context),
             ),
           ],
         );

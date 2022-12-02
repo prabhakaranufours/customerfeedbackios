@@ -503,6 +503,14 @@ class DatabaseHelper {
     return 1;
   }
 
+  //Updated category Details percentage using auditID
+  Future<int> cdPercentageUpdate_auditId(String percentage,String auditId) async{
+    Database? db = await instance.database;
+    await db.update(_categoryDetails, {Cat_Percentage: percentage},
+        where: 'auditid = ?', whereArgs: [auditId]);
+    return 1;
+  }
+
   //Update Categorydata percentage
   Future<List<Map<String, Object?>>> updatePercentage(
       String categoryId, String percentage) async {
@@ -572,12 +580,6 @@ class DatabaseHelper {
     return await db.rawQuery("Select * from $_categoryData");
   }
 
-  // //Get the categoryData with parameters
-  // Future<List<Map>> getCategoryDetailsWithParameters() async{
-  //   Database? db = await instance.database;
-  //   return await db.rawQuery("Select * from $_categoryData");
-  // }
-
   //Get the count of audit Data table
   Future<List<Map>> getAuditDataTableCount() async {
     Database? db = await instance.database;
@@ -620,9 +622,6 @@ class DatabaseHelper {
         " on $_categoryData.$CatData_ScoreId = $_scoreDetails.$Score_Scorescore where $_scoreDetails.$Score_Scorescore != -1 AND $_categoryData.$CatData_SbuId  = $sbuId  AND"
         " $_categoryData.$CatData_CompanyId = $companyId AND $_categoryData.$CatData_LocationId = $locationId AND $_categoryData.$CatData_AuditId = $auditId";
     print(tex);
-    // return await db.rawQuery("Select $Score_Scorescore,$CatData_Weightage from $_categoryData INNER JOIN $_scoreDetails"
-    //     " on $_categoryData.$CatData_ScoreId = $_scoreDetails.$Score_Scorescore where $_scoreDetails.$Score_Scorescore != -1 AND $_categoryData.$CatData_SbuId  = $sbuId  AND"
-    //     " $_categoryData.$CatData_CompanyId = $companyId AND $_categoryData.$CatData_LocationId = $locationId AND $_categoryData.$CatData_AuditId = $auditId");
 
     return await db.rawQuery(
         "Select $CatData_Weightage,$CatData_ScoreId from $_categoryData where $CatData_ScoreId != -1 AND  $CatData_SbuId  = $sbuId  AND $CatData_CompanyId = $companyId AND $CatData_LocationId = $locationId AND $CatData_AuditId = $auditId");
@@ -709,6 +708,20 @@ class DatabaseHelper {
     return await db.delete(_scoreDetails);
   }
 
+  //Delete category Data after give submit in submit page
+  Future<List<Map<String, Object?>>> catDataDelete(String sbuId, String compId,
+      String locId, String auditId, String sectorId, String catId) async {
+    Database db = await instance.database;
+    // return await db.delete(_categoryData,where:'$CatData_SbuId= ? and $CatData_CompanyId= ?'
+    //     ' and $CatData_LocationId= ? and $CatData_AuditId = ? and $CatData_CategoryId = ?',
+    //     whereArgs: [sbuId,compId,locId,auditId,catId]);
+
+    var test = "Delete from $_categoryData where $CatData_SbuId =$sbuId AND $CatData_CompanyId= $compId AND $CatData_LocationId= $locId AND $CatData_AuditId = $auditId";
+
+    return await db.rawQuery(
+        "Delete from $_categoryData where $CatData_SbuId =$sbuId AND $CatData_CompanyId= $compId AND $CatData_LocationId= $locId AND $CatData_AuditId = $auditId");
+  }
+
   //Delete FeedbackImages data using imageGUID
   Future<int> imageDelete(String? guid) async {
     Database db = await instance.database;
@@ -719,6 +732,7 @@ class DatabaseHelper {
   //Delete Feedback data after push to server using guid
   Future<int> feedbackDelete(String guid) async {
     Database db = await instance.database;
-    return await db.delete(_auditData,where: '$AuditData_guid = ?',whereArgs: [guid]);
+    return await db
+        .delete(_auditData, where: '$AuditData_guid = ?', whereArgs: [guid]);
   }
 }

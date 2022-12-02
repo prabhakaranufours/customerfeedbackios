@@ -87,7 +87,7 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
         onSubmit: (val) {
           debugPrint('sub $val');
           typedCode=val;
-          verifyOtp();
+          // verifyOtp();
         }, // end onSubmit
       ),
       SizedBox(

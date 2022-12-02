@@ -99,6 +99,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
         sbuNameController.text != "" &&
         clientPersonNameController.text != "" &&
         siteNameController.text != "") {
+
       var deviceId = await getDeviceUniqueId();
       var catData = await DatabaseHelper.instance
           .getCategoryDetailsWithParameters(
@@ -140,12 +141,19 @@ class _SubmitScreenState extends State<SubmitScreen> {
       // var auditDataJSON = auditData.toJson();
       debugPrint('AUidtDataJSON $auditDataDetails');
       //Take the object to set in db
-      DatabaseHelper.instance.auditDataInsert(auditDataDetails);
+      await DatabaseHelper.instance.auditDataInsert(auditDataDetails);
+      //Delete the data from category details percentage and qnsdetails
+      await DatabaseHelper.instance.catDataDelete(sbuId, companyId, locationId,
+          auditId, sectorId, categoryId);
+      //Update the percentage in category Details
+      await DatabaseHelper.instance.cdPercentageUpdate_auditId(
+          "0", auditId.toString());
+
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => HomeScreen()),
           (Route<dynamic> route) => false);
-      // Navigator.pop(context);
+      Navigator.pop(context);
     } else {
       Utils.showMessage(context, "Please Enter the fields");
     }

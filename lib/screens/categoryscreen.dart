@@ -24,6 +24,8 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
+  final GlobalKey<NavigatorState> key = new GlobalKey<NavigatorState>();
+
   List<Map> categoryDetails = [];
   var percentage;
 
@@ -43,24 +45,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   //We cannot write setstate in between didchangeDependencies so write seperate
   void get() async {
-    // var categoryId = await SharedPreferencesHelper.getPrefString(
-    //     SharedPreferencesHelper.CATEGORY_ID, '');
-    // var auditId = await SharedPreferencesHelper.getPrefString(
-    //     SharedPreferencesHelper.AUDIT_ID, '');
-    // var sbuId = await SharedPreferencesHelper.getPrefString(
-    //     SharedPreferencesHelper.SBU_ID, '');
-    // var companyId = await SharedPreferencesHelper.getPrefString(
-    //     SharedPreferencesHelper.COMPANY_ID, '');
-    // var locationId = await SharedPreferencesHelper.getPrefString(
-    //     SharedPreferencesHelper.LOCATION_ID, '');
-    // var sectorId = await SharedPreferencesHelper.getPrefString(
-    //     SharedPreferencesHelper.SECTOR_ID, '');
-
-    //Get the percentage of category from categoryData table
-    // percentage = await DatabaseHelper.instance.getCategoryDetailsPercentage(
-    //     sbuId, companyId, locationId, auditId, sectorId, categoryId);
-
-
     categoryDetails = await DatabaseHelper.instance
         .getCategory(widget.data['companyId']!, widget.data['feedbackId']!);
 
@@ -77,14 +61,28 @@ class _CategoryScreenState extends State<CategoryScreen> {
     //After close the qns page it returns the result true
     var result = await Navigator.pushNamed(context, '/question');
     debugPrint('result is a $result');
-    if(result != null && result == true){
+    if (result != null && result == true) {
       get();
+    }
+  }
+
+  //Submit the
+  void submit() async {
+    var submit =
+        categoryDetails.every((element) => element['percentage'] == "100");
+    if (submit) {
+      Navigator.pushNamed(context, '/score');
+    } else {
+      //Show the alert dialog for enter details
+      Utils.showMessage(
+          key.currentContext!, "Please complete all category");
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: key,
       appBar: customAppBar(
         context,
         title: Text(
@@ -129,7 +127,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
                               child: CircularPercentIndicator(
                                 radius: 25.0,
                                 lineWidth: 5.0,
-                                percent:  int.parse(categoryDetails[index]["percentage"] ?? "0") / 100,
+                                percent: int.parse(categoryDetails[index]
+                                            ["percentage"] ??
+                                        "0") /
+                                    100,
                                 center: new Text(
                                   categoryDetails[index]["percentage"] ?? "0",
                                   style: TextStyle(fontSize: 12),
@@ -145,12 +146,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(left: 10.0, right: 10.0,bottom: 32),
+            padding: EdgeInsets.only(left: 10.0, right: 10.0, bottom: 32),
             child: CustomButton(
               buttonText: 'Next Feedback',
               borderColor: primaryDark,
               onPressed: () => {
-                Navigator.pushNamed(context, '/score'),
+                submit(),
               },
             ),
           ),
