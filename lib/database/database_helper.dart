@@ -621,10 +621,12 @@ class DatabaseHelper {
         "Select $Score_Scorescore,$CatData_Weightage from $_categoryData INNER JOIN $_scoreDetails"
         " on $_categoryData.$CatData_ScoreId = $_scoreDetails.$Score_Scorescore where $_scoreDetails.$Score_Scorescore != -1 AND $_categoryData.$CatData_SbuId  = $sbuId  AND"
         " $_categoryData.$CatData_CompanyId = $companyId AND $_categoryData.$CatData_LocationId = $locationId AND $_categoryData.$CatData_AuditId = $auditId";
-    print(tex);
+
+    var tt = "Select $CatData_Weightage,$CatData_ScoreId from $_categoryData where $CatData_ScoreId != N/a AND  $CatData_SbuId  = $sbuId  AND $CatData_CompanyId = $companyId AND $CatData_LocationId = $locationId AND $CatData_AuditId = $auditId";
+    print(tt);
 
     return await db.rawQuery(
-        "Select $CatData_Weightage,$CatData_ScoreId from $_categoryData where $CatData_ScoreId != -1 AND  $CatData_SbuId  = $sbuId  AND $CatData_CompanyId = $companyId AND $CatData_LocationId = $locationId AND $CatData_AuditId = $auditId");
+        "Select $CatData_Weightage,$CatData_ScoreId from $_categoryData where $CatData_ScoreId != 'N/a' AND  $CatData_SbuId  = $sbuId  AND $CatData_CompanyId = $companyId AND $CatData_LocationId = $locationId AND $CatData_AuditId = $auditId");
   }
 
   //Get the category details individual category percentage

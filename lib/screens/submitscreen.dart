@@ -153,7 +153,6 @@ class _SubmitScreenState extends State<SubmitScreen> {
           context,
           MaterialPageRoute(builder: (context) => HomeScreen()),
           (Route<dynamic> route) => false);
-      Navigator.pop(context);
     } else {
       Utils.showMessage(context, "Please Enter the fields");
     }
