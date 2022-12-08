@@ -92,13 +92,16 @@ class _SubmitScreenState extends State<SubmitScreen> {
     );
   }
 
-  void storeInDb() async {
+  void storeInDb(BuildContext context) async {
     if (auditeeNameController.text != "" &&
         auditorNameController.text != "" &&
         aomController.text != "" &&
         sbuNameController.text != "" &&
         clientPersonNameController.text != "" &&
-        siteNameController.text != "") {
+        siteNameController.text != "" &&
+        repSignController.isNotEmpty &&
+    signController.isNotEmpty
+    ) {
 
       var deviceId = await getDeviceUniqueId();
       var catData = await DatabaseHelper.instance
@@ -151,7 +154,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
 
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
           (Route<dynamic> route) => false);
     } else {
       Utils.showMessage(context, "Please Enter the fields");
@@ -226,7 +229,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
       child: Scaffold(
         appBar: customAppBar(
           context,
-          title: Text('Submit', style: TextStyle(fontWeight: FontWeight.bold)),
+          title: const Text('Submit', style: TextStyle(fontWeight: FontWeight.bold)),
           backgroundColor: primaryDark,
         ),
         body: Column(
@@ -238,7 +241,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                   padding: const EdgeInsets.all(12),
                   child: Column(
                     children: [
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       BoxEditText(
                         placeholder: 'CUSTOMER NAME',
                         controller: cNameController,
@@ -251,7 +254,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       BoxEditText(
                         placeholder: 'AUDITOR NAME',
                         controller: auditorNameController,
@@ -265,7 +268,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       BoxEditText(
                         placeholder: 'AUDITEE NAME',
                         controller: auditeeNameController,
@@ -278,7 +281,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       BoxEditText(
                         placeholder: 'SITE NAME',
                         controller: siteNameController,
@@ -291,7 +294,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       BoxEditText(
                         placeholder: 'CLIENT PERSON NAME',
                         controller: clientPersonNameController,
@@ -305,7 +308,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       BoxEditText(
                         placeholder: 'SBU NAME',
                         controller: sbuNameController,
@@ -319,7 +322,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       BoxEditText(
                         placeholder: 'OM / AOM / SUPERVISOR',
                         controller: aomController,
@@ -333,7 +336,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       BoxEditText(
                         placeholder: 'FEEDBACK TAKENBY',
                         controller: feedbackTakenByController,
@@ -346,7 +349,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       BoxEditText(
                         placeholder: 'FEEDBACK REP NAME',
                         controller: feedbackRepController,
@@ -359,7 +362,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -383,7 +386,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         height: 12,
                       ),
                       Container(
-                        padding: EdgeInsets.all(6),
+                        padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
                             border: Border.all(color: primaryDark),
                             borderRadius: BorderRadius.circular(8)),
@@ -420,7 +423,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                         height: 12,
                       ),
                       Container(
-                        padding: EdgeInsets.all(6),
+                        padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
                             border: Border.all(color: primaryDark),
                             borderRadius: BorderRadius.circular(8)),
@@ -431,13 +434,12 @@ class _SubmitScreenState extends State<SubmitScreen> {
                           backgroundColor: Colors.white,
                         ),
                       ),
-                      SizedBox(height: 32),
+                      const SizedBox(height: 32),
                       CustomButton(
                         buttonText: 'Submit',
-                        margin: EdgeInsets.only(bottom: 30),
-                        onPressed: () => {
-                          storeInDb(),
-                        },
+                        margin: const EdgeInsets.only(bottom: 30),
+                        onPressed: () => storeInDb(context),
+
                       ),
                     ],
                   ),

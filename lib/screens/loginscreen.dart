@@ -76,7 +76,7 @@ Future<void> _showConfirmationDialog(BuildContext context, String msg) {
               Navigator.of(context).pop();
               // Navigator.of(context).pop('reloadData');
             },
-            child: Text('Ok'),
+            child: const Text('Ok'),
             padding: EdgeInsets.zero,
           ),
         ],
@@ -115,7 +115,7 @@ Future<void> createFol(String folderName) async {
   // print(statuses[Permission.location]);
 
   if (Platform.isIOS) {
-    createFolderInAppDocDir(folderName);
+    // createFolderInAppDocDir(folderName);
   } else if (Platform.isAndroid) {
     var androidInfo = await DeviceInfoPlugin().androidInfo;
     var release = androidInfo.version.sdkInt;
@@ -141,6 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool isRememberMeSelected = true;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -165,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
           height: MediaQuery.of(context).size.height,
           child: Column(
             children: [
@@ -178,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Container(
                 transform: Matrix4.translationValues(0, -10, 0),
                 width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(10),
@@ -189,8 +190,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     Container(
                       transform: Matrix4.translationValues(0, -15, 0),
-                      padding: EdgeInsets.all(7),
-                      decoration: BoxDecoration(
+                      padding: const EdgeInsets.all(7),
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         boxShadow: [
@@ -214,9 +215,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           .apply(color: Colors.black)
                           .copyWith(fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 30),
+                    const SizedBox(height: 30),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 24),
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
                       width: MediaQuery.of(context).size.width,
                       child: Column(
                         children: [
@@ -233,7 +234,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           CustomTextField(
                             placeholder: "Password",
                             controller: passwordController,
@@ -250,33 +251,42 @@ class _LoginScreenState extends State<LoginScreen> {
                                 FocusScope.of(context).unfocus(),
                             textInputAction: TextInputAction.done,
                           ),
-                          SizedBox(height: 25),
+                          const SizedBox(height: 25),
                           CustomButton(
                             buttonText: 'LOGIN',
-                            onPressed: () async => {
-                              if (emailController.text != "" &&
-                                  passwordController.text != "")
-                                {
-                                  if (await isNetConnected())
-                                    {
-                                      api(context, emailController.text,
-                                          passwordController.text),
-                                    }
-                                  else
-                                    {
-                                      Utils.showMessage(
-                                          context, "Please check Internet")
-                                    }
-                                }
-                              else
-                                {
-                                  //Show the alert dialog for enter details
-                                  Utils.showMessage(
-                                      context, "Please Enter the fields")
-                                }
-                            },
+                            onPressed: isLoading
+                                ? null
+                                : () async {
+                              setState(() {
+                                isLoading=true;
+                              });
+                                      if (emailController.text != "" &&
+                                          passwordController.text != "")
+                                        {
+
+                                          if (await isNetConnected())
+                                            {
+                                              api(context, emailController.text,
+                                                  passwordController.text);
+                                            }
+                                          else
+                                            {
+                                              Utils.showMessage(context,
+                                                  "Please check Internet");
+                                            }
+                                        }
+                                      else
+                                        {
+                                          //Show the alert dialog for enter details
+                                          Utils.showMessage(context,
+                                              "Please Enter the fields");
+                                        }
+                              setState(() {
+                                isLoading=false;
+                              });
+                                    },
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[

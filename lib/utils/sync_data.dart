@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:customerfeedbackios/database/database_helper.dart';
 import 'package:customerfeedbackios/models/insertfeedback_request.dart';
 import 'package:customerfeedbackios/models/insertuploadimages.dart';
+import 'package:flutter/cupertino.dart';
 import '../api/customerfeedback_api_call.dart';
 
 typedef onCompleteFunc = Function();
@@ -79,7 +80,9 @@ class SyncData {
               xml: e['xmldata']))
           .toList();
 
+
       insertFeedbackRequest.forEach((element) async {
+        var tt = jsonEncode(element);
         var response = await CustomerFeedbackApiCall().submitFeedback(element);
         if (response != null) {
           if (response['Status']) {

@@ -198,23 +198,23 @@ class Circular_arc extends StatefulWidget {
 
 class _Circular_arcState extends State<Circular_arc>
     with SingleTickerProviderStateMixin {
-  late Animation<double> animation;
-  late AnimationController animationController;
+  // late Animation<double> animation;
+  // late AnimationController animationController;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    animationController =
-        AnimationController(duration: Duration(seconds: 2), vsync: this);
-    final curvedAnimation = CurvedAnimation(
-        parent: animationController, curve: Curves.easeInOutCubic);
-
+    // animationController =
+    //     AnimationController(duration: Duration(seconds: 2), vsync: this);
+    // final curvedAnimation = CurvedAnimation(
+    //     parent: animationController, curve: Curves.easeInOutCubic);
+    //
     // animation = Tween<double>(begin: 0.0, end: 3.14).animate(curvedAnimation)
     //   ..addListener(() {
     //     setState(() {});
     //   });
-    animationController.repeat(reverse: false);
+    // animationController.repeat(reverse: false);
   }
 
   @override

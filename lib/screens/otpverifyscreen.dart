@@ -64,59 +64,64 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
     return Scaffold(
       appBar: customAppBar(
     context,
-    title: Text(
+    title: const Text(
       'OTP Verify',
       style: TextStyle(fontWeight: FontWeight.bold)
     ),
     backgroundColor: primaryDark,
 
       ),
-      body: Column(
+      body: SingleChildScrollView(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
 
-      Image.asset('assets/images/otp_enter.png',width: 250,height: 250,),
-      const SizedBox(height: 64,),
-      OtpTextField(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        numberOfFields: 6,
-        borderColor: Color(0xFF90151A),
-        //set to true to show as box or false to show as dash
-        showFieldAsBox: true,
-        //runs when every textfield is filled
-        onSubmit: (val) {
-          debugPrint('sub $val');
-          typedCode=val;
-          // verifyOtp();
-        }, // end onSubmit
-      ),
-      SizedBox(
-        height: 40,
-      ),
-      Container(
-        margin: EdgeInsets.all(10.0),
-        child: Row(
-          children: [
-            Expanded(
-              child: CustomButton(
-                  buttonText: 'RESEND OTP',
-                  textSize: 15,
-                  buttonType: ButtonType.third,
-                  onPressed: () => getOTP()),
+          Image.asset('assets/images/otp_enter.png',width: 250,height: 250,),
+          const SizedBox(height: 64,),
+          OtpTextField(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            numberOfFields: 6,
+            borderColor: const Color(0xFF90151A),
+            //set to true to show as box or false to show as dash
+            showFieldAsBox: true,
+            //runs when every textfield is filled
+            onSubmit: (val) {
+              debugPrint('sub $val');
+              typedCode=val;
+              // verifyOtp();
+            }, // end onSubmit
+          ),
+          const SizedBox(
+            height: 40,
+          ),
+          Container(
+            margin: const EdgeInsets.all(10.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: CustomButton(
+                      buttonText: 'RESEND OTP',
+                      textSize: 15,
+                      buttonType: ButtonType.third,
+                      onPressed: () => getOTP()),
+                ),
+                const SizedBox(
+                  width: 16,
+                ),
+                Expanded(
+                  child: CustomButton(
+                      buttonText: 'NEXT',
+                      textSize: 15,
+                      onPressed: ()=>verifyOtp()),
+                ),
+              ],
             ),
-            SizedBox(
-              width: 16,
-            ),
-            Expanded(
-              child: CustomButton(
-                  buttonText: 'NEXT',
-                  textSize: 15,
-                  onPressed: ()=>verifyOtp()),
-            ),
-          ],
-        ),
-      ),
+          ),
     ],
+          ),
+        ),
       ),
     );
   }
