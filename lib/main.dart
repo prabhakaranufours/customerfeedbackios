@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'helpers/colors.dart';
+import 'helpers/notification.dart';
 import 'helpers/route_generators.dart';
 import 'package:google_fonts/google_fonts.dart';
 void main() async {
+  //Firebase
+  WidgetsFlutterBinding.ensureInitialized();
+  await FirebaseNotification().initialize();
+
   runApp(MyApp());
   configLoading();
 }

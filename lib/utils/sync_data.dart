@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:customerfeedbackios/database/database_helper.dart';
 import 'package:customerfeedbackios/models/insertfeedback_request.dart';
 import 'package:customerfeedbackios/models/insertuploadimages.dart';
-import 'package:flutter/cupertino.dart';
 import '../api/customerfeedback_api_call.dart';
 
 typedef onCompleteFunc = Function();
