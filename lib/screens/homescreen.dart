@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:customerfeedbackios/database/database_helper.dart';
 import 'package:customerfeedbackios/helpers/utils.dart';
 import 'package:customerfeedbackios/screens/loginscreen.dart';
@@ -120,11 +119,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 child: GestureDetector(
                   onTap: () => FocusScope.of(context).unfocus(),
-                  child: Container(
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .height * 0.5,
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.5,
                     child: Column(
                       children: <Widget>[
                         Flexible(
@@ -135,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             onChanged: (val) async {
                               if (val == "") {
                                 sbuDetails =
-                                await DatabaseHelper.instance.getSBU();
+                                    await DatabaseHelper.instance.getSBU();
                               } else {
                                 sbuDetails.forEach((element) {
                                   element['locationsettingsname'];
@@ -159,25 +155,21 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: ListView.builder(
                             shrinkWrap: true,
                             itemCount: sbuDetails.length,
-                            itemBuilder: (context, index) =>
-                                ListTile(
-                                  onTap: () {
-                                    setSbuData(
-                                      sbuDetails[index]["locationsettingsname"],
-                                      sbuDetails[index]["locationsettingsid"],
-                                    );
+                            itemBuilder: (context, index) => ListTile(
+                              onTap: () {
+                                setSbuData(
+                                  sbuDetails[index]["locationsettingsname"],
+                                  sbuDetails[index]["locationsettingsid"],
+                                );
 
-                                    Navigator.of(context).pop();
-                                    // _getLocation();
-                                  },
-                                  title: Text(
-                                    '${sbuDetails[index]["locationsettingsname"]}',
-                                    style: Theme
-                                        .of(context)
-                                        .textTheme
-                                        .subtitle2,
-                                  ),
-                                ),
+                                Navigator.of(context).pop();
+                                // _getLocation();
+                              },
+                              title: Text(
+                                '${sbuDetails[index]["locationsettingsname"]}',
+                                style: Theme.of(context).textTheme.subtitle2,
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -203,11 +195,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 child: GestureDetector(
                   onTap: () => FocusScope.of(context).unfocus(),
-                  child: Container(
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .height * 0.5,
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.5,
                     child: Column(
                       children: <Widget>[
                         Flexible(
@@ -218,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             onChanged: (val) async {
                               if (val == "") {
                                 companyDetails =
-                                await DatabaseHelper.instance.getCompany();
+                                    await DatabaseHelper.instance.getCompany();
                               } else {
                                 companyDetails.forEach((element) {
                                   element['CompanyName'];
@@ -242,27 +231,23 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: ListView.builder(
                             shrinkWrap: true,
                             itemCount: companyDetails.length,
-                            itemBuilder: (context, index) =>
-                                ListTile(
-                                  onTap: () {
-                                    debugPrint('setstate');
-                                    // locationText="Select Location";
-                                    setCompanyData(
-                                        companyDetails[index]["CompanyName"],
-                                        companyDetails[index]["CompanyID"]);
-                                    _getLocation(
-                                        companyDetails[index]["CompanyID"]);
+                            itemBuilder: (context, index) => ListTile(
+                              onTap: () {
+                                debugPrint('setstate');
+                                // locationText="Select Location";
+                                setCompanyData(
+                                    companyDetails[index]["CompanyName"],
+                                    companyDetails[index]["CompanyID"]);
+                                _getLocation(
+                                    companyDetails[index]["CompanyID"]);
 
-                                    Navigator.of(context).pop();
-                                  },
-                                  title: Text(
-                                    '${companyDetails[index]["CompanyName"]}',
-                                    style: Theme
-                                        .of(context)
-                                        .textTheme
-                                        .subtitle2,
-                                  ),
-                                ),
+                                Navigator.of(context).pop();
+                              },
+                              title: Text(
+                                '${companyDetails[index]["CompanyName"]}',
+                                style: Theme.of(context).textTheme.subtitle2,
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -288,11 +273,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 child: GestureDetector(
                   onTap: () => FocusScope.of(context).unfocus(),
-                  child: Container(
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .height * 0.5,
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.5,
                     child: Column(
                       children: [
                         Flexible(
@@ -327,31 +309,27 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: ListView.builder(
                             shrinkWrap: true,
                             itemCount: locationDetails.length,
-                            itemBuilder: (context, index) =>
-                                ListTile(
-                                  onTap: () {
-                                    setLocationData(
-                                        locationDetails[index]["LocationName"],
-                                        locationDetails[index]["LocationID"]);
+                            itemBuilder: (context, index) => ListTile(
+                              onTap: () {
+                                setLocationData(
+                                    locationDetails[index]["LocationName"],
+                                    locationDetails[index]["LocationID"]);
 
-                                    _getFeedback(
-                                        locationDetails[index]["sectorid"]);
-                                    //SectorId store in sharedPreference
-                                    SharedPreferencesHelper.setPrefString(
-                                        SharedPreferencesHelper.SECTOR_ID,
-                                        locationDetails[index]["sectorid"]);
+                                _getFeedback(
+                                    locationDetails[index]["sectorid"]);
+                                //SectorId store in sharedPreference
+                                SharedPreferencesHelper.setPrefString(
+                                    SharedPreferencesHelper.SECTOR_ID,
+                                    locationDetails[index]["sectorid"]);
 
-                                    Navigator.of(context).pop();
-                                    // _getLocation();
-                                  },
-                                  title: Text(
-                                    '${locationDetails[index]["LocationName"]}',
-                                    style: Theme
-                                        .of(context)
-                                        .textTheme
-                                        .subtitle2,
-                                  ),
-                                ),
+                                Navigator.of(context).pop();
+                                // _getLocation();
+                              },
+                              title: Text(
+                                '${locationDetails[index]["LocationName"]}',
+                                style: Theme.of(context).textTheme.subtitle2,
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -377,11 +355,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 child: GestureDetector(
                   onTap: () => FocusScope.of(context).unfocus(),
-                  child: Container(
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .height * 0.5,
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.5,
                     child: Column(
                       children: [
                         Flexible(
@@ -416,23 +391,19 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: ListView.builder(
                             shrinkWrap: true,
                             itemCount: feedbackDetails.length,
-                            itemBuilder: (context, index) =>
-                                ListTile(
-                                  onTap: () {
-                                    setFeedbackData(
-                                        feedbackDetails[index]["auditname"],
-                                        feedbackDetails[index]["auditid"]);
+                            itemBuilder: (context, index) => ListTile(
+                              onTap: () {
+                                setFeedbackData(
+                                    feedbackDetails[index]["auditname"],
+                                    feedbackDetails[index]["auditid"]);
 
-                                    Navigator.of(context).pop();
-                                  },
-                                  title: Text(
-                                    '${feedbackDetails[index]["auditname"]}',
-                                    style: Theme
-                                        .of(context)
-                                        .textTheme
-                                        .subtitle2,
-                                  ),
-                                ),
+                                Navigator.of(context).pop();
+                              },
+                              title: Text(
+                                '${feedbackDetails[index]["auditname"]}',
+                                style: Theme.of(context).textTheme.subtitle2,
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -457,7 +428,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   //Timer used for count show
   void checkCount() {
-    timer = Timer.periodic(Duration(seconds: 10), (t) async {
+    timer = Timer.periodic(const Duration(seconds: 10), (t) async {
       setCount();
     });
   }
@@ -465,7 +436,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //This for timer
   setCount() async {
     count = (await DatabaseHelper.instance.getAuditDataTableCount())[0]
-    ["count"] ??
+            ["count"] ??
         0;
     setState(() {});
     if (count == 0) {
@@ -506,15 +477,15 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Utils.showExitDialog(context, 'Do you want to exit from the app', () =>
-            SystemNavigator.pop(animated: true));
+        Utils.showExitDialog(context, 'Do you want to exit from the app',
+            () => SystemNavigator.pop(animated: true));
         return true;
       },
       child: UpgradeAlert(
         child: Scaffold(
           appBar: customAppBar(
             context,
-            title: Text(
+            title: const Text(
               'HOME',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
@@ -527,7 +498,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Stack(
                   children: [
                     Padding(
-                      padding: EdgeInsets.all(12.0),
+                      padding: const EdgeInsets.all(12.0),
                       child: Image.asset(
                         'assets/images/cloud-computing.png',
                         height: 25,
@@ -541,13 +512,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Container(
                         width: 20,
                         height: 20,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Colors.white,
                           shape: BoxShape.circle,
                         ),
                         child: Text(
                           '$count',
-                          style: TextStyle(color: Colors.black),
+                          style: const TextStyle(color: Colors.black),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -566,8 +537,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           SharedPreferencesHelper.IS_LOGIN, false);
                       Navigator.pushAndRemoveUntil(
                           context,
-                          MaterialPageRoute(builder: (context) => LoginScreen()),
-                              (Route<dynamic> route) => false);
+                          MaterialPageRoute(
+                              builder: (context) => const LoginScreen()),
+                          (Route<dynamic> route) => false);
                     });
 
                     // await SharedPreferencesHelper.setPrefBool(
@@ -577,9 +549,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     //     MaterialPageRoute(builder: (context) => LoginScreen()),
                     //     (Route<dynamic> route) => false);
                   },
-                  child: Icon(Icons.logout)
-              ),
-
+                  child: const Icon(Icons.logout)),
               const SizedBox(
                 width: 12,
               )
@@ -587,842 +557,193 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           body: SingleChildScrollView(
             child: Container(
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
-
-              padding
-                  :
-
-              EdgeInsets.only
-
-                (
-
-                  left
-                      :
-
-                  10.0
-
-                  ,
-
-                  right
-                      :
-
-                  10.0
-
-              )
-
-              ,
-
-              child
-                  :
-
-              Column
-
-                (
-
-                crossAxisAlignment
-                    :
-
-                CrossAxisAlignment.start
-
-                ,
-
-                children
-                    :
-
-                [
-
-                  SizedBox
-
-                    (
-
-                      height
-                          :
-
-                      40
-
-                  )
-
-                  ,
-
-                  Container
-
-                    (
-
-                    width
-                        :
-
-                    MediaQuery
-                        .of(context)
-
-                        .
-                    size
-                        .width
-
-                    ,
-
-                    height
-                        :
-
-                    50
-
-                    ,
-
-                    padding
-                        :
-
-                    EdgeInsets.all
-
-                      (
-
-                        2.0
-
-                    )
-
-                    ,
-
-                    decoration
-                        :
-
-                    BoxDecoration
-
-                      (
-
-                      border
-                          :
-
-                      Border.all
-
-                        (
-
-                          color
-                              :
-
-                          grey
-
-                      )
-
-                      ,
-
-                      borderRadius
-                          :
-
-                      BorderRadius.all
-
-                        (
-
-                          Radius.circular
-
-                            (
-
-                              10
-
-                          )
-
-                      )
-
-                      ,
-
-                    )
-
-                    ,
-
-                    child
-                        :
-
-                    ElevatedButton
-
-                      (
-
-                      style
-                          :
-
-                      ElevatedButton.styleFrom
-
-                        (
-
-                        backgroundColor
-                            :
-
-                        Colors.white
-
-                        ,
-
-                        elevation
-                            :
-
-                        7
-
-                        ,
-
-                        foregroundColor
-                            :
-
-                        Colors.black
-
-                        , // foreground (text) color
-                      )
-
-                      ,
-
-                      child
-                          :
-
-                      Row
-
-                        (
-
-                        mainAxisAlignment
-                            :
-
-                        MainAxisAlignment.spaceBetween
-
-                        ,
-
-                        children
-                            :
-
-                        [
-
-                          Text
-
-                            (
-
-                            '$sbuText'
-
-                            ,
-
-                            style
-                                :
-
-                            Theme
-                                .of(context)
-
-                                .
-                            textTheme
-                                .bodyText1
-
-                            !
-
-                                .
-                            copyWith
-
-                              (
-
-                              color
-                                  :
-
-                              Colors.black
-
-                              ,
-
-                              fontWeight
-                                  :
-
-                              FontWeight.normal
-
-                              ,
-
-                              fontSize
-                                  :
-
-                              15
-
-                              ,
-
-                            )
-
-                            ,
-
-                          )
-
-                          ,
-
-                          // SizedBox(width: 10),
-                          Image.asset
-                            ('assets/images/downarrow.png',
-                            height: 10,
-
-                            width
-                                :
-
-                            10
-
-                            ,
-
-                          )
-
-                          ,
-
-                        ]
-
-                        ,
-
-                      )
-
-                      ,
-
-                      onPressed
-                          : () {
-                        _showSBU(context);
-                      },
-
-                    )
-
-                    ,
-
-                  )
-
-                  ,
-
-                  SizedBox
-
-                    (
-
-                      height
-                          :
-
-                      30
-
-                  )
-
-                  ,
-
-                  Container
-
-                    (
-
-                    width
-                        :
-
-                    MediaQuery
-                        .of(context)
-
-                        .
-                    size
-                        .width
-
-                    ,
-
-                    height
-                        :
-
-                    50
-
-                    ,
-
-                    padding
-                        :
-
-                    EdgeInsets.all
-
-                      (
-
-                        2.0
-
-                    )
-
-                    ,
-
-                    decoration
-                        :
-
-                    BoxDecoration
-
-                      (
-
-                      border
-                          :
-
-                      Border.all
-
-                        (
-
-                          color
-                              :
-
-                          grey
-
-                      )
-
-                      ,
-
-                      borderRadius
-                          :
-
-                      BorderRadius.all
-
-                        (
-
-                          Radius.circular
-
-                            (
-
-                              10
-
-                          )
-
-                      )
-
-                      ,
-
-                    )
-
-                    ,
-
-                    child
-                        :
-
-                    ElevatedButton
-
-                      (
-
-                      style
-                          :
-
-                      ElevatedButton.styleFrom
-
-                        (
-
-                        backgroundColor
-                            :
-
-                        Colors.white
-
-                        ,
-
-                        elevation
-                            :
-
-                        7
-
-                        ,
-
-                        foregroundColor
-                            :
-
-                        Colors.black
-
-                        , // foreground (text) color
-                      )
-
-                      ,
-
-                      child
-                          :
-
-                      Row
-
-                        (
-
-                        mainAxisAlignment
-                            :
-
-                        MainAxisAlignment.spaceBetween
-
-                        ,
-
-                        children
-                            :
-
-                        [
-
-                          Text(
-                            '$companyText',
-                            style:Theme
-                                .of(context).textTheme.bodyText1!.copyWith(color:Colors.black,
-                              fontWeight:FontWeight.normal,
-                              fontSize:15,
-                            ),
-                          ),
-
-                          // SizedBox(width: 10),
-                          Image.asset('assets/images/downarrow.png',
-                            height:10,
-                            width:10,
-                          ),
-                        ]
-
-                        ,
-
-                      )
-
-                      ,
-
-                      onPressed
-                          : () {
-                        _showCompany(context);
-                      },
-
-                    )
-
-                    ,
-
-                  )
-
-                  ,
-
-                  SizedBox
-
-                    (
-
-                      height
-                          :
-
-                      30
-
-                  )
-
-                  ,
-
-                  Container
-
-                    (
-
-                    width
-                        :
-
-                    MediaQuery
-                        .of(context)
-
-                        .
-                    size
-                        .width
-
-                    ,
-
-                    height
-                        :
-
-                    50
-
-                    ,
-
-                    padding
-                        :
-
-                    EdgeInsets.all
-
-                      (
-
-                        2.0
-
-                    )
-
-                    ,
-
-                    decoration
-                        :
-
-                    BoxDecoration
-
-                      (
-
-                      border
-                          :
-
-                      Border.all
-
-                        (
-
-                          color
-                              :
-
-                          grey
-
-                      )
-
-                      ,
-
-                      borderRadius
-                          :
-
-                      BorderRadius.all
-
-                        (
-
-                          Radius.circular
-
-                            (
-
-                              10
-
-                          )
-
-                      )
-
-                      ,
-
-                    )
-
-                    ,
-
-                    child
-                        :
-
-                    ElevatedButton
-
-                      (
-
-                      style
-                          :
-
-                      ElevatedButton.styleFrom(
+              width: MediaQuery.of(context).size.width,
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 40),
+
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    padding: const EdgeInsets.all(2.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: grey),
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
+
                         elevation: 7,
-                        foregroundColor: Colors.black, // foreground (text) color
+
+                        foregroundColor:
+                            Colors.black, // foreground (text) color
                       ),
                       child: Row(
-                        mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                        children:[
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
                           Text(
-                            '$locationText',
-                            style:Theme.of(context).textTheme.bodyText1!.copyWith(color:Colors.black,
-                              fontWeight:FontWeight.normal,
-                              fontSize:15,
-                            ),
+                            sbuText,
+                            style:
+                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 15,
+                                    ),
                           ),
-                          // SizedBox(width: 10),
-                          Image.asset('assets/images/downarrow.png',
-                            height:10,
-                            width:10,
-                          ),
-                        ],
-                      ),
-
-                      onPressed: () {
-                        _showLocation(context);
-                      },
-
-                    ),
-                  )
-
-                  ,
-
-                  SizedBox
-
-                    (
-
-                      height
-                          :
-
-                      30
-
-                  )
-
-                  ,
-
-                  Container
-
-                    (
-
-                    width
-                        :
-
-                    MediaQuery
-                        .of(context)
-
-                        .
-                    size
-                        .width
-
-                    ,
-
-                    height
-                        :
-
-                    50
-
-                    ,
-
-                    padding
-                        :
-
-                    EdgeInsets.all
-
-                      (
-
-                        2.0
-
-                    )
-
-                    ,
-
-                    decoration
-                        :
-
-                    BoxDecoration
-
-                      (
-
-                      border
-                          :
-
-                      Border.all
-
-                        (
-
-                          color
-                              :
-
-                          grey
-
-                      )
-
-                      ,
-
-                      borderRadius
-                          :
-
-                      BorderRadius.all
-
-                        (
-
-                          Radius.circular
-
-                            (
-
-                              10
-
-                          )
-
-                      )
-
-                      ,
-
-                    )
-
-                    ,
-
-                    child
-                        :
-
-                    ElevatedButton
-
-                      (
-
-                      style
-                          :
-
-                      ElevatedButton.styleFrom
-
-                        (
-
-                        backgroundColor
-                            :
-
-                        Colors.white
-
-                        ,
-
-                        elevation
-                            :
-
-                        7
-
-                        ,
-
-                        foregroundColor
-                            :
-
-                        Colors.black
-
-                        , // foreground (text) color
-                      )
-
-                      ,
-
-                      child
-                          :
-
-                      Row
-
-                        (
-
-                        mainAxisAlignment
-                            :
-
-                        MainAxisAlignment.spaceBetween
-
-                        ,
-
-                        children
-                            :
-
-                        [
-
-                          Text('$feedbackText',
-                            style:Theme
-                                .of(context).textTheme.bodyText1!
-                                .
-                            copyWith
-
-                              (
-
-                              color
-                                  :
-
-                              Colors.black
-
-                              ,
-
-                              fontWeight
-                                  :
-
-                              FontWeight.normal
-
-                              ,
-
-                              fontSize
-                                  :
-
-                              15
-
-                              ,
-
-                            )
-
-                            ,
-
-                          )
-
-                          ,
 
                           // SizedBox(width: 10),
-                          Image.asset('assets/images/downarrow.png',
+                          Image.asset(
+                            'assets/images/downarrow.png',
                             height: 10,
                             width: 10,
                           ),
                         ],
                       ),
+                      onPressed: () {
+                        _showSBU(context);
+                      },
+                    ),
+                  ),
 
-                      onPressed
-                          : () {
+                  const SizedBox(height: 30),
+
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    padding: const EdgeInsets.all(2.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: grey),
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+
+                        elevation: 7,
+
+                        foregroundColor:
+                            Colors.black, // foreground (text) color
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            companyText,
+                            style:
+                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 15,
+                                    ),
+                          ),
+
+                          // SizedBox(width: 10),
+                          Image.asset(
+                            'assets/images/downarrow.png',
+                            height: 10,
+                            width: 10,
+                          ),
+                        ],
+                      ),
+                      onPressed: () {
+                        _showCompany(context);
+                      },
+                    ),
+                  ),
+
+                  const SizedBox(height: 30),
+
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    padding: const EdgeInsets.all(2.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: grey),
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        elevation: 7,
+                        foregroundColor:
+                            Colors.black, // foreground (text) color
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            locationText,
+                            style:
+                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 15,
+                                    ),
+                          ),
+                          // SizedBox(width: 10),
+                          Image.asset(
+                            'assets/images/downarrow.png',
+                            height: 10,
+                            width: 10,
+                          ),
+                        ],
+                      ),
+                      onPressed: () {
+                        _showLocation(context);
+                      },
+                    ),
+                  ),
+
+                  const SizedBox(height: 30),
+
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    padding: const EdgeInsets.all(2.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: grey),
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+
+                        elevation: 7,
+
+                        foregroundColor:
+                            Colors.black, // foreground (text) color
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            feedbackText,
+                            style:
+                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 15,
+                                    ),
+                          ),
+
+                          // SizedBox(width: 10),
+                          Image.asset(
+                            'assets/images/downarrow.png',
+                            height: 10,
+                            width: 10,
+                          ),
+                        ],
+                      ),
+                      onPressed: () {
                         _showFeedback(context);
                       },
+                    ),
+                  ),
 
-                    )
-
-                    ,
-
-                  )
-
-                  ,
-
-                  SizedBox
-
-                    (
-
-                      height
-                          :
-
-                      30
-
-                  )
-
-                  ,
+                  const SizedBox(height: 30),
 
                   // Container(
                   //   width: MediaQuery.of(context).size.width,
@@ -1433,8 +754,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   // SizedBox(height: 30),
                   CustomButton(
                     buttonText: 'Feedback',
-                    onPressed: () =>
-                    {
+                    onPressed: () => {
                       if (sbuId != "" &&
                           companyId != "" &&
                           locationId != "" &&
@@ -1446,7 +766,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           }),
                         }
                       else
-                      // {_showMessage(context, "Please select all items")}
+                        // {_showMessage(context, "Please select all items")}
                         {Utils.showMessage(context, "Please select all items")}
                     },
                   ),
@@ -1454,12 +774,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-
         ),
-      )
-
-      ,
-
+      ),
     );
   }
 

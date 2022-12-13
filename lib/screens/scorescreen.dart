@@ -1,8 +1,8 @@
+import 'dart:math' as math;
+
 import 'package:customerfeedbackios/helpers/utils.dart';
-import 'package:customerfeedbackios/models/scorecalculation.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'dart:math' as math;
 
 import '../database/database_helper.dart';
 import '../helpers/colors.dart';
@@ -27,7 +27,7 @@ class _ScoreScreenState extends State<ScoreScreen> {
   String userId = "";
   String selectedAuditId = "";
 
-  double percentage=0;
+  double percentage = 0;
 
   List<Map> feedbackDetails = [];
   List<Map> scoreCalculation = [];
@@ -58,7 +58,8 @@ class _ScoreScreenState extends State<ScoreScreen> {
 
     //This for get the feedback list
     feedbackDetails = await DatabaseHelper.instance.getFeedback(sectorId);
-    scoreCalculation = await DatabaseHelper.instance.getScoreCalculation(sbuId, companyId, locationId, auditId);
+    scoreCalculation = await DatabaseHelper.instance
+        .getScoreCalculation(sbuId, companyId, locationId, auditId);
     await getScoreCalculte(scoreCalculation);
     setState(() {});
   }
@@ -89,10 +90,9 @@ class _ScoreScreenState extends State<ScoreScreen> {
     var final_totalScore = totalWeightage / int_weight!;
     var convertToPercentage = (final_totalScore / 5.0) * 100;
 
-
     //Store the total score in shared preference
-    await SharedPreferencesHelper.setPrefString(SharedPreferencesHelper.TOTAL_SCORE,
-        final_totalScore.toString());
+    await SharedPreferencesHelper.setPrefString(
+        SharedPreferencesHelper.TOTAL_SCORE, final_totalScore.toString());
     percentage = (convertToPercentage * 3.14) / 100;
     // percentage = 3.14;
   }
@@ -102,23 +102,21 @@ class _ScoreScreenState extends State<ScoreScreen> {
     return Scaffold(
       appBar: customAppBar(
         context,
-        title: Text(
-          'Score',
-          style: TextStyle(fontWeight: FontWeight.bold)
-        ),
+        title:
+            const Text('Score', style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: primaryDark,
       ),
       body: Column(
         children: [
           Utils.subHeader(context, 'Bangalore', 'Audit > Category > Score'),
-          SizedBox(
+          const SizedBox(
             height: 12,
           ),
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: Circular_arc(percentage),
           ),
-          SizedBox(
+          const SizedBox(
             height: 12,
           ),
           Expanded(
@@ -130,8 +128,7 @@ class _ScoreScreenState extends State<ScoreScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(8),
                       child: Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
                             width: 300,
@@ -140,28 +137,27 @@ class _ScoreScreenState extends State<ScoreScreen> {
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                               softWrap: false,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                               ),
                             ),
                           ),
-                          Container(
+                          SizedBox(
                             height: 50,
                             child: CircularPercentIndicator(
                               radius: 25.0,
                               lineWidth: 5.0,
                               percent: 1.0,
-                              center: auditId ==
-                                  feedbackDetails[index]
-                                  ["auditid"]
-                                  ? Text(
-                                "100%",
-                                style: TextStyle(fontSize: 12),
-                              )
-                                  : Text(
-                                "0%",
-                                style: TextStyle(fontSize: 12),
-                              ),
+                              center:
+                                  auditId == feedbackDetails[index]["auditid"]
+                                      ? const Text(
+                                          "100%",
+                                          style: TextStyle(fontSize: 12),
+                                        )
+                                      : const Text(
+                                          "0%",
+                                          style: TextStyle(fontSize: 12),
+                                        ),
                               progressColor: Colors.blue,
                             ),
                           )
@@ -172,15 +168,13 @@ class _ScoreScreenState extends State<ScoreScreen> {
             ),
           ),
           CustomButton(
-            margin: EdgeInsets.only(left: 10,right: 10,bottom: 32),
+            margin: const EdgeInsets.only(left: 10, right: 10, bottom: 32),
             buttonText: 'SUBMIT',
             onPressed: () => {
               Navigator.popAndPushNamed(context, '/otp'),
               // Navigator.popAndPushNamed(context, '/submit'),
-
             },
           ),
-
         ],
       ),
     );
@@ -221,13 +215,12 @@ class _Circular_arcState extends State<Circular_arc>
   Widget build(BuildContext context) {
     return Stack(
       children: [
-
         CustomPaint(
-          size: Size(300, 170),
+          size: const Size(300, 170),
           painter: ProgressArc(null, Colors.grey.shade300, true),
         ),
         CustomPaint(
-          size: Size(300, 170),
+          size: const Size(300, 170),
           painter: ProgressArc(widget.percentage, primary, false),
         ),
         Positioned(
@@ -235,7 +228,7 @@ class _Circular_arcState extends State<Circular_arc>
           left: 130,
           child: Text(
             "${(widget.percentage / 3.14 * 100).round()}%",
-            style: TextStyle(color: Colors.black, fontSize: 30),
+            style: const TextStyle(color: Colors.black, fontSize: 30),
           ),
         ),
       ],
@@ -252,11 +245,11 @@ class ProgressArc extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final rect = Rect.fromLTRB(0, 0, 300, 300);
-    final startAngle = -math.pi;
+    const rect = Rect.fromLTRB(0, 0, 300, 300);
+    const startAngle = -math.pi;
     // final sweepAngle = -arc != null ? arc : math.pi;
     final sweepAngle = arc ?? math.pi;
-    final userCenter = false;
+    const userCenter = false;
     final paint = Paint()
       ..strokeCap = StrokeCap.round
       ..color = progressColor

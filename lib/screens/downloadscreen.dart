@@ -24,7 +24,7 @@ class DownloadScreen extends StatefulWidget {
 }
 
 class _DownloadScreenState extends State<DownloadScreen> {
-  final GlobalKey<NavigatorState> key = new GlobalKey<NavigatorState>();
+  final GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
   var percentage= 0;
 
   @override
@@ -185,15 +185,15 @@ class _DownloadScreenState extends State<DownloadScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body:Container(
+        body:SizedBox(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child:  CircularPercentIndicator(
             radius: 100.0,
             lineWidth: 8.0,
             percent: percentage/100,
-            center: new Text(percentage.toString(),
-              style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+            center: Text(percentage.toString(),
+              style: const TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
             progressColor: primaryDark,
           ),
         ),

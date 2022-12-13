@@ -85,7 +85,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       key: key,
       appBar: customAppBar(
         context,
-        title: Text(
+        title: const Text(
           'Select Category',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
@@ -94,7 +94,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       body: Column(
         children: [
           Utils.subHeader(context, 'Bangalore', ''),
-          SizedBox(
+          const SizedBox(
             height: 12,
           ),
           Expanded(
@@ -122,7 +122,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                 style: TextStyle(fontSize: 18),
                               ),
                             ),
-                            Container(
+                            SizedBox(
                               height: 50,
                               child: CircularPercentIndicator(
                                 radius: 25.0,
@@ -146,7 +146,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(left: 10.0, right: 10.0, bottom: 32),
+            padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 32),
             child: CustomButton(
               buttonText: 'Next Feedback',
               borderColor: primaryDark,

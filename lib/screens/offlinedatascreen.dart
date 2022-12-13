@@ -3,7 +3,6 @@ import 'package:customerfeedbackios/helpers/colors.dart';
 import 'package:customerfeedbackios/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 
-import '../helpers/shared_preferences_helper.dart';
 
 class OfflineDataScreen extends StatefulWidget {
   const OfflineDataScreen({Key? key}) : super(key: key);
@@ -32,14 +31,14 @@ class _OfflineDataScreenState extends State<OfflineDataScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: customAppBar(context, title: Text('Offline Data'),backgroundColor: primaryDark),
+        appBar: customAppBar(context, title: const Text('Offline Data'),backgroundColor: primaryDark),
         body: Container(
-          margin: EdgeInsets.only(top: 10),
+          margin: const EdgeInsets.only(top: 10),
           child: ListView.separated(
             itemCount: offlineList.length,
             itemBuilder: (context, index) {
               return Container(
-                padding: EdgeInsets.all(5),
+                padding: const EdgeInsets.all(5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -48,22 +47,22 @@ class _OfflineDataScreenState extends State<OfflineDataScreen> {
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.location_city,size: 20),
-                            SizedBox(width: 8,),
-                            Text(offlineList[index]["CompanyName"],style: TextStyle(fontWeight: FontWeight.bold),),
+                            const Icon(Icons.location_city,size: 20),
+                            const SizedBox(width: 8,),
+                            Text(offlineList[index]["CompanyName"],style: const TextStyle(fontWeight: FontWeight.bold),),
                           ],
                         ),
                         Row(
                           children: [
-                            Icon(Icons.pin_drop,size: 20),
-                            SizedBox(width: 8,),
-                            Text(offlineList[index]["LocationName"],style: TextStyle(fontWeight: FontWeight.w500),),
+                            const Icon(Icons.pin_drop,size: 20),
+                            const SizedBox(width: 8,),
+                            Text(offlineList[index]["LocationName"],style: const TextStyle(fontWeight: FontWeight.w500),),
                           ],
                         ),
                         Row(
                           children: [
-                            Icon(Icons.ac_unit,size: 20),
-                            SizedBox(width: 8,),
+                            const Icon(Icons.ac_unit,size: 20),
+                            const SizedBox(width: 8,),
                             Text(offlineList[index]["auditname"],),
                           ],
                         ),
@@ -78,16 +77,16 @@ class _OfflineDataScreenState extends State<OfflineDataScreen> {
                             color: primaryDark,
                             shape: BoxShape.circle,
                           ),
-                          child: Center(child: Text(offlineList[index]["count"].toString(),style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)),
+                          child: Center(child: Text(offlineList[index]["count"].toString(),style: const TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)),
                         ),
-                        Text("Image",style: TextStyle(fontSize: 10),),
+                        const Text("Image",style: TextStyle(fontSize: 10),),
                       ],
                     ),
                   ],
                 ),
               );
 
-            }, separatorBuilder: (BuildContext context, int index) => Divider(),
+            }, separatorBuilder: (BuildContext context, int index) => const Divider(),
           ),
         ));
   }

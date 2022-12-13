@@ -4,10 +4,8 @@ import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:i2iutils/helpers/common_functions.dart';
 
 import '../api/customerfeedback_api_call.dart';
-import '../database/database_helper.dart';
 import '../helpers/colors.dart';
 import '../helpers/shared_preferences_helper.dart';
-import '../helpers/utils.dart';
 import '../models/otpdetails.dart';
 import '../widgets/app_bar.dart';
 
@@ -29,7 +27,6 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
     getOTP();
   }
 
-
   //This method is used for get the otp from the apiu
   void getOTP() async {
     var companyId = await SharedPreferencesHelper.getPrefString(
@@ -42,16 +39,15 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
     Otpdetails? response = await CustomerFeedbackApiCall()
         .getOTPDetails(companyId, locationId, userId);
     if (response != null) {
-      // Utils.showToastMsg(response.message);
       if (response.status == 1) {
         apiGetOTP = response.otp!;
 
-        print('OTP CHECK' + response.otp!);
+        debugPrint('OTP CHECK${response.otp!}');
       }
     }
   }
 
-  verifyOtp(){
+  verifyOtp() {
     if (apiGetOTP == typedCode) {
       Navigator.popAndPushNamed(context, '/submit');
     } else {
@@ -63,63 +59,65 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppBar(
-    context,
-    title: const Text(
-      'OTP Verify',
-      style: TextStyle(fontWeight: FontWeight.bold)
-    ),
-    backgroundColor: primaryDark,
-
+        context,
+        title: const Text('OTP Verify',
+            style: TextStyle(fontWeight: FontWeight.bold)),
+        backgroundColor: primaryDark,
       ),
       body: SingleChildScrollView(
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
           child: Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-
-          Image.asset('assets/images/otp_enter.png',width: 250,height: 250,),
-          const SizedBox(height: 64,),
-          OtpTextField(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            numberOfFields: 6,
-            borderColor: const Color(0xFF90151A),
-            //set to true to show as box or false to show as dash
-            showFieldAsBox: true,
-            //runs when every textfield is filled
-            onSubmit: (val) {
-              debugPrint('sub $val');
-              typedCode=val;
-              // verifyOtp();
-            }, // end onSubmit
-          ),
-          const SizedBox(
-            height: 40,
-          ),
-          Container(
-            margin: const EdgeInsets.all(10.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: CustomButton(
-                      buttonText: 'RESEND OTP',
-                      textSize: 15,
-                      buttonType: ButtonType.third,
-                      onPressed: () => getOTP()),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/otp_enter.png',
+                width: 250,
+                height: 250,
+              ),
+              const SizedBox(
+                height: 64,
+              ),
+              OtpTextField(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                numberOfFields: 6,
+                borderColor: const Color(0xFF90151A),
+                //set to true to show as box or false to show as dash
+                showFieldAsBox: true,
+                //runs when every textfield is filled
+                onSubmit: (val) {
+                  debugPrint('sub $val');
+                  typedCode = val;
+                  // verifyOtp();
+                }, // end onSubmit
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              Container(
+                margin: const EdgeInsets.all(10.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: CustomButton(
+                          buttonText: 'RESEND OTP',
+                          textSize: 15,
+                          buttonType: ButtonType.third,
+                          onPressed: () => getOTP()),
+                    ),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    Expanded(
+                      child: CustomButton(
+                          buttonText: 'NEXT',
+                          textSize: 15,
+                          onPressed: () => verifyOtp()),
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  width: 16,
-                ),
-                Expanded(
-                  child: CustomButton(
-                      buttonText: 'NEXT',
-                      textSize: 15,
-                      onPressed: ()=>verifyOtp()),
-                ),
-              ],
-            ),
-          ),
-    ],
+              ),
+            ],
           ),
         ),
       ),

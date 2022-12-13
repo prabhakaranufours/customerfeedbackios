@@ -14,7 +14,6 @@ import '../models/auditdata.dart';
 import '../models/categorydata.dart';
 import '../widgets/app_bar.dart';
 import '../widgets/button.dart';
-import '../widgets/textfield.dart';
 import 'package:i2iutils/widgets/boxedittext.dart';
 
 class SubmitScreen extends StatefulWidget {
@@ -59,8 +58,8 @@ class _SubmitScreenState extends State<SubmitScreen> {
     penColor: Colors.red,
     exportBackgroundColor: Colors.blue,
     exportPenColor: Colors.black,
-    onDrawStart: () => print('onDrawStart called!'),
-    onDrawEnd: () => print('onDrawEnd called!'),
+    onDrawStart: () => debugPrint('onDrawStart called!'),
+    onDrawEnd: () => debugPrint('onDrawEnd called!'),
   );
 
   Future<void> exportImage(BuildContext context) async {

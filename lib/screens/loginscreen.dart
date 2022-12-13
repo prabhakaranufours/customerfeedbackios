@@ -1,14 +1,14 @@
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:device_info/device_info.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:i2iutils/helpers/common_functions.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import '../api/customerfeedback_api_call.dart';
 // import 'package:toast/toast.dart';
 
 import '../database/database_helper.dart';
@@ -18,7 +18,6 @@ import '../helpers/utils.dart';
 import '../models/loginresponse.dart';
 import '../widgets/button.dart';
 import '../widgets/textfield.dart';
-import '../api/customerfeedback_api_call.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -149,7 +148,9 @@ class _LoginScreenState extends State<LoginScreen> {
     // TODO: implement initState
     super.initState();
     // ToastContext().init(context);
-    FirebaseMessaging.instance.getToken().then((value) => debugPrint('Token $value'));
+    FirebaseMessaging.instance
+        .getToken()
+        .then((value) => debugPrint('Token $value'));
     get();
   }
 
@@ -259,34 +260,27 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: isLoading
                                 ? null
                                 : () async {
-                              setState(() {
-                                isLoading=true;
-                              });
-                                      if (emailController.text != "" &&
-                                          passwordController.text != "")
-                                        {
-
-                                          if (await isNetConnected())
-                                            {
-                                              api(context, emailController.text,
-                                                  passwordController.text);
-                                            }
-                                          else
-                                            {
-                                              Utils.showMessage(context,
-                                                  "Please check Internet");
-                                            }
-                                        }
-                                      else
-                                        {
-                                          //Show the alert dialog for enter details
-                                          Utils.showMessage(context,
-                                              "Please Enter the fields");
-                                        }
-                              setState(() {
-                                isLoading=false;
-                              });
-                                    },
+                                    setState(() {
+                                      isLoading = true;
+                                    });
+                                    if (emailController.text != "" &&
+                                        passwordController.text != "") {
+                                      if (await isNetConnected()) {
+                                        api(context, emailController.text,
+                                            passwordController.text);
+                                      } else {
+                                        Utils.showMessage(
+                                            context, "Please check Internet");
+                                      }
+                                    } else {
+                                      //Show the alert dialog for enter details
+                                      Utils.showMessage(
+                                          context, "Please Enter the fields");
+                                    }
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                  },
                           ),
                           const SizedBox(height: 10),
                           Row(

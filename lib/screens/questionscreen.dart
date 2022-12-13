@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:customerfeedbackios/models/categorydata.dart';
 import 'package:customerfeedbackios/models/feedbackimages.dart';
 import 'package:customerfeedbackios/widgets/MyRadioOptions.dart';
@@ -73,7 +72,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
     qnsDetails.forEach((element) {
       element.percentage = percentage.toString();
     });
-    // print(jsonEncode(qnsDetails));
 
     //Update the percentage in category Details
     await DatabaseHelper.instance.categoryDetailsPercentageUpdate(
@@ -156,7 +154,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
               categorydone: e['categorydone']))
           .toList();
 
-      // print(jsonEncode(qnsDetails));
     } else {
       // New
       isUpdate = false;
@@ -186,7 +183,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
     return Scaffold(
       appBar: customAppBar(
         context,
-        title: Text('Questions', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Questions', style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: primaryDark,
       ),
       body: Column(
@@ -199,7 +196,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
               itemBuilder: (context, i) {
                 return Card(
                     elevation: 3,
-                    margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
@@ -207,7 +204,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                         children: [
                           Text(
                             '${qnsDetails[i].question}',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w600),
                           ),
                           const SizedBox(
@@ -269,11 +266,11 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                     qnsDetails[i].image = image;
                                   setState(() {});
                                 },
-                                child: Container(
+                                child: SizedBox(
                                   width: 40,
                                   height: 40,
                                   child: qnsDetails[i].image == null
-                                      ? ImageIcon(
+                                      ? const ImageIcon(
                                           AssetImage(
                                               "assets/images/camera.png"),
                                           color: Color(0xFF3A5A98),
@@ -295,7 +292,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
           ),
           CustomButton(
             buttonText: 'Submit Audit',
-            margin: EdgeInsets.only(left: 10, right: 10, bottom: 30),
+            margin: const EdgeInsets.only(left: 10, right: 10, bottom: 30),
             onPressed: () async {
               print(jsonEncode(qnsDetails));
 
