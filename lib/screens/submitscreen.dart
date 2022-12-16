@@ -115,7 +115,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                 (await repSignController.toPngBytes())?.toList() ?? []),
             auditsign: base64Encode(
                 (await signController.toPngBytes())?.toList() ?? []),
-            auditdate: getDate(),
+            auditdate: getDate(format: "MM/dd/yyyy"),
             userid: userId,
             guid: getCustomUniqueId(),
             deviceid: deviceId,

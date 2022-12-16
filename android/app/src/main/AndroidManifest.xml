@@ -7,7 +7,7 @@
 
 
    <application
-        android:label="customerfeedbackios"
+        android:label="customerfeedback"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
