@@ -225,7 +225,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Column(
                         children: [
                           CustomTextField(
-                            placeholder: "User name/Email ID",
+                            placeholder: "Email ID",
                             //validator: (text) => ValidationUtils.validateEmail(text),
                             controller: emailController,
                             prefixIcon: Padding(
