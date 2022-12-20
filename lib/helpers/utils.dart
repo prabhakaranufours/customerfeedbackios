@@ -71,20 +71,22 @@ class Utils {
   static Widget subHeader(BuildContext context, String msg, String msg1) {
     return Container(
       color: Colors.grey.shade300,
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
               msg,
-            style: TextStyle(color: Colors.black, fontSize: 15.0),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            style: const TextStyle(color: Colors.black, fontSize: 15.0),
           ),
           const SizedBox(width: 8,),
           Expanded(
             child: Text(
               msg1,
-              style: TextStyle(color: Colors.black, fontSize: 13,),
+              style: const TextStyle(color: Colors.black, fontSize: 13,),
               maxLines: 2,
               textAlign: TextAlign.end,
               overflow: TextOverflow.ellipsis,

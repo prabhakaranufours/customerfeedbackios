@@ -119,7 +119,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                                 softWrap: false,
-                                style: TextStyle(fontSize: 18),
+                                style: const TextStyle(fontSize: 18),
                               ),
                             ),
                             SizedBox(
@@ -131,9 +131,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                             ["percentage"] ??
                                         "0") /
                                     100,
-                                center: new Text(
+                                center: Text(
                                   categoryDetails[index]["percentage"] ?? "0",
-                                  style: TextStyle(fontSize: 12),
+                                  style: const TextStyle(fontSize: 12),
                                 ),
                                 progressColor: Colors.blue,
                               ),

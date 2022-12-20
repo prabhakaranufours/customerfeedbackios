@@ -142,6 +142,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final passwordController = TextEditingController();
   bool isRememberMeSelected = true;
   bool isLoading = false;
+  String appVersion="";
+
 
   @override
   void initState() {
@@ -160,9 +162,12 @@ class _LoginScreenState extends State<LoginScreen> {
     var pwd = await SharedPreferencesHelper.getPrefString(
         SharedPreferencesHelper.USER_PASSWORD, '');
 
+    appVersion = 'Version ${await getAppVersion()}';
     emailController.text = email;
     passwordController.text = pwd;
     createFol("CustomerFeedback_IOS");
+
+    setState(() {});
   }
 
   @override
@@ -314,10 +319,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                             .copyWith(fontSize: 13),
                                       ),
                                     ),
+
                                   ],
                                 ),
                               ),
                             ],
+                          ),
+                          const SizedBox(height: 30),
+                          Text(
+                            '${appVersion}\nwww.i2isoftwares.com\n2022. All rights reserved',
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 12),
+                            textAlign: TextAlign.center,
                           ),
                         ],
                       ),

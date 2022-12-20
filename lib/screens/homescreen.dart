@@ -710,9 +710,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
-
                         elevation: 7,
-
                         foregroundColor:
                             Colors.black, // foreground (text) color
                       ),
@@ -721,6 +719,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Text(
                             feedbackText,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            softWrap: false,
                             style:
                                 Theme.of(context).textTheme.bodyText1!.copyWith(
                                       color: Colors.black,
