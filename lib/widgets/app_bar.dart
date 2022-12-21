@@ -19,6 +19,7 @@ PreferredSizeWidget customAppBar(
     leading: leading,
     actions: actions,
     title: title,
+    leadingWidth: 100,
     centerTitle: centerTitle,
   );
 }

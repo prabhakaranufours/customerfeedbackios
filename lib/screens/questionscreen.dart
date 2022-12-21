@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:customerfeedbackios/models/categorydata.dart';
 import 'package:customerfeedbackios/models/feedbackimages.dart';
 import 'package:customerfeedbackios/widgets/MyRadioOptions.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:i2iutils/helpers/common_functions.dart';
 import 'package:i2iutils/helpers/image_picker_helper.dart';
 import 'package:i2iutils/widgets/boxedittext.dart';
+
 import '../database/database_helper.dart';
 import '../helpers/colors.dart';
 import '../helpers/shared_preferences_helper.dart';
@@ -50,8 +52,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
   String companyId = "";
   String locationId = "";
   String sbuId = "";
-  String feedbackName= "";
-
+  String feedbackName = "";
+  String locName = "";
+  String categoryName = "";
   var q;
 
   @override
@@ -80,11 +83,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
     var deviceId = await getDeviceUniqueId();
 
-
     //Insert images in feedback image table
-    feedbackImageList =
-
-        qnsDetails
+    feedbackImageList = qnsDetails
         .where((element) => element.image?.isNotEmpty ?? false)
         .map((e) => FeedbackImages(
             auditId: auditId,
@@ -102,10 +102,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
     await DatabaseHelper.instance.feedbackImagesInsert(feedbackImageList);
 
     if (isUpdate) {
-
       await DatabaseHelper.instance.categoryDataUpdate(qnsDetails);
     } else {
-
       await DatabaseHelper.instance.categoryDataInsert(qnsDetails);
     }
   }
@@ -127,7 +125,10 @@ class _QuestionScreenState extends State<QuestionScreen> {
         SharedPreferencesHelper.SECTOR_ID, '');
     feedbackName = await SharedPreferencesHelper.getPrefString(
         SharedPreferencesHelper.FEEDBACK_NAME, '');
-
+    locName = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.LOCATION_NAME, '');
+    categoryName = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.CATEGORY_NAME, '');
 
     q = await DatabaseHelper.instance.getCategoryDetailsWithParameters(
         sbuId, companyId, locationId, auditId, sectorId, categoryId);
@@ -157,7 +158,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
               weightage: e['weightage'],
               categorydone: e['categorydone']))
           .toList();
-
     } else {
       // New
       isUpdate = false;
@@ -187,13 +187,14 @@ class _QuestionScreenState extends State<QuestionScreen> {
     return Scaffold(
       appBar: customAppBar(
         context,
-        title: const Text('Questions', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Questions',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: primaryDark,
       ),
       body: Column(
         children: [
           // Utils.subHeader(context, 'Bangalore', 'Audit > Category > Question'),
-          Utils.subHeader(context, 'Bangalore', feedbackName),
+          Utils.subHeader(context, locName, '$feedbackName > $categoryName'),
           Expanded(
             child: ListView.builder(
               itemCount: qnsDetails.length,
@@ -201,7 +202,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
               itemBuilder: (context, i) {
                 return Card(
                     elevation: 3,
-                    margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(

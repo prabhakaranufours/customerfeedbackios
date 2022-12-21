@@ -497,6 +497,7 @@ class _HomeScreenState extends State<HomeScreen> {
           appBar: customAppBar(
             context,
             leading: Image.network(compLogo),
+
             title:
             const Text(
               'HOME',

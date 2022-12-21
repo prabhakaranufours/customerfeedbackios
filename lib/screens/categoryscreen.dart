@@ -14,6 +14,7 @@ class CategoryScreen extends StatefulWidget {
   String companyId = "";
   String auditId = "";
 
+
   //This line used to get the data from previous screen
   final Map<String, String> data;
 
@@ -28,6 +29,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   List<Map> categoryDetails = [];
   var percentage;
+  String locName = "";
 
   @override
   void initState() {
@@ -48,16 +50,24 @@ class _CategoryScreenState extends State<CategoryScreen> {
     categoryDetails = await DatabaseHelper.instance
         .getCategory(widget.data['companyId']!, widget.data['feedbackId']!);
 
+    locName = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.LOCATION_NAME, '');
+
     debugPrint(jsonEncode(categoryDetails));
 
     await SharedPreferencesHelper.setPrefString(
         SharedPreferencesHelper.AUDIT_ID, widget.data['feedbackId']!);
+
+
     setState(() {});
   }
 
-  void nextPage(String categoryId) async {
+  void nextPage(String categoryId,String categoryName) async {
     await SharedPreferencesHelper.setPrefString(
         SharedPreferencesHelper.CATEGORY_ID, categoryId);
+    await SharedPreferencesHelper.setPrefString(
+        SharedPreferencesHelper.CATEGORY_NAME, categoryName);
+
     //After close the qns page it returns the result true
     var result = await Navigator.pushNamed(context, '/question');
     debugPrint('result is a $result');
@@ -93,7 +103,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       ),
       body: Column(
         children: [
-          Utils.subHeader(context, 'Bangalore', ''),
+          Utils.subHeader(context, locName, ''),
           const SizedBox(
             height: 12,
           ),
@@ -103,7 +113,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    nextPage(categoryDetails[index]["categoryid"]);
+                    nextPage(categoryDetails[index]["categoryid"],categoryDetails[index]["categoryname"]);
                   },
                   child: Card(
                       elevation: 2,

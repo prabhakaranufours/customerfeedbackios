@@ -22,6 +22,7 @@ class SharedPreferencesHelper {
   static const String FEEDBACK_NAME = "FEEDBACK_NAME";
   static const String SECTOR_ID = "SECTOR_ID";
   static const String CATEGORY_ID = "CATEGORY_ID";
+  static const String CATEGORY_NAME = "CATEGORY_NAME";
   static const String AUDIT_ID = "AUDIT_ID";
   static const String TOTAL_SCORE = "TOTAL_SCORE";
 

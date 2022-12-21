@@ -86,7 +86,7 @@ class Utils {
           Expanded(
             child: Text(
               msg1,
-              style: const TextStyle(color: Colors.black, fontSize: 13,),
+              style: const TextStyle(color: Colors.black, fontSize: 8,),
               maxLines: 2,
               textAlign: TextAlign.end,
               overflow: TextOverflow.ellipsis,
