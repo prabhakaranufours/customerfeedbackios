@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:customerfeedbackios/database/database_helper.dart';
 import 'package:customerfeedbackios/helpers/utils.dart';
@@ -37,6 +38,8 @@ class _HomeScreenState extends State<HomeScreen> {
   String sbuId = "";
   String locationId = "";
   String feedbackId = "";
+  String userName = "";
+  String compLogo = "";
 
   TextEditingController searchController = TextEditingController();
   var sbuTextController = TextEditingController();
@@ -422,8 +425,16 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     checkCount();
     setCount();
+    get();
 
     pushOfflineData();
+  }
+
+  void get() async {
+    userName = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.USER_NAME, '');
+    compLogo = await SharedPreferencesHelper.getPrefString(
+        SharedPreferencesHelper.COMPANY_LOGO, '');
   }
 
   //Timer used for count show
@@ -485,7 +496,9 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Scaffold(
           appBar: customAppBar(
             context,
-            title: const Text(
+            leading: Image.network(compLogo),
+            title:
+            const Text(
               'HOME',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
@@ -556,223 +569,246 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           body: SingleChildScrollView(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 40),
+            child: Column(
+              children: [
+                Utils.subHeader(context, userName, ''),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 40),
 
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    padding: const EdgeInsets.all(2.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: grey),
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    ),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 50,
+                        padding: const EdgeInsets.all(2.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: grey),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                        ),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
 
-                        elevation: 7,
+                            elevation: 7,
 
-                        foregroundColor:
-                            Colors.black, // foreground (text) color
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            sbuText,
-                            style:
-                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                            foregroundColor:
+                                Colors.black, // foreground (text) color
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                sbuText,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(
                                       color: Colors.black,
                                       fontWeight: FontWeight.normal,
                                       fontSize: 15,
                                     ),
+                              ),
+
+                              // SizedBox(width: 10),
+                              Image.asset(
+                                'assets/images/downarrow.png',
+                                height: 10,
+                                width: 10,
+                              ),
+                            ],
                           ),
+                          onPressed: () {
+                            _showSBU(context);
+                          },
+                        ),
+                      ),
 
-                          // SizedBox(width: 10),
-                          Image.asset(
-                            'assets/images/downarrow.png',
-                            height: 10,
-                            width: 10,
+                      const SizedBox(height: 30),
+
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 50,
+                        padding: const EdgeInsets.all(2.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: grey),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                        ),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+
+                            elevation: 7,
+
+                            foregroundColor:
+                                Colors.black, // foreground (text) color
                           ),
-                        ],
-                      ),
-                      onPressed: () {
-                        _showSBU(context);
-                      },
-                    ),
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    padding: const EdgeInsets.all(2.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: grey),
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    ),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-
-                        elevation: 7,
-
-                        foregroundColor:
-                            Colors.black, // foreground (text) color
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            companyText,
-                            style:
-                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                companyText,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(
                                       color: Colors.black,
                                       fontWeight: FontWeight.normal,
                                       fontSize: 15,
                                     ),
+                              ),
+
+                              // SizedBox(width: 10),
+                              Image.asset(
+                                'assets/images/downarrow.png',
+                                height: 10,
+                                width: 10,
+                              ),
+                            ],
                           ),
+                          onPressed: () {
+                            _showCompany(context);
+                          },
+                        ),
+                      ),
 
-                          // SizedBox(width: 10),
-                          Image.asset(
-                            'assets/images/downarrow.png',
-                            height: 10,
-                            width: 10,
+                      const SizedBox(height: 30),
+
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 50,
+                        padding: const EdgeInsets.all(2.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: grey),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                        ),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            elevation: 7,
+                            foregroundColor:
+                                Colors.black, // foreground (text) color
                           ),
-                        ],
-                      ),
-                      onPressed: () {
-                        _showCompany(context);
-                      },
-                    ),
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    padding: const EdgeInsets.all(2.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: grey),
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    ),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        elevation: 7,
-                        foregroundColor:
-                            Colors.black, // foreground (text) color
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            locationText,
-                            style:
-                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                locationText,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(
                                       color: Colors.black,
                                       fontWeight: FontWeight.normal,
                                       fontSize: 15,
                                     ),
+                              ),
+                              // SizedBox(width: 10),
+                              Image.asset(
+                                'assets/images/downarrow.png',
+                                height: 10,
+                                width: 10,
+                              ),
+                            ],
                           ),
-                          // SizedBox(width: 10),
-                          Image.asset(
-                            'assets/images/downarrow.png',
-                            height: 10,
-                            width: 10,
-                          ),
-                        ],
+                          onPressed: () {
+                            _showLocation(context);
+                          },
+                        ),
                       ),
-                      onPressed: () {
-                        _showLocation(context);
-                      },
-                    ),
-                  ),
 
-                  const SizedBox(height: 30),
+                      const SizedBox(height: 30),
 
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    padding: const EdgeInsets.all(2.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: grey),
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    ),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        elevation: 7,
-                        foregroundColor:
-                            Colors.black, // foreground (text) color
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            feedbackText,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            softWrap: false,
-                            style:
-                                Theme.of(context).textTheme.bodyText1!.copyWith(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 15,
-                                    ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 50,
+                        padding: const EdgeInsets.all(2.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: grey),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                        ),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            elevation: 7,
+                            foregroundColor:
+                                Colors.black, // foreground (text) color
                           ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  feedbackText,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  softWrap: false,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .copyWith(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 15,
+                                      ),
+                                ),
+                              ),
 
-                          // SizedBox(width: 10),
-                          Image.asset(
-                            'assets/images/downarrow.png',
-                            height: 10,
-                            width: 10,
+                              // SizedBox(width: 10),
+                              Image.asset(
+                                'assets/images/downarrow.png',
+                                height: 10,
+                                width: 10,
+                              ),
+                            ],
                           ),
-                        ],
+                          onPressed: () {
+                            _showFeedback(context);
+                          },
+                        ),
                       ),
-                      onPressed: () {
-                        _showFeedback(context);
-                      },
-                    ),
-                  ),
 
-                  const SizedBox(height: 30),
+                      const SizedBox(height: 30),
 
-                  // Container(
-                  //   width: MediaQuery.of(context).size.width,
-                  //   child: Text('Sector',
-                  //       style: TextStyle(fontSize: 15.0),
-                  //       textAlign: TextAlign.left),
-                  // ),
-                  // SizedBox(height: 30),
-                  CustomButton(
-                    buttonText: 'Feedback',
-                    onPressed: () => {
-                      if (sbuId != "" &&
-                          companyId != "" &&
-                          locationId != "" &&
-                          feedbackId != "")
-                        {
-                          Navigator.pushNamed(context, '/category', arguments: {
-                            "companyId": companyId,
-                            "feedbackId": feedbackId
-                          }),
-                        }
-                      else
-                        // {_showMessage(context, "Please select all items")}
-                        {Utils.showMessage(context, "Please select all items")}
-                    },
+                      // Container(
+                      //   width: MediaQuery.of(context).size.width,
+                      //   child: Text('Sector',
+                      //       style: TextStyle(fontSize: 15.0),
+                      //       textAlign: TextAlign.left),
+                      // ),
+                      // SizedBox(height: 30),
+                      CustomButton(
+                        buttonText: 'Feedback',
+                        onPressed: () => {
+                          if (sbuId != "" &&
+                              companyId != "" &&
+                              locationId != "" &&
+                              feedbackId != "")
+                            {
+                              Navigator.pushNamed(context, '/category',
+                                  arguments: {
+                                    "companyId": companyId,
+                                    "feedbackId": feedbackId
+                                  }),
+                            }
+                          else
+                            // {_showMessage(context, "Please select all items")}
+                            {
+                              Utils.showMessage(
+                                  context, "Please select all items")
+                            }
+                        },
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

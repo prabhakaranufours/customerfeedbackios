@@ -73,7 +73,7 @@ class Utils {
       color: Colors.grey.shade300,
         padding: const EdgeInsets.all(8),
         child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(

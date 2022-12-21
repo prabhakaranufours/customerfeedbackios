@@ -56,6 +56,8 @@ void api(BuildContext context, String emailId, String pwd) async {
           response.returnData.userDetails![0].userFirstName.toString());
       await SharedPreferencesHelper.setPrefString(
           SharedPreferencesHelper.IS_FEEDBACK, response.isfeedback.toString());
+      await SharedPreferencesHelper.setPrefString(
+          SharedPreferencesHelper.COMPANY_LOGO, response.returnData.userDetails![0].compLogo);
 
       Navigator.popAndPushNamed(context, '/download');
     }

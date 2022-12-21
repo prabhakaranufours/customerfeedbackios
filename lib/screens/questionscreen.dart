@@ -192,8 +192,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
       ),
       body: Column(
         children: [
-          Utils.subHeader(context, 'Bangalore', 'Audit > Category > Question'),
-          Utils.subHeader(context, feedbackName, 'Audit > Category > Question'),
+          // Utils.subHeader(context, 'Bangalore', 'Audit > Category > Question'),
+          Utils.subHeader(context, 'Bangalore', feedbackName),
           Expanded(
             child: ListView.builder(
               itemCount: qnsDetails.length,

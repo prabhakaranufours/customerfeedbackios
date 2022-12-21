@@ -4,35 +4,36 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesHelper {
 
-  static final String IS_LOGIN = "is_login";
-  static final String IS_FEEDBACK = "is_feedback";
-  static final String LOGIN_RESPONSE = "login_response";
-  static final String USER_EMAIL = "USER_EMAIL";
-  static final String USER_PASSWORD = "USER_PASSWORD";
-  static final String USER_ID = "USER_ID";
-  static final String USER_NAME = "USER_NAME";
-  static final String COMPANY_ID = "COMPANY_ID";
-  static final String COMPANY_NAME = "COMPANY_NAME";
-  static final String SBU_ID = "SBU_ID";
-  static final String SBU_NAME = "SBU_NAME";
-  static final String LOCATION_ID = "LOCATION_ID";
-  static final String LOCATION_NAME = "LOCATION_NAME";
-  static final String FEEDBACK_ID = "FEEDBACK_ID";
-  static final String FEEDBACK_NAME = "FEEDBACK_NAME";
-  static final String SECTOR_ID = "SECTOR_ID";
-  static final String CATEGORY_ID = "CATEGORY_ID";
-  static final String AUDIT_ID = "AUDIT_ID";
-  static final String TOTAL_SCORE = "TOTAL_SCORE";
+  static const String IS_LOGIN = "is_login";
+  static const String IS_FEEDBACK = "is_feedback";
+  static const String COMPANY_LOGO = "comp_logo";
+  static const String LOGIN_RESPONSE = "login_response";
+  static const String USER_EMAIL = "USER_EMAIL";
+  static const String USER_PASSWORD = "USER_PASSWORD";
+  static const String USER_ID = "USER_ID";
+  static const String USER_NAME = "USER_NAME";
+  static const String COMPANY_ID = "COMPANY_ID";
+  static const String COMPANY_NAME = "COMPANY_NAME";
+  static const String SBU_ID = "SBU_ID";
+  static const String SBU_NAME = "SBU_NAME";
+  static const String LOCATION_ID = "LOCATION_ID";
+  static const String LOCATION_NAME = "LOCATION_NAME";
+  static const String FEEDBACK_ID = "FEEDBACK_ID";
+  static const String FEEDBACK_NAME = "FEEDBACK_NAME";
+  static const String SECTOR_ID = "SECTOR_ID";
+  static const String CATEGORY_ID = "CATEGORY_ID";
+  static const String AUDIT_ID = "AUDIT_ID";
+  static const String TOTAL_SCORE = "TOTAL_SCORE";
 
-  static final String SETTING_DETAILS = "SETTING_DETAILS";
+  static const String SETTING_DETAILS = "SETTING_DETAILS";
 
-  static final String DEPARTMENTID = "DEPARTMENT_ID";
-  static final String DEPARTMENTNAME = "DEPARTMENT_NAME";
+  static const String DEPARTMENTID = "DEPARTMENT_ID";
+  static const String DEPARTMENTNAME = "DEPARTMENT_NAME";
 
-  static final String selectedCompany = "SelectedCompany";
-  static final String selectedLocation = "SelectedLocation";
-  static final String selectedBuilding = "SelectedBuilding";
-  static final String selectedFloor = "SelectedFloor";
+  static const String selectedCompany = "SelectedCompany";
+  static const String selectedLocation = "SelectedLocation";
+  static const String selectedBuilding = "SelectedBuilding";
+  static const String selectedFloor = "SelectedFloor";
 
 
 
