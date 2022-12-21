@@ -230,7 +230,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                         qnsDetails[i].scoreid = val;
                                         qnsDetails[i].categorydone =
                                             index != 5 ? "true" : "false";
-                                        print(jsonEncode(qnsDetails));
+                                        debugPrint(jsonEncode(qnsDetails));
 
                                         setState(() {});
                                       },

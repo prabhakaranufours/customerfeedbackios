@@ -8,13 +8,11 @@ import 'package:customerfeedbackios/models/sbudetails.dart';
 import 'package:customerfeedbackios/models/scoredetails.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:i2iutils/helpers/common_functions.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../api/customerfeedback_api_call.dart';
 import '../helpers/colors.dart';
 import '../helpers/shared_preferences_helper.dart';
-import '../helpers/utils.dart';
 
 class DownloadScreen extends StatefulWidget {
   const DownloadScreen({Key? key}) : super(key: key);

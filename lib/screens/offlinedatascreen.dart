@@ -73,7 +73,7 @@ class _OfflineDataScreenState extends State<OfflineDataScreen> {
                         Container(
                           height: 30,
                           width: 30,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: primaryDark,
                             shape: BoxShape.circle,
                           ),

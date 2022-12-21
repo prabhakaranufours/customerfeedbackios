@@ -233,7 +233,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
         ),
         body: Column(
           children: [
-            Utils.subHeader(context, 'Chitra', ''),
+            Utils.subHeader(context, userName, ''),
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
@@ -372,7 +372,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                             onTap: () {
                               repSignController.clear();
                             },
-                            child: Text(
+                            child: const Text(
                               "Clear Sign",
                               style: TextStyle(
                                   color: primaryDark,
@@ -409,7 +409,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
                             onTap: () {
                               signController.clear();
                             },
-                            child: Text(
+                            child: const Text(
                               "Clear Sign",
                               style: TextStyle(
                                   color: primaryDark,
