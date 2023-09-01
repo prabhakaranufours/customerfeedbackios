@@ -11,6 +11,7 @@ class Loginresponse {
     this.data,
     this.isOTP,
     this.isfeedback,
+    this.colorCode,
   );
 
   Loginresponse.fromJson(dynamic json) {
@@ -25,6 +26,7 @@ class Loginresponse {
     data = json['data'];
     isOTP = json['isOTP'];
     isfeedback = json['isfeedback'];
+    colorCode = json['colorCode'];
   }
 
   late bool status;
@@ -38,6 +40,7 @@ class Loginresponse {
   late num data;
   dynamic isOTP;
   late num isfeedback;
+  late String colorCode;
 
 // Loginresponse copyWith({  bool? status,
 //   bool? showQa,

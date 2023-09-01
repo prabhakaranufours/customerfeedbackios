@@ -19,7 +19,7 @@ import '../models/scoredetails.dart';
 
 class DatabaseHelper {
   static const _dbName = 'CustomerFeedback.db';
-  static const _dbVersion = 1;
+  static const _dbVersion = 2;
   static const _userDetails = 'userDetails';
   static const _sbuDetails = "sbuDetails";
   static const _companyDetails = "companyDetails";
@@ -76,6 +76,7 @@ class DatabaseHelper {
   static const SectorID = 'sectorid';
   static const UserCompanyID = 'UserCompanyID';
   static const GroupName = 'GroupName';
+  static const Sbu = 'sbu';
 
   //Location Table
   static const LocID = 'id';
@@ -204,7 +205,15 @@ class DatabaseHelper {
   _initiateDatabase() async {
     Directory directory = await getApplicationDocumentsDirectory();
     String path = join(directory.path + "/CustomerFeedback_IOS/", _dbName);
-    return await openDatabase(path, version: _dbVersion, onCreate: _onCreate);
+    return await openDatabase(path,
+        version: _dbVersion, onCreate: _onCreate, onUpgrade: _onUpgrade);
+  }
+
+  // UPGRADE DATABASE TABLES
+  void _onUpgrade(Database db, int oldVersion, int newVersion) {
+    if (oldVersion < newVersion) {
+      db.execute("ALTER TABLE $_companyDetails ADD COLUMN sbu TEXT;");
+    }
   }
 
   Future _onCreate(Database db, int version) async {
@@ -252,7 +261,8 @@ class DatabaseHelper {
     $CompanyShortName TEXT,
     $SectorID TEXT,
     $UserCompanyID TEXT,
-    $GroupName TEXT      
+    $GroupName TEXT,     
+    $Sbu TEXT      
     )''');
 
     try {
@@ -504,7 +514,8 @@ class DatabaseHelper {
   }
 
   //Updated category Details percentage using auditID
-  Future<int> cdPercentageUpdate_auditId(String percentage,String auditId) async{
+  Future<int> cdPercentageUpdate_auditId(
+      String percentage, String auditId) async {
     Database? db = await instance.database;
     await db.update(_categoryDetails, {Cat_Percentage: percentage},
         where: 'auditid = ?', whereArgs: [auditId]);
@@ -533,6 +544,15 @@ class DatabaseHelper {
   Future<List<Map>> getCompany() async {
     Database? db = await instance.database;
     return await db.query(_companyDetails);
+  }
+
+  //Get the companyDetails
+  Future<List<Map>> getCompanyWithSbu(String sbuId) async {
+    Database? db = await instance.database;
+    return await db
+        .query(_companyDetails,
+        where: "$Sbu = ?",
+        whereArgs: [sbuId]);
   }
 
   //Get the locationDetails
@@ -622,7 +642,8 @@ class DatabaseHelper {
         " on $_categoryData.$CatData_ScoreId = $_scoreDetails.$Score_Scorescore where $_scoreDetails.$Score_Scorescore != -1 AND $_categoryData.$CatData_SbuId  = $sbuId  AND"
         " $_categoryData.$CatData_CompanyId = $companyId AND $_categoryData.$CatData_LocationId = $locationId AND $_categoryData.$CatData_AuditId = $auditId";
 
-    var tt = "Select $CatData_Weightage,$CatData_ScoreId from $_categoryData where $CatData_ScoreId != N/a AND  $CatData_SbuId  = $sbuId  AND $CatData_CompanyId = $companyId AND $CatData_LocationId = $locationId AND $CatData_AuditId = $auditId";
+    var tt =
+        "Select $CatData_Weightage,$CatData_ScoreId from $_categoryData where $CatData_ScoreId != N/a AND  $CatData_SbuId  = $sbuId  AND $CatData_CompanyId = $companyId AND $CatData_LocationId = $locationId AND $CatData_AuditId = $auditId";
     print(tt);
 
     return await db.rawQuery(

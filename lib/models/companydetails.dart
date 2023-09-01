@@ -116,7 +116,8 @@ class CompanyTable {
       this.companyShortName, 
       this.sectorid, 
       this.userCompanyID, 
-      this.groupName,);
+      this.groupName,
+      this.sbu);
 
   CompanyTable.fromJson(dynamic json) {
     stateid = json['stateid'];
@@ -127,6 +128,7 @@ class CompanyTable {
     sectorid = json['sectorid'];
     userCompanyID = json['UserCompanyID'];
     groupName = json['GroupName'];
+    sbu = json['sbu'];
   }
   late num stateid;
   late num companyID;
@@ -136,6 +138,7 @@ class CompanyTable {
   late num sectorid;
   late num userCompanyID;
   late String groupName;
+  late num sbu;
 
 // Table copyWith({  num? stateid,
 //   num? companyID,
@@ -164,6 +167,7 @@ class CompanyTable {
     map['sectorid'] = sectorid;
     map['UserCompanyID'] = userCompanyID;
     map['GroupName'] = groupName;
+    map['sbu'] = sbu;
     return map;
   }
 

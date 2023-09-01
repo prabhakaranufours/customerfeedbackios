@@ -33,7 +33,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
     '3': "assets/images/three_grey.png",
     '4': "assets/images/four_grey.png",
     '5': "assets/images/five_grey.png",
-    'n/a': "assets/images/na_unselect.png"
+    '-1': "assets/images/na_unselect.png"
   };
   Map<String, dynamic> emojiSelect = {
     '1': "assets/images/one.png",
@@ -41,7 +41,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
     '3': "assets/images/three.png",
     '4': "assets/images/four.png",
     '5': "assets/images/five.png",
-    'n/a': "assets/images/na.png"
+    '-1': "assets/images/na.png"
   };
 
   List<Categorydata> qnsDetails = [];
@@ -223,9 +223,18 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                 scoreDetails.length,
                                 (index) => MyRadioOption(
                                       value:
-                                          // '$i${scoreDetails[index]['scorename']}',
-                                          '${scoreDetails[index]['scorename']}',
+                                          // '${scoreDetails[index]['scorename']}',
+                                          '${scoreDetails[index]['score']}',
                                       groupValue: qnsDetails[i].scoreid,
+                                      // onChanged: (val) {
+                                      //   val == 'N/a'
+                                      //       ? qnsDetails[i].scoreid =
+                                      //           scoreDetails[index]['score']
+                                      //       : qnsDetails[i].scoreid = val;
+                                      //   qnsDetails[i].categorydone =
+                                      //       index != 5 ? "true" : "false";
+                                      //   debugPrint(jsonEncode(qnsDetails));
+
                                       onChanged: (val) {
                                         qnsDetails[i].scoreid = val;
                                         qnsDetails[i].categorydone =
@@ -234,13 +243,23 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
                                         setState(() {});
                                       },
-                                      label: scoreDetails[index]['scorename'],
+                                      // label: scoreDetails[index]['scorename'],
+                                      // text: emojigrey[scoreDetails[index]
+                                      //         ['scorename']
+                                      //     .toString()
+                                      //     .toLowerCase()],
+                                      // selectedText: emojiSelect[
+                                      //     scoreDetails[index]['scorename']
+                                      //         .toString()
+                                      //         .toLowerCase()],
+
+                                      label: scoreDetails[index]['score'],
                                       text: emojigrey[scoreDetails[index]
-                                              ['scorename']
+                                              ['score']
                                           .toString()
                                           .toLowerCase()],
                                       selectedText: emojiSelect[
-                                          scoreDetails[index]['scorename']
+                                          scoreDetails[index]['score']
                                               .toString()
                                               .toLowerCase()],
                                     )),

@@ -28,6 +28,11 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Map> locationDetails = [];
   List<Map> feedbackDetails = [];
 
+  List<Map> filterSbuDetails = [];
+  List<Map> filterCompanyDetails = [];
+  List<Map> filterLocationDetails = [];
+  List<Map> filterFeedbackDetails = [];
+
   String sbuText = "Select SBU";
   String companyText = "Select Company";
   String locationText = "Select Location";
@@ -46,6 +51,56 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Timer? timer;
   int count = 0;
+
+  //Sbu Filter
+  void _filterItems(String query) {
+    setState(() {
+      if (query != "") {
+        filterSbuDetails = sbuDetails
+            .where((item) => item['locationsettingsname']
+                .toLowerCase()
+                .contains(query.toLowerCase()))
+            .toList();
+      }
+    });
+  }
+
+  //Company Filter
+  void _filterCompItems(String query) {
+    setState(() {
+      if (query != "") {
+        filterCompanyDetails = companyDetails
+            .where((item) =>
+                item['CompanyName'].toLowerCase().contains(query.toLowerCase()))
+            .toList();
+      }
+    });
+  }
+
+  //Location Filter
+  void _filterLocationItems(String query) {
+    setState(() {
+      if (query != "") {
+        filterLocationDetails = locationDetails
+            .where((item) => item['locationName']
+                .toLowerCase()
+                .contains(query.toLowerCase()))
+            .toList();
+      }
+    });
+  }
+
+  //Feedback Filter
+  void _filterFeedbackItems(String query) {
+    setState(() {
+      if (query != "") {
+        filterFeedbackDetails = feedbackDetails
+            .where((item) =>
+                item['auditname'].toLowerCase().contains(query.toLowerCase()))
+            .toList();
+      }
+    });
+  }
 
   //After click the list item in sbu then set the value in text
   void setSbuData(String value, String id) {
@@ -133,12 +188,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 FocusScope.of(context).unfocus(),
                             onChanged: (val) async {
                               if (val == "") {
-                                sbuDetails =
+                                // sbuDetails = await DatabaseHelper.instance.getSBU();
+                                filterSbuDetails =
                                     await DatabaseHelper.instance.getSBU();
                               } else {
-                                sbuDetails.forEach((element) {
-                                  element['locationsettingsname'];
-                                });
+                                _filterItems(val);
                               }
                               setState(() {});
                             },
@@ -157,19 +211,28 @@ class _HomeScreenState extends State<HomeScreen> {
                           flex: 6,
                           child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: sbuDetails.length,
+                            // itemCount: sbuDetails.length,
+                            itemCount: filterSbuDetails.length,
                             itemBuilder: (context, index) => ListTile(
                               onTap: () {
                                 setSbuData(
-                                  sbuDetails[index]["locationsettingsname"],
-                                  sbuDetails[index]["locationsettingsid"],
+                                  // sbuDetails[index]["locationsettingsname"],
+                                  // sbuDetails[index]["locationsettingsid"],
+
+                                  filterSbuDetails[index]
+                                      ["locationsettingsname"],
+                                  filterSbuDetails[index]["locationsettingsid"],
                                 );
+                                // _getCompany(sbuDetails[index]["locationsettingsid"]);
+                                _getCompany(filterSbuDetails[index]
+                                    ["locationsettingsid"]);
 
                                 Navigator.of(context).pop();
                                 // _getLocation();
                               },
                               title: Text(
-                                '${sbuDetails[index]["locationsettingsname"]}',
+                                // '${sbuDetails[index]["locationsettingsname"]}',
+                                '${filterSbuDetails[index]["locationsettingsname"]}',
                                 style: Theme.of(context).textTheme.subtitle2,
                               ),
                             ),
@@ -209,12 +272,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                 FocusScope.of(context).unfocus(),
                             onChanged: (val) async {
                               if (val == "") {
-                                companyDetails =
-                                    await DatabaseHelper.instance.getCompany();
+                                // companyDetails =
+                                //     // await DatabaseHelper.instance.getCompany();
+                                //     await DatabaseHelper.instance
+                                //         .getCompanyWithSbu(sbuId);
+
+                                filterCompanyDetails = await DatabaseHelper
+                                    .instance
+                                    .getCompanyWithSbu(sbuId);
                               } else {
-                                companyDetails.forEach((element) {
-                                  element['CompanyName'];
-                                });
+                                // companyDetails.forEach((element) {
+                                //   element['CompanyName'];
+                                // });
+
+                                _filterCompItems(val);
                               }
                               setState(() {});
                             },
@@ -233,21 +304,33 @@ class _HomeScreenState extends State<HomeScreen> {
                           flex: 6,
                           child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: companyDetails.length,
+                            // itemCount: companyDetails.length,
+                            itemCount: filterCompanyDetails.length,
                             itemBuilder: (context, index) => ListTile(
+                              // onTap: () {
+                              //   debugPrint('setstate');
+                              //   // locationText="Select Location";
+                              //   setCompanyData(
+                              //       companyDetails[index]["CompanyName"],
+                              //       companyDetails[index]["CompanyID"]);
+                              //   _getLocation(
+                              //       companyDetails[index]["CompanyID"]);
+                              //
+                              //   Navigator.of(context).pop();
+                              // },
                               onTap: () {
                                 debugPrint('setstate');
                                 // locationText="Select Location";
                                 setCompanyData(
-                                    companyDetails[index]["CompanyName"],
-                                    companyDetails[index]["CompanyID"]);
+                                    filterCompanyDetails[index]["CompanyName"],
+                                    filterCompanyDetails[index]["CompanyID"]);
                                 _getLocation(
-                                    companyDetails[index]["CompanyID"]);
+                                    filterCompanyDetails[index]["CompanyID"]);
 
                                 Navigator.of(context).pop();
                               },
                               title: Text(
-                                '${companyDetails[index]["CompanyName"]}',
+                                '${filterCompanyDetails[index]["CompanyName"]}',
                                 style: Theme.of(context).textTheme.subtitle2,
                               ),
                             ),
@@ -287,12 +370,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                 FocusScope.of(context).unfocus(),
                             onChanged: (val) async {
                               if (val == null || val == "") {
-                                locationDetails = await DatabaseHelper.instance
+                                // locationDetails = await DatabaseHelper.instance
+                                //     .getLocation(companyId, sbuId);
+
+                                filterLocationDetails = await DatabaseHelper
+                                    .instance
                                     .getLocation(companyId, sbuId);
                               } else {
-                                locationDetails.forEach((element) {
-                                  element['locationName'];
-                                });
+                                // locationDetails.forEach((element) {
+                                //   element['locationName'];
+                                // });
+
+                                _filterLocationItems(val);
                               }
                               setState(() {});
                             },
@@ -313,23 +402,39 @@ class _HomeScreenState extends State<HomeScreen> {
                             shrinkWrap: true,
                             itemCount: locationDetails.length,
                             itemBuilder: (context, index) => ListTile(
+                              // onTap: () {
+                              //   setLocationData(
+                              //       locationDetails[index]["LocationName"],
+                              //       locationDetails[index]["LocationID"]);
+                              //
+                              //   _getFeedback(
+                              //       locationDetails[index]["sectorid"]);
+                              //   //SectorId store in sharedPreference
+                              //   SharedPreferencesHelper.setPrefString(
+                              //       SharedPreferencesHelper.SECTOR_ID,
+                              //       locationDetails[index]["sectorid"]);
+                              //
+                              //   Navigator.of(context).pop();
+                              //   // _getLocation();
+                              // },
                               onTap: () {
                                 setLocationData(
-                                    locationDetails[index]["LocationName"],
-                                    locationDetails[index]["LocationID"]);
+                                    filterLocationDetails[index]
+                                        ["LocationName"],
+                                    filterLocationDetails[index]["LocationID"]);
 
                                 _getFeedback(
-                                    locationDetails[index]["sectorid"]);
+                                    filterLocationDetails[index]["sectorid"]);
                                 //SectorId store in sharedPreference
                                 SharedPreferencesHelper.setPrefString(
                                     SharedPreferencesHelper.SECTOR_ID,
-                                    locationDetails[index]["sectorid"]);
+                                    filterLocationDetails[index]["sectorid"]);
 
                                 Navigator.of(context).pop();
                                 // _getLocation();
                               },
                               title: Text(
-                                '${locationDetails[index]["LocationName"]}',
+                                '${filterLocationDetails[index]["LocationName"]}',
                                 style: Theme.of(context).textTheme.subtitle2,
                               ),
                             ),
@@ -369,12 +474,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                 FocusScope.of(context).unfocus(),
                             onChanged: (val) async {
                               if (val == null || val == "") {
-                                feedbackDetails = await DatabaseHelper.instance
+                                // feedbackDetails = await DatabaseHelper.instance
+                                //     .getFeedback(companyId);
+                                filterFeedbackDetails = await DatabaseHelper
+                                    .instance
                                     .getFeedback(companyId);
                               } else {
-                                feedbackDetails.forEach((element) {
-                                  element['auditname'];
-                                });
+                                // feedbackDetails.forEach((element) {
+                                //   element['auditname'];
+                                // });
+                                _filterFeedbackItems(val);
                               }
                               setState(() {});
                             },
@@ -395,15 +504,22 @@ class _HomeScreenState extends State<HomeScreen> {
                             shrinkWrap: true,
                             itemCount: feedbackDetails.length,
                             itemBuilder: (context, index) => ListTile(
+                              // onTap: () {
+                              //   setFeedbackData(
+                              //       feedbackDetails[index]["auditname"],
+                              //       feedbackDetails[index]["auditid"]);
+                              //
+                              //   Navigator.of(context).pop();
+                              // },
                               onTap: () {
                                 setFeedbackData(
-                                    feedbackDetails[index]["auditname"],
-                                    feedbackDetails[index]["auditid"]);
+                                    filterFeedbackDetails[index]["auditname"],
+                                    filterFeedbackDetails[index]["auditid"]);
 
                                 Navigator.of(context).pop();
                               },
                               title: Text(
-                                '${feedbackDetails[index]["auditname"]}',
+                                '${filterFeedbackDetails[index]["auditname"]}',
                                 style: Theme.of(context).textTheme.subtitle2,
                               ),
                             ),
@@ -468,13 +584,29 @@ class _HomeScreenState extends State<HomeScreen> {
     super.didChangeDependencies();
 
     sbuDetails = await DatabaseHelper.instance.getSBU();
-    companyDetails = await DatabaseHelper.instance.getCompany();
+    filterSbuDetails.clear();
+    filterSbuDetails.addAll(sbuDetails);
+    // companyDetails = await DatabaseHelper.instance.getCompany();
+    // companyDetails = await DatabaseHelper.instance.getCompanyWithSbu(sbuId);
+  }
+
+  //Get Company
+  void _getCompany(String sbuId) async {
+    debugPrint('GetCompany');
+    // companyDetails = await DatabaseHelper.instance.getCompanyWithSbu(sbuId);
+
+    companyDetails = await DatabaseHelper.instance.getCompanyWithSbu(sbuId);
+    filterCompanyDetails.clear();
+    filterCompanyDetails.addAll(companyDetails);
+    setState(() {});
   }
 
   //Get location
   void _getLocation(String compId) async {
     debugPrint('GetLocation');
     locationDetails = await DatabaseHelper.instance.getLocation(compId, sbuId);
+    filterLocationDetails.clear();
+    filterLocationDetails.addAll(locationDetails);
     setState(() {});
   }
 
@@ -482,6 +614,9 @@ class _HomeScreenState extends State<HomeScreen> {
   void _getFeedback(String sectorId) async {
     debugPrint('GetFeedback');
     feedbackDetails = await DatabaseHelper.instance.getFeedback(sectorId);
+    filterFeedbackDetails.clear();
+    filterFeedbackDetails.addAll(feedbackDetails);
+    setState(() {});
   }
 
   @override
@@ -497,9 +632,7 @@ class _HomeScreenState extends State<HomeScreen> {
           appBar: customAppBar(
             context,
             leading: Image.network(compLogo),
-
-            title:
-            const Text(
+            title: const Text(
               'HOME',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
@@ -623,6 +756,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                           onPressed: () {
+                            searchController.clear();
                             _showSBU(context);
                           },
                         ),
@@ -642,9 +776,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
-
                             elevation: 7,
-
                             foregroundColor:
                                 Colors.black, // foreground (text) color
                           ),
@@ -672,6 +804,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                           onPressed: () {
+                            _getCompany(sbuId);
+                            searchController.clear();
                             _showCompany(context);
                           },
                         ),
@@ -718,6 +852,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                           onPressed: () {
+                            _getLocation(companyId);
+                            searchController.clear();
                             _showLocation(context);
                           },
                         ),
@@ -770,6 +906,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                           onPressed: () {
+                            searchController.clear();
                             _showFeedback(context);
                           },
                         ),
