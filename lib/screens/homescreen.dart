@@ -82,7 +82,8 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       if (query != "") {
         filterLocationDetails = locationDetails
-            .where((item) => item['locationName']
+            // .where((item) => item['locationName']
+            .where((item) => item['LocationName']
                 .toLowerCase()
                 .contains(query.toLowerCase()))
             .toList();
@@ -400,7 +401,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           flex: 6,
                           child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: locationDetails.length,
+                            // itemCount: locationDetails.length,
+                            itemCount: filterLocationDetails.length,
                             itemBuilder: (context, index) => ListTile(
                               // onTap: () {
                               //   setLocationData(
@@ -502,7 +504,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           flex: 6,
                           child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: feedbackDetails.length,
+                            // itemCount: feedbackDetails.length,
+                            itemCount: filterFeedbackDetails.length,
                             itemBuilder: (context, index) => ListTile(
                               // onTap: () {
                               //   setFeedbackData(
