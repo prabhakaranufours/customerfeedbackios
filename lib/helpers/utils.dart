@@ -43,7 +43,7 @@ class Utils {
                   '$msg',
                   style: Theme.of(context)
                       .textTheme
-                      .subtitle2!
+                      .bodyMedium!
                       .apply(color: Colors.black),
                 ),
               ],

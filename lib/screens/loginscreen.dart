@@ -221,7 +221,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       'Customer Feedback',
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1!
+                          .bodyLarge!
                           .apply(color: Colors.black)
                           .copyWith(fontWeight: FontWeight.bold),
                     ),
@@ -317,7 +317,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         'Remember me',
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText1!
+                                            .bodyLarge!
                                             .copyWith(fontSize: 13),
                                       ),
                                     ),

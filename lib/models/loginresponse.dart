@@ -26,7 +26,7 @@ class Loginresponse {
     data = json['data'];
     isOTP = json['isOTP'];
     isfeedback = json['isfeedback'];
-    colorCode = json['colorCode'];
+    colorCode = json['colorCode'] ?? '';
   }
 
   late bool status;

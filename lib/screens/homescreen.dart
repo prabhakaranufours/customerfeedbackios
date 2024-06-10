@@ -233,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               title: Text(
                                 // '${sbuDetails[index]["locationsettingsname"]}',
                                 '${filterSbuDetails[index]["locationsettingsname"]}',
-                                style: Theme.of(context).textTheme.subtitle2,
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ),
                           ),
@@ -331,7 +331,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                               title: Text(
                                 '${filterCompanyDetails[index]["CompanyName"]}',
-                                style: Theme.of(context).textTheme.subtitle2,
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ),
                           ),
@@ -435,7 +435,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                               title: Text(
                                 '${filterLocationDetails[index]["LocationName"]}',
-                                style: Theme.of(context).textTheme.subtitle2,
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ),
                           ),
@@ -520,7 +520,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                               title: Text(
                                 '${filterFeedbackDetails[index]["auditname"]}',
-                                style: Theme.of(context).textTheme.subtitle2,
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ),
                           ),
@@ -739,7 +739,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 sbuText,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodyText1!
+                                    .bodyLarge!
                                     .copyWith(
                                       color: Colors.black,
                                       fontWeight: FontWeight.normal,
@@ -787,7 +787,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 companyText,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodyText1!
+                                    .bodyLarge!
                                     .copyWith(
                                       color: Colors.black,
                                       fontWeight: FontWeight.normal,
@@ -836,7 +836,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 locationText,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodyText1!
+                                    .bodyLarge!
                                     .copyWith(
                                       color: Colors.black,
                                       fontWeight: FontWeight.normal,
@@ -888,7 +888,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   softWrap: false,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .bodyText1!
+                                      .bodyLarge!
                                       .copyWith(
                                         color: Colors.black,
                                         fontWeight: FontWeight.normal,

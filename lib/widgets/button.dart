@@ -54,7 +54,7 @@ class CustomButton extends StatelessWidget {
 
         child: Text(
           this.buttonText,
-          style: Theme.of(context).textTheme.bodyText1?.copyWith(
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
             // color: this.buttonType == ButtonType.primary ? primary :
             // this.buttonType == ButtonType.third ? Colors.black : Colors.white,
             color: Colors.white,
